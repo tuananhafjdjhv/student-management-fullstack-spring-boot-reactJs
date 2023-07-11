@@ -7,7 +7,8 @@ import Navbar from "./Navbar";
 const Admin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [listStudent, setListStudent]= useState([])
+  const [listStudent, setListStudent]= useState([]);
+  const [listSearch,setListSearch] =useState([])
   useEffect(() => {
     let show = new StudentService();
     show.showAll().then((res) => {
@@ -15,6 +16,14 @@ const Admin = () => {
       setListStudent(res.data);
     });
   }, []);
+
+  // const handleSearch = () => {
+  //   setListSearch()
+  // }
+
+  // const filteredData = listStudent.filter(item =>
+  //   item.name.toLowerCase().includes(listStudent.name.toLowerCase())
+  // );
   return (
     <>
     <Navbar></Navbar>
@@ -43,9 +52,13 @@ const Admin = () => {
               type="text"
               id="search"
               name="search"
+              // value={(e)=>listSearch(e.target.value)}
+              
               placeholder="Tìm kiếm sinh viên"
             />
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded ml-2">
+            <button
+            //  onClick={handleSearch} 
+             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded ml-2">
               Tìm kiếm
             </button>
           </form>

@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../service/AuthService";
@@ -7,6 +7,7 @@ import { login } from "../redux/reduxSlice";
 const Login = () => {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const [role,setRole] = useState([]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -18,10 +19,26 @@ const Login = () => {
     let authService = new AuthService();
     authService.login(body).then((res) => {
       dispatch(login(res.data));
-      if (res.data.status){
-        navigate("/")
+      const {isBlock} = res.data.status;
+      const datas = res.data.roles;
+      
+      setRole(datas.id)
+      console.log("role: "+datas);
+      if (isBlock) {
+        alert("tai khoan bi khoa")
+        navigate("/");
+      } else {
+        alert("dang nhap thanh cong")
+        if (role == 1 && role == 3 && role == 4) {
+          navigate("/admin");
+        } else {
+          navigate("/home")
+        }
+        // navigate("/admin");
+        
       }
-      navigate("/admin");
+        
+      
     });
     e.preventDefault();
   };
@@ -44,7 +61,7 @@ const Login = () => {
           <div className="text-center">
             <h1 className="text-xl md:text-2xl font-bold leading-tight">
               {" "}
-              Login {" "}
+              Login{" "}
             </h1>
           </div>
           <form className="mt-6">
