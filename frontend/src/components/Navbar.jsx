@@ -1,7 +1,10 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+// import logo from "../static/logo.png";
 
-const  Navbar =() => {
+
+
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -10,19 +13,46 @@ const  Navbar =() => {
   };
 
   const LogOut = (e) => {
-    e.preventDefault()
-    localStorage.removeItem('token');
-    localStorage.removeItem('name');
+    e.preventDefault();
+    localStorage.removeItem("token");
+    localStorage.removeItem("name");
     navigate("/");
-  }
+  };
+
+  let color = ["bg-blue-400", "bg-black-400", "bg-green-400", "bg-yellow-400"];
+  const [colorState, setColorState] = useState(0);
+  useEffect(() => {
+    let id = setInterval(() => {
+      if (colorState < color.length - 1) {
+        setColorState((prev) => prev + 1);
+      } else {
+        setColorState(0);
+      }
+    }, 600);
+    return () => clearInterval(id);
+  }, [colorState]);
 
   return (
-    <nav className="bg-blue-500">
+    <>
+    <nav className={`${color[colorState]} transition-all duration-300`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
+            <div>
+              <img
+                src="/logo.png"
+                width="40"
+                height="50"
+                className="bg-black-500"
+                alt="Logo"
+                
+              ></img>
+              
+            </div>
             <div className="flex-shrink-0">
-              <span className="text-white font-bold text-lg">Quản lí sinh viên</span>
+              <span className="text-white font-bold text-lg">
+                Lờ Mờ Ét
+              </span>
             </div>
           </div>
           <div className="hidden md:block">
@@ -33,12 +63,12 @@ const  Navbar =() => {
               >
                 Trang chủ
               </a>
-              <a
-                href="#"
+              <NavLink
+                to={"/admin"}
                 className="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
               >
                 Sinh viên
-              </a>
+              </NavLink>
               <a
                 href="#"
                 className="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
@@ -99,7 +129,10 @@ const  Navbar =() => {
           </div>
         </div>
       </div>
-      <div className={`${isOpen ? 'block' : 'hidden'} md:hidden`} id="mobile-menu">
+      <div
+        className={`${isOpen ? "block" : "hidden"} md:hidden`}
+        id="mobile-menu"
+      >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <a
             href="#"
@@ -128,7 +161,10 @@ const  Navbar =() => {
         </div>
       </div>
     </nav>
+    
+    </>
+    
   );
-}
+};
 
 export default Navbar;

@@ -10,10 +10,5 @@
         <module name="ra.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ra" target="1.8" />
-      <module name="ra.main" target="1.8" />
-      <module name="ra.test" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

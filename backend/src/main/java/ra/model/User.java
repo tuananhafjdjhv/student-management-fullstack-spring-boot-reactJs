@@ -50,6 +50,7 @@ public class User {
     private String address;
 
     private String phoneNumber;
+
     private LocalDate birthDate;
 
     @ManyToMany(fetch = FetchType.EAGER)

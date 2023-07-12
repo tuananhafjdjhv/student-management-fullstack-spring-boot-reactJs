@@ -80,22 +80,22 @@ public class UserController {
         } else {
             signUpForm.getRoles().forEach(role -> {
                 switch (role) {
-                    case "admin":
+                    case "ADMIN":
                         Role adminRole = roleService.findByName(RoleName.ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Failed -> NOT FOUND ROLE"));
                         roles.add(adminRole);
 //                        break;
-                    case "pm":
+                    case "PM":
                         Role pmRole = roleService.findByName(RoleName.PM)
                                 .orElseThrow(() -> new RuntimeException("Failed -> NOT FOUND ROLE"));
                         roles.add(pmRole);
 //                        break;
-                    case "teacher":
+                    case "TEACHER":
                         Role teacherRole = roleService.findByName(RoleName.TEACHER)
                                 .orElseThrow(() -> new RuntimeException("Failed -> NOT FOUND ROLE"));
                         roles.add(teacherRole);
 //                        break;
-                    case "student":
+                    case "STUDENT":
                         Role studentRole = roleService.findByName(RoleName.STUDENT)
                                 .orElseThrow(() -> new RuntimeException("Failed -> NOT FOUND ROLE"));
                         roles.add(studentRole);
@@ -112,7 +112,7 @@ public class UserController {
                 .avatar(signUpForm.getAvatar())
                 .phoneNumber(signUpForm.getPhoneNumber())
                 .address(signUpForm.getAddress())
-                .birthDate(LocalDate.parse(signUpForm.getBirthDate()))
+                .birthDate(signUpForm.getBirthDate())
                 .roles(roles)
                 .build();
 
@@ -147,6 +147,7 @@ public class UserController {
                             .address(userPrincipal.getAddress())
                             .phoneNumber(userPrincipal.getPhoneNumber())
                             .birthDate(userPrincipal.getBirthDate())
+                            .status(String.valueOf(userPrincipal.isStatus()))
                             .token(token)
                             .roles(userPrincipal.getAuthorities())
                             .build(), HttpStatus.OK);

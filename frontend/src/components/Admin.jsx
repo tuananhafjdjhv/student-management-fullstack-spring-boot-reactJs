@@ -3,12 +3,14 @@ import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import StudentService from "../service/StudentService";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 const Admin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [listStudent, setListStudent]= useState([]);
-  const [listSearch,setListSearch] =useState([])
+  const [listStudent, setListStudent] = useState([]);
+  const [search, setSearch] = useState("");
+  
   useEffect(() => {
     let show = new StudentService();
     show.showAll().then((res) => {
@@ -17,24 +19,34 @@ const Admin = () => {
     });
   }, []);
 
-  // const handleSearch = () => {
-  //   setListSearch()
-  // }
+  const handleSearch = (e) => {
+    e.preventDefault();
+    let show = new StudentService();
+    show.searchUser().then((res) => {
+      const results = res.data.filter((item) =>
+        item.toLowerCase().includes(search.toLowerCase())
+      );
+      setListStudent(results);
+      navigate("/admin");
+    });
+  };
 
-  // const filteredData = listStudent.filter(item =>
-  //   item.name.toLowerCase().includes(listStudent.name.toLowerCase())
-  // );
+  const handleChange = (e) => {
+    setSearch(e.target.value);
+  };
+
   return (
     <>
-    <Navbar></Navbar>
-    
-      <div className="container mx-auto p-12 " 
-      style={{
-        backgroundImage: "",
-        backgroundColor: "rgb(169 216 244)",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-      }}
+      <Navbar></Navbar>
+
+      <div
+        className="container mx-auto p-12"
+        style={{
+          backgroundImage: "",
+          backgroundColor: "rgb(169 216 244)",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        }}
       >
         <div className="mt-4">
           <NavLink
@@ -52,13 +64,14 @@ const Admin = () => {
               type="text"
               id="search"
               name="search"
-              // value={(e)=>listSearch(e.target.value)}
-              
+              value={search}
+              onChange={handleChange}
               placeholder="Tìm kiếm sinh viên"
             />
             <button
-            //  onClick={handleSearch} 
-             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded ml-2">
+              onClick={handleSearch}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded ml-2"
+            >
               Tìm kiếm
             </button>
           </form>
@@ -75,30 +88,25 @@ const Admin = () => {
             </tr>
           </thead>
           <tbody>
-            {
-              
-              listStudent.map((cu,index) => (
-                  <tr key={index}>
-              <td className="border-b px-4 py-2">{index}</td>
-              <td className="border-b px-4 py-2">{cu.name}</td>
-              <td className="border-b px-4 py-2">{cu.id}</td>
-              <td className="border-b px-4 py-2">{cu.address}</td>
-              <td className="border-b px-4 py-2">
-                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
-                  Xem
-                </button>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
-                  Sửa
-                </button>
-                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                  Block 
-                </button>
-              </td>
-            </tr>
-              ))
-            }
-            
-            
+            {listStudent.map((cu, index) => (
+              <tr key={index}>
+                <td className="border-b px-4 py-2">{index}</td>
+                <td className="border-b px-4 py-2">{cu.name}</td>
+                <td className="border-b px-4 py-2">{cu.id}</td>
+                <td className="border-b px-4 py-2">{cu.address}</td>
+                <td className="border-b px-4 py-2">
+                  <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
+                    Xem
+                  </button>
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                    Sửa
+                  </button>
+                  <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    Block
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
         <div className="mt-4">
@@ -153,8 +161,8 @@ const Admin = () => {
             </li>
           </ul>
         </div>
-        
       </div>
+      <Footer></Footer>
     </>
   );
 };

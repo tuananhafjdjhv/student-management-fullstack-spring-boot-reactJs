@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../service/AuthService";
 import Navbar from "./Navbar";
+import { useSelector } from "react-redux";
+import { ADD_STUDENT, EDIT_STUDENT } from "../actionTypes";
 
 const Signup = () => {
   const [name, setName] = useState(null);
@@ -11,17 +13,21 @@ const Signup = () => {
   const [avatar, setAvatar] = useState(null);
   const [address, setAddress] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState(null);
+  const [birthDate, setBirthDate] = useState(null);
   const [roles, setRoles] = useState([]);
 
+  const convertDateFormat = (dateString) => {
+    const parts = dateString.split("/");
+    const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+    return formattedDate;
+  };
+
+  // console.log(roles);
 
   const navigate = useNavigate();
 
-  const handleSelectRole = (e) => {
-    setRoles(e.target.value);
-  };
-
-
-  const signupClick = (e) => {
+  const handleAdd = (e) => {
+    e.preventDefault();
     let body = {
       name,
       email,
@@ -30,135 +36,231 @@ const Signup = () => {
       avatar,
       address,
       phoneNumber,
-      roles
+      birthDate,
+      roles,
     };
     let authService = new AuthService();
-    authService.signup(body).then((res) => {
-      console.log(res.data);
-        navigate("/");
-      
+    // console.log(body);
+    authService.signUp(body).then((res) => {
+      console.log("res.data =>", res.data);
+      navigate("/admin");
     });
     e.preventDefault();
   };
+
   return (
     <>
-    <Navbar></Navbar>
-    <section
-      className="flex flex-col md:flex-row h-screen items-center"
-      style={{
-        backgroundImage: "",
-        backgroundColor: " #1da1f2",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-      }}
-    >
-      <div
-        className="relative bg-white w-full md:max-w-md lg:max-w-full md:mx-auto md:mx-0 md:w-1/2 xl:w-1/3 h-max rounded-2xl px-6 lg:px-16 xl:px-12
-        flex items-center justify-center"
+      <Navbar></Navbar>
+      <section
+        className="flex flex-col md:flex-row h-screen items-center"
+        style={{
+          backgroundImage: "",
+          backgroundColor: " #1da1f2",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        }}
       >
-        <div className="w-full h-100">
-          <div className="text-center">
-            <h1 className="text-xl md:text-2xl font-bold leading-tight">
-              Create Account 
-            </h1>
-          </div>
-          <form action={signupClick} className="mt-3">
-            <div>
-              <input
-                className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                id="fullName"
-                type="text"
-                placeholder="Full Name"
-                onChange={(e) => setName(e.target.value)}
-              />
+        <div
+          className="relative bg-white w-full md:max-w-md lg:max-w-full md:mx-auto md:mx-0 md:w-1/2 xl:w-1/3 h-max rounded-2xl px-6 lg:px-16 xl:px-12
+        flex items-center justify-center"
+        >
+          <div className="w-full h-100">
+            <div className="text-center">
+              <h1 className="text-xl md:text-2xl font-bold leading-tight">
+                Create Account
+              </h1>
             </div>
-            <div>
-              <input
-                className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                id="email"
-                type="email"
-                placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <input
-                className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                id="username"
-                type="text"
-                placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-            
-            <div>
-              <input
-                className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                id="avatar"
-                type="text"
-                placeholder="Avatar"
-                onChange={(e) => setAvatar(e.target.value)}
-              />
-            </div>
-            <div>
-              <input
-                className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                id="username"
-                type="Address"
-                placeholder="Address"
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </div>
-            <div>
-            <input
-                className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                id="phoneNumber"
-                type="text"
-                placeholder="phoneNumber"
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
-            </div>
-            <div>
-            <input
-                className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                id="birthDate"
-                type="date"
-                placeholder="birth date"
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
-            </div>
-            <select value={roles} onChange={handleSelectRole} className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white">
-              <option value="">--Chọn quyền truy cập-- </option>
-              <option value="ADMIN">Admin </option>
-              <option value="PM">PM</option>
-              <option value="TEACHER">TEACHER</option>
-              <option value="STUDENT">STUDENT</option>
-            </select>
-            <div>
-              <input
-                className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                id="password"
-                type="password"
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+            <form className="mt-3">
+              <div>
+                <input
+                  className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
+                  id="name"
+                  type="text"
+                  value={name}
+                  placeholder="Full Name"
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div>
+                <input
+                  className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div>
+                <input
+                  className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
+                  id="username"
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
 
-            <button
-              type="submit"
-              className="w-full block hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg
+              <div>
+                <input
+                  className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
+                  id="avatar"
+                  type="text"
+                  placeholder="Avatar"
+                  value={avatar}
+                  onChange={(e) => setAvatar(e.target.value)}
+                />
+              </div>
+              <div>
+                <input
+                  className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
+                  id="address"
+                  type="Address"
+                  placeholder="Address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
+              <div>
+                <input
+                  className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
+                  id="phoneNumber"
+                  type="text"
+                  placeholder="phoneNumber"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </div>
+              <div>
+                <input
+                  className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
+                  id="birthDate"
+                  type="date"
+                  placeholder="birth date"
+                  value={birthDate}
+                  onChange={(e) => setBirthDate(e.target.value)}
+                />
+              </div>
+              {/* <select
+                onChange={(e) => {
+                  setRoles([...roles, e.target.value])
+                }}
+                className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
+              >
+                <option value="">--Chọn quyền truy cập-- </option>
+                <option value="ADMIN">Admin </option>
+                <option value="PM">PM</option>
+                <option value="TEACHER">TEACHER</option>
+                <option value="STUDENT">STUDENT</option>
+              </select> */}
+              <div>
+                <>
+                  <h5 className="mb-4 font-semibold text-gray-900 dark:text-white">
+                    Chọn quyền Truy cập
+                  </h5>
+                  <ul
+                    onChange={(e) => {
+                      setRoles([...roles, e.target.value]);
+                    }}
+                    className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  >
+                    <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                      <div className="flex items-center pl-3">
+                        <input
+                          id="vue-checkbox-list"
+                          type="checkbox"
+                          defaultValue=""
+                          value="ADMIN"
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                        />
+                        <label
+                          htmlFor="vue-checkbox-list"
+                          className="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        >
+                          ADMIN
+                        </label>
+                      </div>
+                    </li>
+                    <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                      <div className="flex items-center pl-3">
+                        <input
+                          id="react-checkbox-list"
+                          type="checkbox"
+                          defaultValue=""
+                          value="PM"
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                        />
+                        <label
+                          htmlFor="react-checkbox-list"
+                          className="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        >
+                          PM
+                        </label>
+                      </div>
+                    </li>
+                    <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                      <div className="flex items-center pl-3">
+                        <input
+                          id="angular-checkbox-list"
+                          type="checkbox"
+                          defaultValue=""
+                          value="TEACHER"
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                        />
+                        <label
+                          htmlFor="angular-checkbox-list"
+                          className="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        >
+                          Teacher
+                        </label>
+                      </div>
+                    </li>
+                    <li className="w-full dark:border-gray-600">
+                      <div className="flex items-center pl-3">
+                        <input
+                          id="laravel-checkbox-list"
+                          type="checkbox"
+                          defaultValue=""
+                          value="STUDENT"
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                        />
+                        <label
+                          htmlFor="laravel-checkbox-list"
+                          className="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        >
+                          Student
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                </>
+              </div>
+              <div className="flex flex-row">
+                <input
+                  className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full block hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg
               px-4 py-3 mt-4"
-              style={{ backgroundColor: "#00acee" }}
-              onClick={signupClick}
-            >
-              Thêm mới
-            </button>
-          </form>
+                style={{ backgroundColor: "#00acee" }}
+                onClick={handleAdd}
+              >
+                Thêm mới
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
     </>
-    
   );
 };
 export default Signup;

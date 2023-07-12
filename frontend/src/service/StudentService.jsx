@@ -7,12 +7,12 @@ export default class StudentService {
         return axios.get("http://localhost:8080/v1/api/auth/show-all")
     }
     blockUser(id){
-       return axios.get(`http://localhost:8080/v1/api/auth/block-user/${id}`)
+       return axios.post(`http://localhost:8080/v1/api/auth/block-user/${id}`)
     }
     unblockUser(id){
-        return axios.get(`http://localhost:8080/v1/api/auth/unblock-user/${id}`)
+        return axios.post(`http://localhost:8080/v1/api/auth/unblock-user/${id}`)
      }
-    searchUser(body){
-        return axios.get("http://localhost:8080/v1/api/admin/search",body)
+    searchUser(name){
+        return axios.get(`http://localhost:8080/v1/api/admin/search/${name}`)
     }
 }

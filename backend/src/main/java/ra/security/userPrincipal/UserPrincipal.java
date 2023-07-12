@@ -34,6 +34,7 @@ public class UserPrincipal implements UserDetails {
     private String password;
     private String username;
     private LocalDate birthDate;
+    private boolean status;
     private Collection<? extends GrantedAuthority>  roles;
 
     public static UserPrincipal build(User user) {
@@ -50,6 +51,7 @@ public class UserPrincipal implements UserDetails {
                 .avatar(user.getAvatar())
                 .phoneNumber(user.getPhoneNumber())
                 .address(user.getAddress())
+                .status(user.isStatus())
                 .roles(grantedAuthorities)
                 .build();
     }

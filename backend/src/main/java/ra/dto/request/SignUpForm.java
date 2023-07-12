@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.Lob;
+import java.time.LocalDate;
 import java.util.Set;
 @Data
 @AllArgsConstructor
@@ -24,7 +25,7 @@ public class SignUpForm {
 
     private String phoneNumber;
 
-    private String birthDate;
+    private LocalDate birthDate;
 
     private Set<String> roles;
 }

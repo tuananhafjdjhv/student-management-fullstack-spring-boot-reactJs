@@ -24,11 +24,6 @@ public class StudentController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/create")
-    public void createStudent(@RequestBody User user){
-        userRepository.save(user);
-    }
-
     @PutMapping("/update")
     public User updateMovie(@RequestBody User user){
         User update = userRepository.findById(user.getId()).get();
@@ -43,8 +38,8 @@ public class StudentController {
         userRepository.deleteById(Long.valueOf(id));
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<User>> searchStudent(@RequestBody String name){
+    @GetMapping("/search/{name}")
+    public ResponseEntity<List<User>> searchStudent(@PathVariable String name){
         return new ResponseEntity<>(userService.findUserByName(name), HttpStatus.OK);
     }
 

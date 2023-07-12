@@ -6,7 +6,7 @@ export default class AuthService {
         return axios.post("http://localhost:8080/v1/api/auth/signIn", body)
     }
 
-    signup(body) {
+    signUp(body) {
         return axios.post("http://localhost:8080/v1/api/auth/signup", body)
     }
 
