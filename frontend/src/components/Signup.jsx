@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../service/AuthService";
 import Navbar from "./Navbar";
-import { useSelector } from "react-redux";
-import { ADD_STUDENT, EDIT_STUDENT } from "../actionTypes";
+// import validator from "validator";
+// import axios from "axios";
 
 const Signup = () => {
   const [name, setName] = useState(null);
@@ -16,15 +16,82 @@ const Signup = () => {
   const [birthDate, setBirthDate] = useState(null);
   const [roles, setRoles] = useState([]);
 
-  const convertDateFormat = (dateString) => {
-    const parts = dateString.split("/");
-    const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-    return formattedDate;
-  };
-
-  // console.log(roles);
+  // const [error, setError] = useState("");
+  // const [success, setSuccess] = useState("");
+  // const [inputValue, setInputValue] = useState({
+  //   name: "",
+  //   email: "",
+  //   username: "",
+  //   password: "",
+  //   avatar: "",
+  //   address: "",
+  //   phoneNumber: "",
+  //   birthDate: "",
+  //   roles: [],
+  // });
+  // const handleChange = (e) => {
+  //   let key = e.target.name;
+  //   let value = e.target.value;
+  //   setInputValue({ ...inputValue, [key]: value });
+  //   if (key === "email") {
+  //     if (value.trim() === "") {
+  //       setError("Vui lòng nhập email");
+  //     } else if (!validator.isEmail(value)) {
+  //       setError("Vui lòng nhập email hợp lệ.");
+  //     } else {
+  //       setError("");
+  //       setInputValue({ ...inputValue, [key]: value });
+  //     }
+  //   }
+  //   if (key === "username") {
+  //     if (value.trim() === "" || inputValue.username.trim().length < 6) {
+  //       setError("Vui lòng nhập username và  phải trên 6 kí tự");
+  //     } else {
+  //       setError("");
+  //       setInputValue({ ...inputValue, [key]: value });
+  //     }
+  //   }
+  //   if (key === "name") {
+  //     if (value.trim() === "" || inputValue.name.trim().length < 6) {
+  //       setError("Vui lòng nhập họ tên và  phải trên 6 kí tự");
+  //     } else {
+  //       setError("");
+  //       setInputValue({ ...inputValue, [key]: value });
+  //     }
+  //   }
+  //   if (key === "password") {
+  //     if (value.trim() === "" || inputValue.password.trim().length < 6) {
+  //       setError("Vui lòng nhập mật khẩu và  phải trên 6 kí tự");
+  //     } else {
+  //       setError("");
+  //       setInputValue({ ...inputValue, [key]: value });
+  //     }
+  //   }
+  // };
 
   const navigate = useNavigate();
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log(inputValue);
+
+  //   if (
+  //     inputValue.name === "" ||
+  //     inputValue.username === "" ||
+  //     inputValue.email === "" ||
+  //     inputValue.password === "" ||
+  //     inputValue.roles === ""
+  //   ) {
+  //     setError("Vui lòng điền đầy đủ thông tin.");
+  //     return;
+  //   }
+  //   axios
+  //     .post("http://localhost:8080/v1/api/auth/signup", inputValue)
+  //     .then((res) => console.log(res))
+  //     .catch((err) => console.log(err));
+  //   setError("");
+  //   setSuccess("Thêm mới thành công!", navigate("/login"));
+  // };
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -40,7 +107,6 @@ const Signup = () => {
       roles,
     };
     let authService = new AuthService();
-    // console.log(body);
     authService.signUp(body).then((res) => {
       console.log("res.data =>", res.data);
       navigate("/admin");
@@ -66,11 +132,13 @@ const Signup = () => {
         >
           <div className="w-full h-100">
             <div className="text-center">
+              {/* {error && <h7 style={{ color: "red" }}>{error}</h7>}
+              {success && <p style={{ color: "green" }}>{success}</p>} */}
               <h1 className="text-xl md:text-2xl font-bold leading-tight">
                 Create Account
               </h1>
             </div>
-            <form className="mt-3">
+            <form className="mt-3" >
               <div>
                 <input
                   className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
@@ -126,7 +194,7 @@ const Signup = () => {
                 <input
                   className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
                   id="phoneNumber"
-                  type="text"
+                  type="number" 
                   placeholder="phoneNumber"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
@@ -142,18 +210,6 @@ const Signup = () => {
                   onChange={(e) => setBirthDate(e.target.value)}
                 />
               </div>
-              {/* <select
-                onChange={(e) => {
-                  setRoles([...roles, e.target.value])
-                }}
-                className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-              >
-                <option value="">--Chọn quyền truy cập-- </option>
-                <option value="ADMIN">Admin </option>
-                <option value="PM">PM</option>
-                <option value="TEACHER">TEACHER</option>
-                <option value="STUDENT">STUDENT</option>
-              </select> */}
               <div>
                 <>
                   <h5 className="mb-4 font-semibold text-gray-900 dark:text-white">
@@ -163,6 +219,7 @@ const Signup = () => {
                     onChange={(e) => {
                       setRoles([...roles, e.target.value]);
                     }}
+        
                     className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   >
                     <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -249,7 +306,7 @@ const Signup = () => {
 
               <button
                 type="submit"
-                className="w-full block hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg
+                className="w-full block hover:bg-indigo-400 focus:bg-indigo-600 text-white font-semibold rounded-lg
               px-4 py-3 mt-4"
                 style={{ backgroundColor: "#00acee" }}
                 onClick={handleAdd}

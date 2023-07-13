@@ -6,6 +6,8 @@ import CreateStudent from './components/CreateStudent'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import Home from './components/Home'
+import Course from './components/Course'
+
 
 function App() {
 
@@ -17,6 +19,7 @@ function App() {
       <Route index Component={Login} path='/'></Route>
       <Route  Component={Signup} path='/signup'></Route>
       <Route  Component={Home} path='/home'></Route>
+      <Route  Component={Course} path='/course'></Route>
     </Routes>
     
     </>

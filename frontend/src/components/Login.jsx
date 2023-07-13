@@ -1,40 +1,50 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import AuthService from "../service/AuthService";
-import { login } from "../redux/reduxSlice";
+// import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { toastError } from "./toast/ToastVariabble";
 
 const Login = () => {
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
+  
 
-  const dispatch = useDispatch();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const loginClick = (e) => {
-    let body = {
-      username: username,
-      password: password,
-    };
-    let authService = new AuthService();
-    authService.login(body).then((res) => {
-      dispatch(login(res.data));
-      const isBlock = res.data.status;
-      console.log();
-      if (isBlock === "true") {
-        alert("Tài khoản đã bị khóa,vui lòng thử tài bằng khoản khác");
-        navigate("/");
-      } else {
-        alert("Đăng nhập thành công");
-        navigate("/admin");
-      }
-    });
-    e.preventDefault();
-  };
 
+
+  const loginClick = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Gọi API để đăng nhập và nhận JWT từ server
+      const response = await axios.post(
+        "http://localhost:8080/v1/api/auth/signIn",
+        {
+          username,
+          password,
+        }
+      ).then(res=>console.log(res));
+
+      // Lưu JWT vào cookie
+      // document.cookie = `token=${response.data.token}; path=/`;
+      // Cookies.set('token', response.data.token, { expires: 7 });
+
+      // Đăng nhập thành công
+      setError("");
+      setPassword("");
+      setUsername("");
+      alert("Đăng nhập thành công!", navigate("/admin"));
+      // console.log(response.data);
+    } catch (error) {
+      // Xử lý lỗi nếu có
+      setError(alert("Tên người dùng hoặc mật khẩu không đúng."));
+      // toastError()
+    }
+  };
   return (
     <>
-      {/* <Navbar /> */}
       <section
         className="flex flex-col md:flex-row h-screen items-center"
         style={{
@@ -50,9 +60,10 @@ const Login = () => {
         >
           <div className="w-full h-100">
             <div className="text-center">
+              {/* <p className="bg-red-500">{error}</p> */}
               <h1 className="text-xl md:text-2xl font-bold leading-tight">
                 {" "}
-                Login{" "}
+                Login{"  "}
               </h1>
             </div>
             <form className="mt-6">
@@ -88,9 +99,13 @@ const Login = () => {
                 Log In
               </button>
             </form>
+
             <div className="flex flex-row gap-2 p-3">
               <div className="flex bg-gray-50 ">
-                <button className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                <button
+                  // onClick={() => auth()}
+                  className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                >
                   <svg
                     className="h-6 w-6 mr-2"
                     xmlns="http://www.w3.org/2000/svg"
@@ -176,17 +191,15 @@ const Login = () => {
                       </g>
                     </g>
                   </svg>
-
                   <span> Facebook</span>
                 </button>
               </div>
             </div>
-
             <div className="text-center mt-5">
               <p
                 className="cursor-pointer text-blue-500 hover:text-blue-700 font-semibold text-center"
                 style={{ color: "#00acee" }}
-                onClick={() => navigate("/signup")}
+                onClick={() => navigate("/")}
               >
                 Forgot password ?
               </p>

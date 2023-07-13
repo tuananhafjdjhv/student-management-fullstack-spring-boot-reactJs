@@ -8,10 +8,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ra.dto.reponse.JwtResponse;
 import ra.dto.reponse.ResponseMessage;
+import ra.dto.request.ChangeAvatar;
 import ra.dto.request.ChangePass;
 import ra.dto.request.SignInForm;
 import ra.dto.request.SignUpForm;
@@ -20,11 +22,13 @@ import ra.model.RoleName;
 import ra.model.User;
 import ra.repository.UserRepository;
 import ra.security.jwt.JwtProvider;
+import ra.security.jwt.JwtTokenFilter;
 import ra.security.userPrincipal.UserDetailService;
 import ra.security.userPrincipal.UserPrincipal;
 import ra.service.role.RoleService;
 import ra.service.user.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -45,6 +49,8 @@ public class UserController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    @Autowired
+    JwtTokenFilter jwtTokenFilter;
 
     @PostMapping("/signup")
     public ResponseEntity<ResponseMessage> doSignUp( @RequestBody SignUpForm signUpForm) {
@@ -188,5 +194,18 @@ public class UserController {
     public ResponseEntity<ResponseMessage>  unblockUser(@PathVariable String id){
         userRepository.unBlockUser(Long.valueOf(id));
         return new ResponseEntity<>(new ResponseMessage("","Unblock success!!",null), HttpStatus.OK);
+    }
+    @PutMapping("/change-avatar")
+    public ResponseEntity<?> changeAvatar(HttpServletRequest request, @RequestBody ChangeAvatar changeAvatar){
+        String token = jwtTokenFilter.getTokenFromRequest(request);
+        String username = jwtProvider.getUserNameFromToken(token);
+        User user = userService.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("Username Not found"));
+        if(changeAvatar.getAvatar()==null||changeAvatar.getAvatar().trim().equals("")){
+            return new ResponseEntity<>(new ResponseMessage("no","Change error",null), HttpStatus.OK);
+        }else {
+            user.setAvatar(changeAvatar.getAvatar());
+            userService.save(user);
+            return new ResponseEntity<>(new ResponseMessage("yes","Change Success",userService.save(user)), HttpStatus.OK);
+        }
     }
 }

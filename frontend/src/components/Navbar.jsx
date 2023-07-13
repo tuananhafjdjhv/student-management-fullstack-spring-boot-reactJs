@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-// import logo from "../static/logo.png";
 
 
 
@@ -19,7 +18,7 @@ const Navbar = () => {
     navigate("/");
   };
 
-  let color = ["bg-blue-400", "bg-black-400", "bg-green-400", "bg-yellow-400"];
+  let color = [ "bg-green-950"];
   const [colorState, setColorState] = useState(0);
   useEffect(() => {
     let id = setInterval(() => {
@@ -28,7 +27,7 @@ const Navbar = () => {
       } else {
         setColorState(0);
       }
-    }, 600);
+    }, 1000);
     return () => clearInterval(id);
   }, [colorState]);
 
@@ -41,6 +40,7 @@ const Navbar = () => {
             <div>
               <img
                 src="/logo.png"
+                
                 width="40"
                 height="50"
                 className="bg-black-500"
@@ -73,11 +73,18 @@ const Navbar = () => {
                 href="#"
                 className="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
               >
-                Khoa
+                Khoá học
+              </a>
+              <a
+                href="#"
+                className="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Bạn bè
               </a>
               <a
                 onClick={LogOut}
-                className="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+                
+                className="cursor-pointer text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
               >
                 Đăng xuất
               </a>

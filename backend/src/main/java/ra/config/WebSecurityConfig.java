@@ -3,6 +3,7 @@ package ra.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import ra.security.jwt.JwtEntryPoint;
@@ -25,6 +28,7 @@ import java.util.Collections;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private  final UserDetailService userDetailService;
+
 
     private final JwtEntryPoint jwtEntryPoint;
 
@@ -62,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/v1/api/**").permitAll()
+                .antMatchers("/", "/user", "/webjars/**").permitAll()
                 .antMatchers("v1/api/pm/**").hasRole("PM")
                 .antMatchers("v1/api/teacher/**").hasRole("TEACHER")
                 .antMatchers("v1/api/admin/**").hasRole("ADMIN")
@@ -75,4 +80,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtTokenFilter(),
                 UsernamePasswordAuthenticationFilter.class);
     }
+
 }

@@ -14,7 +14,7 @@ const Admin = () => {
   useEffect(() => {
     let show = new StudentService();
     show.showAll().then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       setListStudent(res.data);
     });
   }, []);
@@ -22,12 +22,11 @@ const Admin = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     let show = new StudentService();
-    show.searchUser().then((res) => {
-      const results = res.data.filter((item) =>
-        item.toLowerCase().includes(search.toLowerCase())
-      );
-      setListStudent(results);
+    show.searchUser(search).then((res) => {
+      setListStudent(res.data);
       navigate("/admin");
+    }).catch((err) => {
+      console.error('Error: ', err);
     });
   };
 
@@ -37,13 +36,13 @@ const Admin = () => {
 
   return (
     <>
+    
       <Navbar></Navbar>
-
       <div
         className="container mx-auto p-12"
         style={{
           backgroundImage: "",
-          backgroundColor: "rgb(169 216 244)",
+          backgroundColor: "rgb(169 206 244 / 38%)",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
@@ -90,7 +89,7 @@ const Admin = () => {
           <tbody>
             {listStudent.map((cu, index) => (
               <tr key={index}>
-                <td className="border-b px-4 py-2">{index}</td>
+                <td className="border-b px-4 py-2">{index+1}</td>
                 <td className="border-b px-4 py-2">{cu.name}</td>
                 <td className="border-b px-4 py-2">{cu.id}</td>
                 <td className="border-b px-4 py-2">{cu.address}</td>
