@@ -14,7 +14,7 @@ const Admin = () => {
   useEffect(() => {
     let show = new StudentService();
     show.showAll().then((res) => {
-      // console.log(res.data);
+      console.log([res.data]);
       setListStudent(res.data);
     });
   }, []);
@@ -31,7 +31,14 @@ const Admin = () => {
   };
 
   const handleChange = (e) => {
-    setSearch(e.target.value);
+    handleSearch(e)
+    if (e.target.value ===""){
+      let show = new StudentService();
+      show.showAll().then((res) => {
+        // console.log(res.data);
+        setListStudent(res.data);
+      });
+    } setSearch(e.target.value);
   };
 
   return (
@@ -94,7 +101,9 @@ const Admin = () => {
                 <td className="border-b px-4 py-2">{cu.id}</td>
                 <td className="border-b px-4 py-2">{cu.address}</td>
                 <td className="border-b px-4 py-2">
-                  <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
+                  <button
+                  onClick={()=>navigate("/profile")}
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
                     Xem
                   </button>
                   <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">

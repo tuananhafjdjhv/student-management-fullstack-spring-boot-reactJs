@@ -2,116 +2,121 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../service/AuthService";
 import Navbar from "./Navbar";
-// import validator from "validator";
-// import axios from "axios";
+import validator from "validator";
+import axios from "axios";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase/firebaseConfig";
+import { v4 } from "uuid";
+import { toast } from "react-hot-toast";
 
 const Signup = () => {
-  const [name, setName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [avatar, setAvatar] = useState(null);
-  const [address, setAddress] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState(null);
-  const [birthDate, setBirthDate] = useState(null);
-  const [roles, setRoles] = useState([]);
+  const [error, setError] = useState("");
+  const [role,setRole] = useState([]);
+  const [checkbox,setCheckbox] = useState({
+    checkbox1: false,
+    checkbox2: false,
+    checkbox3: false,
+    checkbox4: false,
+  })
+  console.log("role   === ",role);
 
-  // const [error, setError] = useState("");
-  // const [success, setSuccess] = useState("");
-  // const [inputValue, setInputValue] = useState({
-  //   name: "",
-  //   email: "",
-  //   username: "",
-  //   password: "",
-  //   avatar: "",
-  //   address: "",
-  //   phoneNumber: "",
-  //   birthDate: "",
-  //   roles: [],
-  // });
-  // const handleChange = (e) => {
-  //   let key = e.target.name;
-  //   let value = e.target.value;
-  //   setInputValue({ ...inputValue, [key]: value });
-  //   if (key === "email") {
-  //     if (value.trim() === "") {
-  //       setError("Vui lòng nhập email");
-  //     } else if (!validator.isEmail(value)) {
-  //       setError("Vui lòng nhập email hợp lệ.");
-  //     } else {
-  //       setError("");
-  //       setInputValue({ ...inputValue, [key]: value });
-  //     }
-  //   }
-  //   if (key === "username") {
-  //     if (value.trim() === "" || inputValue.username.trim().length < 6) {
-  //       setError("Vui lòng nhập username và  phải trên 6 kí tự");
-  //     } else {
-  //       setError("");
-  //       setInputValue({ ...inputValue, [key]: value });
-  //     }
-  //   }
-  //   if (key === "name") {
-  //     if (value.trim() === "" || inputValue.name.trim().length < 6) {
-  //       setError("Vui lòng nhập họ tên và  phải trên 6 kí tự");
-  //     } else {
-  //       setError("");
-  //       setInputValue({ ...inputValue, [key]: value });
-  //     }
-  //   }
-  //   if (key === "password") {
-  //     if (value.trim() === "" || inputValue.password.trim().length < 6) {
-  //       setError("Vui lòng nhập mật khẩu và  phải trên 6 kí tự");
-  //     } else {
-  //       setError("");
-  //       setInputValue({ ...inputValue, [key]: value });
-  //     }
-  //   }
-  // };
+  const [inputValue, setInputValue] = useState({
+    name: "",
+    email: "",
+    username: "",
+    password: "",
+    avatar: "",
+    address: "",
+    phoneNumber: "",
+    birthDate: "",
+    roles: [],
+  });
+  const handleChange = (e) => {
+    let key = e.target.name;
+    let value = e.target.value;
+    setInputValue({ ...inputValue, [key]: value });
+    if (key === "email") {
+      if (value.trim() === "") {
+        setError("Vui lòng nhập email");
+      } else if (!validator.isEmail(value)) {
+        setError("Vui lòng nhập email hợp lệ.");
+      } else {
+        setError("");
+      }
+    }
+    if (key === "username") {
+      if (value.trim() === "" || inputValue.username.trim().length < 6) {
+        setError("Vui lòng nhập username và  phải trên 6 kí tự");
+      } else {
+        setError("");
+      }
+    }
+    if (key === "name") {
+      if (value.trim() === "" || inputValue.name.trim().length < 6) {
+        setError("Vui lòng nhập họ tên và  phải trên 6 kí tự");
+      } else {
+        setError("");
+      }
+    }
+    if (key === "password") {
+      if (value.trim() === "" || inputValue.password.trim().length < 6) {
+        setError("Vui lòng nhập mật khẩu và  phải trên 6 kí tự");
+      } else {
+        setError("");
+        // setInputValue({ ...inputValue, [key]: value });
+      }
+    }
+      setCheckbox({...checkbox, [value]: true});
+  };
 
   const navigate = useNavigate();
+  const [imageUrl, setImageUrl] = useState("");
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log(inputValue);
-
-  //   if (
-  //     inputValue.name === "" ||
-  //     inputValue.username === "" ||
-  //     inputValue.email === "" ||
-  //     inputValue.password === "" ||
-  //     inputValue.roles === ""
-  //   ) {
-  //     setError("Vui lòng điền đầy đủ thông tin.");
-  //     return;
-  //   }
-  //   axios
-  //     .post("http://localhost:8080/v1/api/auth/signup", inputValue)
-  //     .then((res) => console.log(res))
-  //     .catch((err) => console.log(err));
-  //   setError("");
-  //   setSuccess("Thêm mới thành công!", navigate("/login"));
-  // };
-
-  const handleAdd = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    let body = {
-      name,
-      email,
-      username,
-      password,
-      avatar,
-      address,
-      phoneNumber,
-      birthDate,
-      roles,
-    };
-    let authService = new AuthService();
-    authService.signUp(body).then((res) => {
-      console.log("res.data =>", res.data);
-      navigate("/admin");
+    console.log(inputValue);
+    setInputValue({ ...inputValue, roles: role})
+
+    if (
+      inputValue.name === "" ||
+      inputValue.username === "" ||
+      inputValue.email === "" ||
+      inputValue.password === "" ||
+      inputValue.address === "" ||
+      inputValue.birthDate === "" ||
+      inputValue.phoneNumber === ""
+    ) {
+      setError("Vui lòng điền đầy đủ thông tin.");
+      return;
+    }
+    
+    // console.log(inputValue.roles);
+    axios
+      .post("http://localhost:8080/v1/api/auth/signup", inputValue)
+      .then((res) =>{
+        setInputValue({ ...inputValue, roles: role})
+      console.log(res)
+      })
+      
+      .catch((err) => console.log(err));
+    setError("");
+    toast.success("Thêm mới thành công");
+    navigate("/admin");
+  };
+
+  const uploadImage = (e) => {
+    let previewImg = e.target.files[0];
+    console.log(previewImg);
+    let url = URL.createObjectURL(previewImg);
+    console.log(previewImg);
+    setInputValue({ ...inputValue, avatar: url });
+    setImageUrl(previewImg);
+    const imageRef = ref(storage, `uploadImage/${imageUrl.name}${v4()}`);
+    uploadBytes(imageRef, imageUrl).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setInputValue({ ...inputValue, avatar: url });
+      });
     });
-    e.preventDefault();
   };
 
   return (
@@ -132,94 +137,128 @@ const Signup = () => {
         >
           <div className="w-full h-100">
             <div className="text-center">
-              {/* {error && <h7 style={{ color: "red" }}>{error}</h7>}
-              {success && <p style={{ color: "green" }}>{success}</p>} */}
+              {error && <h7 style={{ color: "red" }}>{error}</h7>}
               <h1 className="text-xl md:text-2xl font-bold leading-tight">
                 Create Account
               </h1>
             </div>
-            <form className="mt-3" >
+            <form className="mt-3" onSubmit={handleSubmit}>
               <div>
                 <input
                   className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                  id="name"
+                  name="name"
                   type="text"
-                  value={name}
                   placeholder="Full Name"
-                  onChange={(e) => setName(e.target.value)}
+                  // value={name}
+                  // onChange={(e) => setName(e.target.value)}
+                  value={inputValue.name}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
               <div>
                 <input
                   className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                  id="email"
+                  name="email"
                   type="email"
                   placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  // value={email}
+                  // onChange={(e) => setEmail(e.target.value)}
+                  value={inputValue.email}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
               <div>
                 <input
                   className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                  id="username"
+                  name="username"
                   type="text"
                   placeholder="Username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  // value={username}
+                  // onChange={(e) => setUsername(e.target.value)}
+                  value={inputValue.username}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
 
               <div>
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  for="small_size"
+                >
+                  Tải lên avatar
+                </label>
                 <input
-                  className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                  id="avatar"
-                  type="text"
-                  placeholder="Avatar"
-                  value={avatar}
-                  onChange={(e) => setAvatar(e.target.value)}
+                  className="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                  id="small_size"
+                  type="file"
+                  name="avatar"
+                  onChange={uploadImage}
                 />
+
+                <div>
+                  <img width={50} src={inputValue.avatar} alt="avatar" />
+                </div>
               </div>
+              {/* <div className="mb-3">
+                <label className="form-label">Tải anh lên:     </label>
+                <input
+                  type="file"
+                  // onChange={uploadImage}
+                  className="form-control"
+                />
+                <div>
+                  <img width={100} src={imageUrl} alt="" />
+                </div>
+              </div> */}
               <div>
                 <input
                   className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                  id="address"
+                  name="address"
                   type="Address"
                   placeholder="Address"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  // value={address}
+                  // onChange={(e) => setAddress(e.target.value)}
+                  value={inputValue.address}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
               <div>
                 <input
                   className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                  id="phoneNumber"
-                  type="number" 
+                  name="phoneNumber"
+                  type="number"
                   placeholder="phoneNumber"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  // value={phoneNumber}
+                  // onChange={(e) => setPhoneNumber(e.target.value)}
+                  value={inputValue.phoneNumber}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
               <div>
                 <input
                   className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                  id="birthDate"
+                  name="birthDate"
                   type="date"
                   placeholder="birth date"
-                  value={birthDate}
-                  onChange={(e) => setBirthDate(e.target.value)}
+                  // value={birthDate}
+                  // onChange={(e) => setBirthDate(e.target.value)}
+                  value={inputValue.birthDate}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
               <div>
                 <>
-                  <h5 className="mb-4 font-semibold text-gray-900 dark:text-white">
+                  <h7 className="mb-4 font-semibold text-gray-900 dark:text-white">
                     Chọn quyền Truy cập
-                  </h5>
+                  </h7>
                   <ul
                     onChange={(e) => {
-                      setRoles([...roles, e.target.value]);
+                      setRole([...role, e.target.value]);
                     }}
-        
+                    value={role}
+                    name="roles"
+                    // value={inputValue.roles}
+                    // onChange={(e) => handleChange(e)}
                     className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   >
                     <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -229,6 +268,9 @@ const Signup = () => {
                           type="checkbox"
                           defaultValue=""
                           value="ADMIN"
+                          name="checkbox1"
+                          // value={inputValue.roles}
+                          onChange={(e) => setRole(e.target.value)}
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                         />
                         <label
@@ -246,6 +288,8 @@ const Signup = () => {
                           type="checkbox"
                           defaultValue=""
                           value="PM"
+                          name="checkbox2"
+                          onChange={(e) => setRole([...role, e.target.value])}
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                         />
                         <label
@@ -263,6 +307,8 @@ const Signup = () => {
                           type="checkbox"
                           defaultValue=""
                           value="TEACHER"
+                          onChange={(e) => setRole([...role, e.target.value])}
+                          name="checkbox3"
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                         />
                         <label
@@ -278,8 +324,9 @@ const Signup = () => {
                         <input
                           id="laravel-checkbox-list"
                           type="checkbox"
-                          defaultValue=""
                           value="STUDENT"
+                          onChange={(e) => setRole([...role, e.target.value])}
+                          name="checkbox4"
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                         />
                         <label
@@ -296,11 +343,13 @@ const Signup = () => {
               <div className="flex flex-row">
                 <input
                   className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
-                  id="password"
+                  name="password"
                   type="password"
                   placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  // value={password}
+                  // onChange={(e) => setPassword(e.target.value)}
+                  value={inputValue.password}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
 
@@ -309,7 +358,7 @@ const Signup = () => {
                 className="w-full block hover:bg-indigo-400 focus:bg-indigo-600 text-white font-semibold rounded-lg
               px-4 py-3 mt-4"
                 style={{ backgroundColor: "#00acee" }}
-                onClick={handleAdd}
+                // onClick={handleAdd}
               >
                 Thêm mới
               </button>

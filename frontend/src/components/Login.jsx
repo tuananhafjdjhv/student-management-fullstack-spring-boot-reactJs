@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { toastError } from "./toast/ToastVariabble";
+import { toast } from "react-hot-toast";
 
 const Login = () => {
   
@@ -35,12 +35,14 @@ const Login = () => {
       setError("");
       setPassword("");
       setUsername("");
-      alert("Đăng nhập thành công!", navigate("/admin"));
+      // alert("Đăng nhập thành công!", navigate("/admin"));
+      toast.success("Đăng nhập thành công!")
+      navigate("/admin")
       // console.log(response.data);
     } catch (error) {
       // Xử lý lỗi nếu có
-      setError(alert("Tên người dùng hoặc mật khẩu không đúng."));
-      // toastError()
+      // setError(alert("Tên người dùng hoặc mật khẩu không đúng."));
+      toast.error("Tên người dùng hoặc mật khẩu không đúng.")
     }
   };
   return (

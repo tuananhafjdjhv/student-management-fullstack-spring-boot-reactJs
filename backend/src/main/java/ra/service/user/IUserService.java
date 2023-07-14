@@ -12,7 +12,6 @@ public interface IUserService {
     Boolean existsByUsername(String username); //username da co trong DB chua, khi tao du lieu
     Boolean existsByEmail(String email); //email da co trong DB chua
     User save(User user);
-
     List<User> findAll();
 
 }
