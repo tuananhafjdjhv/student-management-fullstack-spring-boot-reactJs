@@ -242,4 +242,8 @@ public class UserController {
         userService.save(users);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
+    @GetMapping("/user/{id}")
+    public User findUserById(@PathVariable String id){
+        return userService.findUserById(Long.valueOf(id)).get();
+    }
 }
