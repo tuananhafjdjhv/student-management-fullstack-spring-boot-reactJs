@@ -14,8 +14,9 @@ const Admin = () => {
   useEffect(() => {
     let show = new StudentService();
     show.showAll().then((res) => {
-      console.log([res.data]);
-      setListStudent(res.data);
+        setListStudent(res.data);
+      console.log(res.data);
+      
     });
   }, []);
 
@@ -35,7 +36,6 @@ const Admin = () => {
     if (e.target.value ===""){
       let show = new StudentService();
       show.showAll().then((res) => {
-        // console.log(res.data);
         setListStudent(res.data);
       });
     } setSearch(e.target.value);
@@ -90,6 +90,7 @@ const Admin = () => {
               <th className="border-b px-4 py-2 bg-gray-200">Họ và tên</th>
               <th className="border-b px-4 py-2 bg-gray-200">Mã sinh viên</th>
               <th className="border-b px-4 py-2 bg-gray-200">Địa chỉ</th>
+              <th className="border-b px-4 py-2 bg-gray-200">Quyền Truy Cập</th>
               <th className="border-b px-4 py-2 bg-gray-200">Hành động</th>
             </tr>
           </thead>
@@ -100,6 +101,8 @@ const Admin = () => {
                 <td className="border-b px-4 py-2">{cu.name}</td>
                 <td className="border-b px-4 py-2">{cu.id}</td>
                 <td className="border-b px-4 py-2">{cu.address}</td>
+                {/* {roles.map((roles,index) => <span key={index}>{roles.name}</span>)} */}
+                {/* <td className="border-b px-4 py-2">{cu.roles}</td> */}
                 <td className="border-b px-4 py-2">
                   <button
                   onClick={()=>navigate("/profile")}

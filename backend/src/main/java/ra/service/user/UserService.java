@@ -52,4 +52,9 @@ public class UserService implements IUserService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
+
+    @Override
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
+    }
 }

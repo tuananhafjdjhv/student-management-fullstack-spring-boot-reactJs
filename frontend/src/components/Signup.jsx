@@ -18,6 +18,23 @@ const Signup = () => {
     checkbox3: false,
     checkbox4: false,
   })
+  const handleCheckboxChange = (event) => {
+    const checkboxName = event.target.name;
+    const isChecked = event.target.checked;
+    setCheckbox((prevCheckbox) => ({
+      ...prevCheckbox,
+      [checkboxName]: isChecked,
+    }));
+
+    if (isChecked) {
+      const inputValue = event.target.value;
+      setRole((prevValues) => [...prevValues, inputValue]);
+    } else {
+      const updatedValues = role.filter((value) => value !== event.target.value);
+      setRole(updatedValues);
+    }
+  };
+
   console.log("role   === ",role);
 
   const [inputValue, setInputValue] = useState({
@@ -66,7 +83,7 @@ const Signup = () => {
         // setInputValue({ ...inputValue, [key]: value });
       }
     }
-      setCheckbox({...checkbox, [value]: true});
+      // setCheckbox({...inputValue, [value]: e.target.value});
   };
 
   const navigate = useNavigate();
@@ -95,10 +112,12 @@ const Signup = () => {
       .post("http://localhost:8080/v1/api/auth/signup", inputValue)
       .then((res) =>{
         setInputValue({ ...inputValue, roles: role})
-      console.log(res)
+      console.log(res.data)
       })
-      
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("Đã xảy ra lỗi");
+        console.log(err);
+      })
     setError("");
     toast.success("Thêm mới thành công");
     navigate("/admin");
@@ -199,17 +218,7 @@ const Signup = () => {
                   <img width={50} src={inputValue.avatar} alt="avatar" />
                 </div>
               </div>
-              {/* <div className="mb-3">
-                <label className="form-label">Tải anh lên:     </label>
-                <input
-                  type="file"
-                  // onChange={uploadImage}
-                  className="form-control"
-                />
-                <div>
-                  <img width={100} src={imageUrl} alt="" />
-                </div>
-              </div> */}
+              
               <div>
                 <input
                   className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
@@ -252,13 +261,6 @@ const Signup = () => {
                     Chọn quyền Truy cập
                   </h7>
                   <ul
-                    onChange={(e) => {
-                      setRole([...role, e.target.value]);
-                    }}
-                    value={role}
-                    name="roles"
-                    // value={inputValue.roles}
-                    // onChange={(e) => handleChange(e)}
                     className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   >
                     <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -270,7 +272,7 @@ const Signup = () => {
                           value="ADMIN"
                           name="checkbox1"
                           // value={inputValue.roles}
-                          onChange={(e) => setRole(e.target.value)}
+                          onChange={handleCheckboxChange}
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                         />
                         <label
@@ -289,7 +291,8 @@ const Signup = () => {
                           defaultValue=""
                           value="PM"
                           name="checkbox2"
-                          onChange={(e) => setRole([...role, e.target.value])}
+                          onChange={handleCheckboxChange}
+                          // onChange={(e) => setRole([...role, e.target.value])}
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                         />
                         <label
@@ -307,7 +310,8 @@ const Signup = () => {
                           type="checkbox"
                           defaultValue=""
                           value="TEACHER"
-                          onChange={(e) => setRole([...role, e.target.value])}
+                          onChange={handleCheckboxChange}
+                          // onChange={(e) => setRole([...role, e.target.value])}
                           name="checkbox3"
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                         />
@@ -325,7 +329,8 @@ const Signup = () => {
                           id="laravel-checkbox-list"
                           type="checkbox"
                           value="STUDENT"
-                          onChange={(e) => setRole([...role, e.target.value])}
+                          onChange={handleCheckboxChange}
+                          // onChange={(e) => setRole([...role, e.target.value])}
                           name="checkbox4"
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                         />

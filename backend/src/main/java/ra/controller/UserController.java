@@ -1,22 +1,22 @@
 package ra.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ra.dto.reponse.JwtResponse;
 import ra.dto.reponse.ResponseMessage;
-import ra.dto.request.ChangeAvatar;
-import ra.dto.request.ChangePass;
-import ra.dto.request.SignInForm;
-import ra.dto.request.SignUpForm;
+import ra.dto.request.*;
 import ra.model.Role;
 import ra.model.RoleName;
 import ra.model.User;
@@ -29,10 +29,9 @@ import ra.service.role.RoleService;
 import ra.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -53,6 +52,7 @@ public class UserController {
     JwtTokenFilter jwtTokenFilter;
 
     @PostMapping("/signup")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PM','TEACHER')")
     public ResponseEntity<ResponseMessage> doSignUp( @RequestBody SignUpForm signUpForm) {
         boolean isExistUsername = userService.existsByUsername(signUpForm.getUsername());
         if (isExistUsername) {
@@ -173,11 +173,17 @@ public class UserController {
         String pass = user.getPassword();
         if (!passwordEncoder.matches(changePass.getOldPass(), pass)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ResponseMessage("Failed","Mật khẩu trùng!!",null)
+                    new ResponseMessage("Failed","Mật khẩu cũ không khớp!!",null)
             );
         }
+        if (!changePass.getRePass().matches(changePass.getNewPass())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ResponseMessage("Failed","Mật khẩu mới không khớp nhau!!",null)
+            );
+        } else
         user.setPassword(passwordEncoder.encode(changePass.getNewPass()));
         userRepository.save(user);
+        new ResponseMessage("OK","Đổi mật khẩu thành công!!",null);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/show-all")
@@ -185,15 +191,18 @@ public class UserController {
         return userService.findAll();
     }
 
-    @PutMapping("/block-user/{id}")
+    //2 phương thức block và unblock bị ngược nhau :))
+    @PutMapping("/unblock-user/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseMessage> blockUser(@PathVariable String id){
         userRepository.blockUser(Long.valueOf(id));
-        return new ResponseEntity<>(new ResponseMessage("","Block success!!",null), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("OK","unblock success!!",null), HttpStatus.OK);
     }
-    @PutMapping("/unblock-user/{id}")
+    @PutMapping("/block-user/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseMessage>  unblockUser(@PathVariable String id){
         userRepository.unBlockUser(Long.valueOf(id));
-        return new ResponseEntity<>(new ResponseMessage("","Unblock success!!",null), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("OK","Block success!!",null), HttpStatus.OK);
     }
     @PutMapping("/change-avatar")
     public ResponseEntity<?> changeAvatar(HttpServletRequest request, @RequestBody ChangeAvatar changeAvatar){
@@ -201,11 +210,36 @@ public class UserController {
         String username = jwtProvider.getUserNameFromToken(token);
         User user = userService.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("Username Not found"));
         if(changeAvatar.getAvatar()==null||changeAvatar.getAvatar().trim().equals("")){
-            return new ResponseEntity<>(new ResponseMessage("no","Change error",null), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("Failed","Thay đổi avatar lỗi",null), HttpStatus.OK);
         }else {
             user.setAvatar(changeAvatar.getAvatar());
             userService.save(user);
-            return new ResponseEntity<>(new ResponseMessage("yes","Change Success",userService.save(user)), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("OK","Đổi avatar thành công",userService.save(user)), HttpStatus.OK);
         }
+    }
+    @PutMapping("/updateProfile")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SELLER','ROLE_SM','ROLE_USER')")
+    @Transactional(rollbackFor = UserException.class)
+    public ResponseEntity<?> updateProfile(@RequestBody UpdateProfile user) {
+        Long userId = userDetailService.getFromAuthentication().getId();
+        Optional<User> usersOptional = userService.findUserById(userId);
+        User userOld = usersOptional.get();
+        User users = User.builder()
+                .id(userId)
+                .username(user.getUsername() == null ? userOld.getUsername() : user.getUsername())
+                .name(user.getName() == null ? userOld.getName() : user.getName())
+                .email(user.getEmail() == null ? userOld.getEmail() : user.getEmail())
+                .address(user.getAddress()==null ? userOld.getAddress() : user.getAddress())
+                .avatar(user.getAvatar() == null ? userOld.getAvatar() : user.getAvatar())
+                .phoneNumber(user.getPhoneNumber() == null ? userOld.getPhoneNumber() : user.getPhoneNumber())
+                .address(user.getAddress() == null ? userOld.getAddress() : user.getAddress())
+                .password(userOld.getPassword())
+                .status(userOld.isStatus())
+                .birthDate(userOld.getBirthDate())
+                .roles(userOld.getRoles())
+
+                .build();
+        userService.save(users);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }

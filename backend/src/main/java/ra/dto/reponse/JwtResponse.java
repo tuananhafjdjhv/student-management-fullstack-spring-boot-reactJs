@@ -22,5 +22,6 @@ public class JwtResponse {
     private String phoneNumber;
     private String email;
     private LocalDate birthDate;
+    private String avatar;
     private Collection<? extends GrantedAuthority> roles;
 }

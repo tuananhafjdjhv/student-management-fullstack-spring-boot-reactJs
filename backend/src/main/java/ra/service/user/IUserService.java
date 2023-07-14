@@ -13,5 +13,6 @@ public interface IUserService {
     Boolean existsByEmail(String email); //email da co trong DB chua
     User save(User user);
     List<User> findAll();
+    Optional<User> findUserById(Long id);
 
 }
