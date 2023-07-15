@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import Cookies from "js-cookie";
+
 
 const Login = () => {
-  const [email, setEmail] = useState("");
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const isLogin = Cookies.get("token");
 
   const loginClick = async (e) => {
+
     e.preventDefault();
 
     try {
@@ -22,14 +23,13 @@ const Login = () => {
           username,
           password,
         })
-        .then((res) => console.log(res));
-
+        
       // Lưu JWT vào cookie
       // document.cookie = `token=${response.data.token}; path=/`;
-      // Cookies.set('token', response.data.token, { expires: 7 });
+      Cookies.set("token",response.data.token);
+      // document.cookie = `token=${response.data.token}; path=/`;
+      // localStorage.setItem('token', response.data.token);
 
-      // Đăng nhập thành công
-      setError("");
       setPassword("");
       setUsername("");
       // alert("Đăng nhập thành công!", navigate("/admin"));
@@ -38,6 +38,9 @@ const Login = () => {
       // console.log(response.data);
     } catch (error) {
       // Xử lý lỗi nếu có
+      // if (password === "" || username === ""){
+      //   toast.error("Tên người dùng hoặc mật khẩu không được để trống.");
+      // } else
       // setError(alert("Tên người dùng hoặc mật khẩu không đúng."));
       toast.error("Tên người dùng hoặc mật khẩu không đúng.");
     }
@@ -105,7 +108,6 @@ const Login = () => {
               <div className="flex bg-gray-50 ">
                 <a
                 href="http://localhost:8080/oauth2/authorization/google"
-                  // onClick={(e)=> googleLogin(e)}
                   className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                 >
                   <svg
@@ -166,7 +168,7 @@ const Login = () => {
                 </a>
               </div>
               <div className="flex bg-gray-50">
-                <button className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                <button  className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                   <svg
                     className="h-6 w-6 mr-2"
                     xmlns="http://www.w3.org/2000/svg"

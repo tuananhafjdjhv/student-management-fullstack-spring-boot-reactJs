@@ -12,7 +12,7 @@ export const reduxSlice = createSlice({
   reducers: {
       login: (state, action) => {
         //   localStorage.setItem('currentUser', action.payload.userId)
-          localStorage.setItem('name', action.payload.name)
+          localStorage.setItem('username', action.payload.username)
           localStorage.setItem('token', action.payload.token)
           state.currentUser = action.payload.userId
           state.username = action.payload.username
@@ -20,7 +20,7 @@ export const reduxSlice = createSlice({
       },
       logout: state => {
         //   localStorage.removeItem('currentUser')
-          localStorage.removeItem("name")
+          localStorage.removeItem("username")
           localStorage.removeItem('token')
           localStorage.removeItem('profileImageLink')
           state.currentUser = undefined

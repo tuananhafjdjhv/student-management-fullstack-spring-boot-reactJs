@@ -1,3 +1,5 @@
+
+import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -6,6 +8,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const isLogin = Cookies.get("token");
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -15,6 +18,7 @@ const Navbar = () => {
     e.preventDefault();
     localStorage.removeItem("token");
     localStorage.removeItem("name");
+    Cookies.remove("token");
     navigate("/");
   };
 

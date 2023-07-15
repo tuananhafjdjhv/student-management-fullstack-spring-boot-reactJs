@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 
 const Course = () => {
   return (
-    <div className="flex h-screen">
+    <div className="h-screen">
       {/* Sidebar */}
 
       {/* Main content */}

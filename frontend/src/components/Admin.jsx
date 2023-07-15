@@ -4,8 +4,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import StudentService from "../service/StudentService";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import Cookies from "js-cookie";
+import ErrorPage from "./ErrorPage";
 
 const Admin = () => {
+  const isLogin = Cookies.get("token");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [listStudent, setListStudent] = useState([]);
@@ -43,7 +46,8 @@ const Admin = () => {
 
   return (
     <>
-    
+    {isLogin ? (
+      <>
       <Navbar></Navbar>
       <div
         className="container mx-auto p-12"
@@ -175,6 +179,13 @@ const Admin = () => {
       </div>
       <Footer></Footer>
     </>
+    ):(
+      <ErrorPage></ErrorPage>
+    )}
+    
+    </>
+
+    
   );
 };
 
