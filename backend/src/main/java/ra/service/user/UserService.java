@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 ;
+import ra.model.Provider;
 import ra.model.User;
 import ra.repository.UserRepository;
 
@@ -56,5 +57,20 @@ public class UserService implements IUserService {
     @Override
     public Optional<User> findUserById(Long id) {
         return userRepository.findById(id);
+    }
+    public void processOAuthPostLogin(String username) {
+        User existUser = userRepository.findByUsername(username).get();
+
+        if (existUser == null) {
+            User newUser = new User();
+            newUser.setUsername(username);
+            newUser.setProvider(Provider.GOOGLE);
+            newUser.setStatus(true);
+
+            userRepository.save(newUser);
+
+            System.out.println("Created new user: " + username);
+        }
+
     }
 }

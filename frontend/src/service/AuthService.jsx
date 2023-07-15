@@ -13,4 +13,5 @@ export default class AuthService {
     changePassword(body) {
         return axios.put("http://localhost:8080/v1/api/auth/change-password",body)
     }
+    
 }
