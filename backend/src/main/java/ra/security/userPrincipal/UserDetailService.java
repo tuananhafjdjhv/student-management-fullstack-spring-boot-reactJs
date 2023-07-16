@@ -3,6 +3,7 @@ package ra.security.userPrincipal;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +26,9 @@ public class UserDetailService implements UserDetailsService {
     public User getFromAuthentication(){
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return  userRepository.findByUsername(userPrincipal.getUsername()).get();
+    }
+    public Boolean hasProtectedAccess() {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
     }
 }
 

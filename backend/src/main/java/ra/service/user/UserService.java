@@ -58,6 +58,9 @@ public class UserService implements IUserService {
     public Optional<User> findUserById(Long id) {
         return userRepository.findById(id);
     }
+
+
+
     public void processOAuthPostLogin(String username) {
         User existUser = userRepository.findByUsername(username).get();
 
