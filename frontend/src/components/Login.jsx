@@ -46,6 +46,12 @@ const Login = () => {
     }
   };
 
+  // const googleLogin  = async () =>{
+  //   // e.preventDefault()
+  //   const response = await 
+  //   axios.get('http://localhost:8080/oauth2/authorization/google').then(res=>console.log(res.data))
+    
+  // }
 
   return (
     <>
@@ -107,6 +113,7 @@ const Login = () => {
             <div className="flex flex-row gap-2 p-3">
               <div className="flex bg-gray-50 ">
                 <a
+                // onClick={googleLogin}
                 href="http://localhost:8080/oauth2/authorization/google"
                   className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                 >

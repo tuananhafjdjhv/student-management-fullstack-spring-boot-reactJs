@@ -12,12 +12,8 @@ const store = configureStore;
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Provider store={store}>
-      {/* <ToastContainer> */}
       <Toaster position="top-center" reverseOrder={true} />
         <App />
-      
-        
-      {/* </ToastContainer> */}
     </Provider>
   </BrowserRouter>
 );
