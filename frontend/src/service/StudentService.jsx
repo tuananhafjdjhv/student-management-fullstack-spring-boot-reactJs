@@ -3,8 +3,8 @@ import axios from "axios";
 
 
 export default class StudentService {
-    showAll() {
-        return axios.get("http://localhost:8080/v1/api/auth/show-all")
+    showAll(currentPage) {
+        return axios.get(`http://localhost:8080/v1/api/auth/show-all?page=${currentPage}`)
     }
     blockUser(id){
        return axios.post(`http://localhost:8080/v1/api/auth/block-user/${id}`)

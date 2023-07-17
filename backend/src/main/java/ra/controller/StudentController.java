@@ -33,8 +33,7 @@ public class StudentController {
         }
         update.setName(user.getName());
         update.setAvatar(user.getAvatar());
-        update.setAddress(user.getAvatar());
-//        update.setRoles(user.getRoles());
+        update.setAddress(user.getAddress());
         update.setPhoneNumber(user.getPhoneNumber());
         update.setBirthDate(user.getBirthDate());
         update.setUsername(user.getUsername());

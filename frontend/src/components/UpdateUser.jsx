@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -15,50 +15,51 @@ const UpdateUser = () => {
     email: "",
     username: "",
     address: "",
-    avatarUrl: "",
+    avatar: "",
     phoneNumber: "",
     birthDate: "",
   });
 
-
-  const handleSubmit = async (e) => {
-    let value = e.target.value;
+  const handleSubmit = () => {
     try {
       const updatedUserData = {
         name: student.name,
         email: student.email,
         username: student.username,
         address: student.address,
+        avatar: student.avatar,
         phoneNumber: student.phoneNumber,
-        avatarUrl: student.avatarUrl,
         birthDate: student.birthDate,
       };
-      const response = await axios
-        .put("http://localhost:8080/v1/api/update",updatedUserData)
-        toast.success("Update thành công")
-        setStudent({...student, value: updatedUserData});
-        navigate("/admin")
-         console.log(response.data);
+      setStudent({ ...student, updatedUserData });
+      console.log(student);
+      const response = axios.put(
+        "http://localhost:8080/v1/api/auth/updateProfile",
+        student
+      );
+      toast.success("Update thành công");
+      navigate("/admin");
     } catch (error) {
-      console.log(error);
-      toast.error("Update lỗi !!")
-    } 
-   };
+      console.log("error ====", error);
+      toast.error("Update lỗi !!");
+      navigate("/admin");
+    }
+  };
 
-   const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
-   const uploadImage = (e) => {
-     let previewImg = e.target.files[0];
-     if (previewImg == null) return;
-     const imageRef = ref(storage, `uploadImage/${uploadImage.name}${v4()}`);
-     uploadBytes(imageRef, previewImg).then((snapshot) => {
-       getDownloadURL(snapshot.ref).then((url) => {
-         setStudent({ ...student,avatar : url });
-         setImageUrl(url);
-         console.log("image url ",url);
-       });
-     });
-   };
+  const uploadImage = (e) => {
+    let previewImg = e.target.files[0];
+    if (previewImg == null) return;
+    const imageRef = ref(storage, `uploadImage/${uploadImage.name}${v4()}`);
+    uploadBytes(imageRef, previewImg).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setStudent({ ...student, avatar: url });
+        setImageUrl(url);
+        console.log("image url ", url);
+      });
+    });
+  };
 
   useEffect(() => {
     fetchData();
@@ -70,7 +71,6 @@ const UpdateUser = () => {
     );
     setStudent(response.data);
   };
-
 
   return (
     <>
@@ -176,7 +176,7 @@ const UpdateUser = () => {
                   className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
                   name="phoneNumber"
                   type="number"
-                  placeholder="phoneNumber"
+                  placeholder="Phone Number"
                   // value={phoneNumber}
                   // onChange={(e) => setPhoneNumber(e.target.value)}
                   value={student.phoneNumber}
@@ -199,98 +199,6 @@ const UpdateUser = () => {
                   }
                 />
               </div>
-              {/* <div>
-                <>
-                  <h7 className="mb-4 font-semibold text-gray-900 dark:text-white">
-                    Chọn quyền Truy cập
-                  </h7>
-                  <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                    <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                      <div className="flex items-center pl-3">
-                        <input
-                          id="vue-checkbox-list"
-                          type="checkbox"
-                          defaultValue=""
-                          // value="ADMIN"
-                          name="checkbox1"
-                          checked="checked"
-                          value={student.roles.id}
-                          // onChange={handleCheckboxChange}
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="vue-checkbox-list"
-                          className="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                        >
-                          ADMIN
-                        </label>
-                      </div>
-                    </li>
-                    <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                      <div className="flex items-center pl-3">
-                        <input
-                          id="react-checkbox-list"
-                          type="checkbox"
-                          defaultValue=""
-                          // value="PM"
-                          name="checkbox2"
-                          value={student.roles}
-                          // onChange={handleCheckboxChange}
-                          // onChange={(e) => setRole([...role, e.target.value])}
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="react-checkbox-list"
-                          className="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                        >
-                          PM
-                        </label>
-                      </div>
-                    </li>
-                    <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                      <div className="flex items-center pl-3">
-                        <input
-                          id="angular-checkbox-list"
-                          type="checkbox"
-                          defaultValue=""
-                          // value="TEACHER"
-                          value={student.roles}
-                          // onChange={handleCheckboxChange}
-                          // onChange={(e) => setRole([...role, e.target.value])}
-                          name="checkbox3"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="angular-checkbox-list"
-                          className="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                        >
-                          Teacher
-                        </label>
-                      </div>
-                    </li>
-                    <li className="w-full dark:border-gray-600">
-                      <div className="flex items-center pl-3">
-                        <input
-                          id="laravel-checkbox-list"
-                          type="checkbox"
-                          // value="STUDENT"
-                          value={student.roles}
-                          // onChange={handleCheckboxChange}
-                          // onChange={(e) => setRole([...role, e.target.value])}
-                          name="checkbox4"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="laravel-checkbox-list"
-                          className="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                        >
-                          Student
-                        </label>
-                      </div>
-                    </li>
-                  </ul>
-                </>
-              </div> */}
 
               <button
                 type="submit"

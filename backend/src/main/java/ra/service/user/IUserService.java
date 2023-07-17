@@ -1,6 +1,8 @@
 package ra.service.user;
 
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ra.model.User;
 
 import java.util.List;
@@ -12,7 +14,7 @@ public interface IUserService {
     Boolean existsByUsername(String username); //username da co trong DB chua, khi tao du lieu
     Boolean existsByEmail(String email); //email da co trong DB chua
     User save(User user);
-    List<User> findAll();
+    Page<User> findAll(Pageable pageable);
     Optional<User> findUserById(Long id);
 
 }

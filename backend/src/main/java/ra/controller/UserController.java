@@ -3,6 +3,9 @@ package ra.controller;
 import lombok.RequiredArgsConstructor;
 import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -186,8 +189,10 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/show-all")
-    public List<User> findAllUser() {
-        return userService.findAll();
+    public ResponseEntity<?> findAllUser(Pageable pageable) {
+        pageable = PageRequest.of(pageable.getPageNumber(), 10);
+        Page<User> listUser = userService.findAll(pageable);
+        return new ResponseEntity<>(listUser, HttpStatus.OK);
     }
 
     //2 phương thức block và unblock bị ngược nhau :))
@@ -232,11 +237,10 @@ public class UserController {
                 .avatar(user.getAvatar() == null ? userOld.getAvatar() : user.getAvatar())
                 .phoneNumber(user.getPhoneNumber() == null ? userOld.getPhoneNumber() : user.getPhoneNumber())
                 .address(user.getAddress() == null ? userOld.getAddress() : user.getAddress())
+                .birthDate(user.getBirthDate() == null ? userOld.getBirthDate() : user.getBirthDate())
                 .password(userOld.getPassword())
                 .status(userOld.isStatus())
-                .birthDate(userOld.getBirthDate())
                 .roles(userOld.getRoles())
-
                 .build();
         userService.save(users);
         return new ResponseEntity<>(users, HttpStatus.OK);
