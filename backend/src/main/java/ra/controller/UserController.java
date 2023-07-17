@@ -76,7 +76,6 @@ public class UserController {
             );
         }
 
-
         Set<Role> roles = new HashSet<>();
 
         if (signUpForm.getRoles() == null || signUpForm.getRoles().isEmpty()) {
@@ -218,7 +217,7 @@ public class UserController {
         }
     }
     @PutMapping("/updateProfile")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_SELLER','ROLE_SM','ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','PM','STUDENT','TEACHER')")
     @Transactional(rollbackFor = UserException.class)
     public ResponseEntity<?> updateProfile(@RequestBody UpdateProfile user) {
         Long userId = userDetailService.getFromAuthentication().getId();

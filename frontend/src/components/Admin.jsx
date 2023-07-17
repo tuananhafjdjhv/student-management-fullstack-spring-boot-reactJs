@@ -44,6 +44,20 @@ const Admin = () => {
     } setSearch(e.target.value);
   };
 
+  const handleGetStudent = (id)=>{
+
+    let show = new StudentService();
+    show.getById(id).then((res) => {console.log(res.data)})
+      navigate(`/profile/${id}`);
+  }
+
+  const handleEdit = (id)=>{
+
+    let show = new StudentService();
+    show.getById(id).then((res) => {console.log(res.data)})
+    navigate(`/edit-profile/${id}`);
+  }
+
   return (
     <>
     {isLogin ? (
@@ -94,8 +108,9 @@ const Admin = () => {
               <th className="border-b px-4 py-2 bg-gray-200">Họ và tên</th>
               <th className="border-b px-4 py-2 bg-gray-200">Mã sinh viên</th>
               <th className="border-b px-4 py-2 bg-gray-200">Địa chỉ</th>
-              <th className="border-b px-4 py-2 bg-gray-200">Quyền Truy Cập</th>
-              <th className="border-b px-4 py-2 bg-gray-200">Hành động</th>
+              <th className="border-b px-4 py-2 bg-gray-200">Avatar</th>
+              <th className="border-b px-4 py-2 bg-gray-200">Option</th>
+              <th className="border-b px-4 py-2 bg-gray-200">Trạng thái</th>
             </tr>
           </thead>
           <tbody>
@@ -105,21 +120,42 @@ const Admin = () => {
                 <td className="border-b px-4 py-2">{cu.name}</td>
                 <td className="border-b px-4 py-2">{cu.id}</td>
                 <td className="border-b px-4 py-2">{cu.address}</td>
+                <td className="border-b px-4 py-2"><img style={{width:80}} src={cu.avatar}/></td>
                 {/* {roles.map((roles,index) => <span key={index}>{roles.name}</span>)} */}
                 {/* <td className="border-b px-4 py-2">{cu.roles}</td> */}
                 <td className="border-b px-4 py-2">
                   <button
-                  onClick={()=>navigate("/profile")}
-                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
+                  onClick={()=>handleGetStudent(cu.id)}
+                  className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2">
                     Xem
                   </button>
-                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                  <button
+                  onClick={() =>handleEdit(cu.id)}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
                     Sửa
                   </button>
-                  <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                    Block
+                  {
+                    cu.status ? (<>
+                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    unBlock
                   </button>
+                  
+                    </>
+                        
+                    ):(
+                      <>
+                       <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                      Block
+                    </button>
+                    
+                      </>
+                     
+                    )
+                  }
+                  
+                  
                 </td>
+                <td className="border-b px-4 py-2">{cu.status ? ( <p className="bg-red-500 border-b px-4 py-2" >Tài khoản bị khóa</p>):(<p className="bg-green-500">Hoạt động</p> )}</td>
               </tr>
             ))}
           </tbody>

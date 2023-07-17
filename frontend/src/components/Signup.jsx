@@ -8,10 +8,12 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase/firebaseConfig";
 import { v4 } from "uuid";
 import { toast } from "react-hot-toast";
+import Cookies from "js-cookie";
 
 const Signup = () => {
   const [error, setError] = useState("");
   const [role,setRole] = useState([]);
+  const isLogin = Cookies.get("token");
   const [checkbox,setCheckbox] = useState({
     checkbox1: false,
     checkbox2: false,
@@ -29,9 +31,11 @@ const Signup = () => {
     if (isChecked) {
       const inputValue = event.target.value;
       setRole((prevValues) => [...prevValues, inputValue]);
+      setInputValue({...inputValue, roles: role});
     } else {
       const updatedValues = role.filter((value) => value !== event.target.value);
-      setRole(updatedValues);
+      // setRole(updatedValues);
+      setInputValue({...inputValue, roles: updatedValues});
     }
   };
 
@@ -48,6 +52,7 @@ const Signup = () => {
     birthDate: "",
     roles: [],
   });
+
   const handleChange = (e) => {
     let key = e.target.name;
     let value = e.target.value;
@@ -80,18 +85,15 @@ const Signup = () => {
         setError("Vui lòng nhập mật khẩu và  phải trên 6 kí tự");
       } else {
         setError("");
-        // setInputValue({ ...inputValue, [key]: value });
       }
     }
-      // setCheckbox({...inputValue, [value]: e.target.value});
   };
 
   const navigate = useNavigate();
-  const [imageUrl, setImageUrl] = useState("");
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(inputValue);
     setInputValue({ ...inputValue, roles: role})
 
     if (
@@ -106,12 +108,14 @@ const Signup = () => {
       setError("Vui lòng điền đầy đủ thông tin.");
       return;
     }
+
+
     
-    // console.log(inputValue.roles);
     axios
       .post("http://localhost:8080/v1/api/auth/signup", inputValue)
       .then((res) =>{
         setInputValue({ ...inputValue, roles: role})
+        
       console.log(res.data)
       })
       .catch((err) => {
@@ -123,17 +127,17 @@ const Signup = () => {
     navigate("/admin");
   };
 
+  const [imageUrl, setImageUrl] = useState("");
+
   const uploadImage = (e) => {
     let previewImg = e.target.files[0];
-    console.log(previewImg);
-    let url = URL.createObjectURL(previewImg);
-    console.log(previewImg);
-    setInputValue({ ...inputValue, avatar: url });
-    setImageUrl(previewImg);
-    const imageRef = ref(storage, `uploadImage/${imageUrl.name}${v4()}`);
-    uploadBytes(imageRef, imageUrl).then((snapshot) => {
+    if (previewImg == null) return;
+    const imageRef = ref(storage, `uploadImage/${uploadImage.name}${v4()}`);
+    uploadBytes(imageRef, previewImg).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
-        setInputValue({ ...inputValue, avatar: url });
+        setInputValue({ ...inputValue,avatar : url });
+        setImageUrl(url);
+        console.log("image url ",url);
       });
     });
   };
@@ -202,7 +206,7 @@ const Signup = () => {
               <div>
                 <label
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  for="small_size"
+                  // for="small_size"
                 >
                   Tải lên avatar
                 </label>
@@ -215,7 +219,7 @@ const Signup = () => {
                 />
 
                 <div>
-                  <img width={50} src={inputValue.avatar} alt="avatar" />
+                  <img width={50} src={imageUrl} alt="avatar" />
                 </div>
               </div>
               
@@ -271,6 +275,7 @@ const Signup = () => {
                           defaultValue=""
                           value="ADMIN"
                           name="checkbox1"
+                          checked={checkbox.checked}
                           // value={inputValue.roles}
                           onChange={handleCheckboxChange}
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
@@ -291,6 +296,7 @@ const Signup = () => {
                           defaultValue=""
                           value="PM"
                           name="checkbox2"
+                          checked={checkbox.checked}
                           onChange={handleCheckboxChange}
                           // onChange={(e) => setRole([...role, e.target.value])}
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
@@ -310,6 +316,7 @@ const Signup = () => {
                           type="checkbox"
                           defaultValue=""
                           value="TEACHER"
+                          checked={checkbox.checked}
                           onChange={handleCheckboxChange}
                           // onChange={(e) => setRole([...role, e.target.value])}
                           name="checkbox3"
@@ -329,6 +336,7 @@ const Signup = () => {
                           id="laravel-checkbox-list"
                           type="checkbox"
                           value="STUDENT"
+                          checked={checkbox.checked}
                           onChange={handleCheckboxChange}
                           // onChange={(e) => setRole([...role, e.target.value])}
                           name="checkbox4"

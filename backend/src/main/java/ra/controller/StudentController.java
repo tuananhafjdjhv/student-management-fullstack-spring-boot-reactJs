@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/api/admin")
+@RequestMapping("/v1/api")
 @CrossOrigin("*")
 @RequiredArgsConstructor
 public class StudentController {
@@ -26,17 +26,26 @@ public class StudentController {
     private UserRepository userRepository;
 
     @PutMapping("/update")
-    public User updateMovie(@RequestBody User user){
+    public ResponseEntity<?> updateStudent(@RequestBody User user){
         User update = userRepository.findById(user.getId()).get();
-        if (update != null){
-            return userRepository.save(user);
+        if (update == null){
+            return new ResponseEntity<>("Update error",HttpStatus.NOT_FOUND);
         }
-        return  null;
+        update.setName(user.getName());
+        update.setAvatar(user.getAvatar());
+        update.setAddress(user.getAvatar());
+//        update.setRoles(user.getRoles());
+        update.setPhoneNumber(user.getPhoneNumber());
+        update.setBirthDate(user.getBirthDate());
+        update.setUsername(user.getUsername());
+        update.setEmail(user.getEmail());
+        userRepository.save(update);
+        return new ResponseEntity<>("Update success",HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteMovie(@PathVariable String id){
+    public void deleteStudent(@PathVariable String id){
         userRepository.deleteById(Long.valueOf(id));
     }
 

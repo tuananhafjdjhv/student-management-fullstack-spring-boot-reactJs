@@ -1,50 +1,28 @@
+import { useParams } from "react-router-dom"
 import Navbar from "./Navbar"
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 
 const Profile = () => {
+  const {id} = useParams();
+  const [student,setStudent] = useState({});
+  // console.log(id);
 
+  useEffect(()  => {
+    fetchData()
+  },[])
+  
+  const fetchData = async () =>{
+    const response = await
+    axios.get(`http://localhost:8080/v1/api/auth/user/${id}`)
+    setStudent(response.data);
+  }
   return (
     <>
       <div className="bg-gray-100">
-        {/* <div className="w-full text-white bg-main-color">
-          <div className="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
-            <div className="p-4 flex flex-row items-center justify-between">
-              <a href="#" className="text-lg font-semibold tracking-widest uppercase rounded-lg focus:outline-none focus:shadow-outline">
-                profile</a>
-              <button className="md:hidden rounded-lg focus:outline-none focus:shadow-outline" >
-                <svg fill="currentColor" viewBox="0 0 20 20" className="w-6 h-6">
-                  <path  fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z" clipRule="evenodd" />
-                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </button>
-            </div>
-            <nav className="flex-col flex-grow pb-4 md:pb-0 hidden md:flex md:justify-end md:flex-row">
-              <div  className="relative"
-            //    x-data="{ open: false }"
-               >
-                <button  className="flex flex-row items-center space-x-2 w-full px-4 py-2 mt-2 text-sm font-semibold text-left bg-transparent hover:bg-blue-800 md:w-auto md:inline md:mt-0 md:ml-4 hover:bg-gray-200 focus:bg-blue-800 focus:outline-none focus:shadow-outline">
-                  <span>Jane Doe</span>
-                  <img className="inline h-6 rounded-full" src="https://avatars2.githubusercontent.com/u/24622175?s=60&v=4" />
-                  <svg fill="currentColor" viewBox="0 0 20 20"  className="inline w-4 h-4 transition-transform duration-200 transform">
-                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </button>
-                <div 
-                // x-sh="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" 
-                className="absolute right-0 w-full mt-2 origin-top-right rounded-md shadow-lg md:w-48">
-                  <div className="py-2 bg-white text-blue-800 text-sm rounded-sm border border-main-color shadow-sm">
-                    <a className="block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Settings</a>
-                    <a className="block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Help</a>
-                    <div className="border-b" />
-                    <a className="block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Logout</a>
-                  </div>
-                </div>
-              </div>
-            </nav>
-          </div>
-        </div> */}
+
         <Navbar ></Navbar>
-        {/* End of Navbar */}
         <div className="container mx-auto my-5 p-5">
           <div className="md:flex no-wrap md:-mx-2 ">
             {/* Left Side */}
@@ -54,7 +32,7 @@ const Profile = () => {
                 <div className="image overflow-hidden">
                   <img className="h-auto w-full mx-auto" src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg" alt="" />
                 </div>
-                <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">Jane Doe</h1>
+                <h1  className="text-gray-900 font-bold text-xl leading-8 my-1" >{student.name}</h1>
                 <h3 className="text-gray-600 font-lg text-semibold leading-6">Owner at Her Company Inc.</h3>
                 <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">Lorem ipsum dolor sit amet
                   consectetur adipisicing elit.
@@ -119,38 +97,38 @@ const Profile = () => {
                 <div className="text-gray-700">
                   <div className="grid md:grid-cols-2 text-sm">
                     <div className="grid grid-cols-2">
-                      <div className="px-4 py-2 font-semibold">First Name</div>
-                      <div className="px-4 py-2">Jane</div>
+                      <div className="px-4 py-2 font-semibold"> Name</div>
+                      <div className="px-4 py-2">{student.name}</div>
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Last Name</div>
-                      <div className="px-4 py-2">Doe</div>
+                      <div className="px-4 py-2">{student.name}</div>
                     </div>
-                    <div className="grid grid-cols-2">
-                      <div className="px-4 py-2 font-semibold">Gender</div>
+                    {/* <div className="grid grid-cols-2">
+                      <div className="px-4 py-2 font-semibold">Birth Date</div>
                       <div className="px-4 py-2">Female</div>
-                    </div>
+                    </div> */}
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Contact No.</div>
-                      <div className="px-4 py-2">+11 998001001</div>
+                      <div className="px-4 py-2">{student.phoneNumber}</div>
                     </div>
                     <div className="grid grid-cols-2">
-                      <div className="px-4 py-2 font-semibold">Current Address</div>
-                      <div className="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
+                      <div className="px-4 py-2 font-semibold"> Address</div>
+                      <div className="px-4 py-2">{student.address}</div>
                     </div>
-                    <div className="grid grid-cols-2">
+                    {/* <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Permanant Address</div>
                       <div className="px-4 py-2">Arlington Heights, IL, Illinois</div>
-                    </div>
+                    </div> */}
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Email.</div>
                       <div className="px-4 py-2">
-                        <a className="text-blue-800" href="mailto:jane@example.com">jane@example.com</a>
+                        <a className="text-blue-800" href="mailto:jane@example.com">{student.email}</a>
                       </div>
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Birthday</div>
-                      <div className="px-4 py-2">Feb 06, 1998</div>
+                      <div className="px-4 py-2">{student.birthDate}</div>
                     </div>
                   </div>
                 </div>

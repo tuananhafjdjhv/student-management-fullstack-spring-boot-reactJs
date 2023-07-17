@@ -32,26 +32,13 @@ const Login = () => {
 
       setPassword("");
       setUsername("");
-      // alert("Đăng nhập thành công!", navigate("/admin"));
       toast.success("Đăng nhập thành công!");
       navigate("/admin");
       // console.log(response.data);
     } catch (error) {
-      // Xử lý lỗi nếu có
-      // if (password === "" || username === ""){
-      //   toast.error("Tên người dùng hoặc mật khẩu không được để trống.");
-      // } else
-      // setError(alert("Tên người dùng hoặc mật khẩu không đúng."));
       toast.error("Tên người dùng hoặc mật khẩu không đúng.");
     }
   };
-
-  // const googleLogin  = async () =>{
-  //   // e.preventDefault()
-  //   const response = await 
-  //   axios.get('http://localhost:8080/oauth2/authorization/google').then(res=>console.log(res.data))
-    
-  // }
 
   return (
     <>
