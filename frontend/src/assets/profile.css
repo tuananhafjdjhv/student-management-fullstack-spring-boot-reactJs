@@ -13,3 +13,23 @@
   .border-main-color {
     border-color: var(--main-color);
   }
+  /* Container cho button */
+.button-container {
+  position: relative;
+}
+/* Hiệu ứng thông báo */
+.button-container .notification {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
