@@ -31,10 +31,10 @@ const UpdateUser = () => {
         phoneNumber: student.phoneNumber,
         birthDate: student.birthDate,
       };
-      setStudent({ ...student, updatedUserData });
+      setStudent({ ...student, value : updatedUserData });
       console.log(student);
       const response = axios.put(
-        "http://localhost:8080/v1/api/auth/updateProfile",
+        "http://localhost:8080/v1/api/update",
         student
       );
       toast.success("Update thành công");
@@ -42,7 +42,7 @@ const UpdateUser = () => {
     } catch (error) {
       console.log("error ====", error);
       toast.error("Update lỗi !!");
-      navigate("/admin");
+      navigate("/chết-lun");
     }
   };
 
@@ -115,13 +115,10 @@ const UpdateUser = () => {
                   className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
                   name="email"
                   type="email"
-                  placeholder="Email"
-                  // value={email}
-                  // onChange={(e) => setEmail(e.target.value)}
+                  placeholder=""
                   value={student.email}
-                  onChange={(e) =>
-                    setStudent({ ...student, email: e.target.value })
-                  }
+                  disabled
+                  // }
                 />
               </div>
               <div>
@@ -130,8 +127,6 @@ const UpdateUser = () => {
                   name="username"
                   type="text"
                   placeholder="Username"
-                  // value={username}
-                  // onChange={(e) => setUsername(e.target.value)}
                   value={student.username}
                   onChange={(e) =>
                     setStudent({ ...student, username: e.target.value })
@@ -177,8 +172,6 @@ const UpdateUser = () => {
                   name="phoneNumber"
                   type="number"
                   placeholder="Phone Number"
-                  // value={phoneNumber}
-                  // onChange={(e) => setPhoneNumber(e.target.value)}
                   value={student.phoneNumber}
                   onChange={(e) =>
                     setStudent({ ...student, phoneNumber: e.target.value })

@@ -8,7 +8,6 @@ import Home from './components/Home'
 import Course from './components/Course'
 import Profile from './components/Profile'
 import UpdateUser from './components/UpdateUser'
-import Navbar from './components/Navbar'
 
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
     <>
     <Routes >
       <Route  Component={Admin} path='/admin'></Route>
-      {/* <Route  Component={Navbar} path='/navbar'></Route> */}
       <Route index Component={Login} path='/'></Route>
       <Route  Component={Signup} path='/signup'></Route>
       <Route  Component={Home} path='/home'></Route>

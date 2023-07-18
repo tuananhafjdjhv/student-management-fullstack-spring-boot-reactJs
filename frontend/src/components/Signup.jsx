@@ -12,35 +12,8 @@ import Cookies from "js-cookie";
 
 const Signup = () => {
   const [error, setError] = useState("");
-  const [role,setRole] = useState([]);
+  const [role, setRole] = useState([]);
   const isLogin = Cookies.get("token");
-  const [checkbox,setCheckbox] = useState({
-    checkbox1: false,
-    checkbox2: false,
-    checkbox3: false,
-    checkbox4: false,
-  })
-  const handleCheckboxChange = (event) => {
-    const checkboxName = event.target.name;
-    const isChecked = event.target.checked;
-    setCheckbox((prevCheckbox) => ({
-      ...prevCheckbox,
-      [checkboxName]: isChecked,
-    }));
-
-    if (isChecked) {
-      const inputValue = event.target.value;
-      setRole((prevValues) => [...prevValues, inputValue]);
-      setInputValue({...inputValue, roles: role});
-    } else {
-      const updatedValues = role.filter((value) => value !== event.target.value);
-      // setRole(updatedValues);
-      setInputValue({...inputValue, roles: updatedValues});
-    }
-  };
-
-  console.log("role   === ",role);
-
   const [inputValue, setInputValue] = useState({
     name: "",
     email: "",
@@ -52,6 +25,36 @@ const Signup = () => {
     birthDate: "",
     roles: [],
   });
+  const [checkbox, setCheckbox] = useState({
+    checkbox1: "",
+    checkbox2: "",
+    checkbox3: "",
+    checkbox4: "",
+  });
+  const handleCheckboxChange = (event) => {
+    const checkboxName = event.target.name;
+    const isChecked = event.target.checked;
+    setCheckbox((prevCheckbox) => ({
+      ...prevCheckbox,
+      [checkboxName]: isChecked,
+    }));
+
+    if (isChecked) {
+      const inputValue = event.target.value;
+      setRole((prevValues) => [...prevValues, inputValue]);
+      setInputValue({ ...inputValue, roles: role });
+    } else {
+      const updatedValues = role.filter(
+        (value) => value !== event.target.value
+      );
+      // setRole(updatedValues);
+      setInputValue({ ...inputValue, roles: updatedValues });
+    }
+  };
+
+  console.log("role   === ", role);
+
+
 
   const handleChange = (e) => {
     let key = e.target.name;
@@ -91,40 +94,36 @@ const Signup = () => {
 
   const navigate = useNavigate();
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    setInputValue({ ...inputValue, roles: role})
+    try {
+      setInputValue({ ...inputValue, roles: role });
 
-    if (
-      inputValue.name === "" ||
-      inputValue.username === "" ||
-      inputValue.email === "" ||
-      inputValue.password === "" ||
-      inputValue.address === "" ||
-      inputValue.birthDate === "" ||
-      inputValue.phoneNumber === ""
-    ) {
-      setError("Vui lòng điền đầy đủ thông tin.");
-      return;
+      if (
+        inputValue.name === "" ||
+        inputValue.username === "" ||
+        inputValue.email === "" ||
+        inputValue.password === "" ||
+        inputValue.address === "" ||
+        inputValue.birthDate === "" ||
+        inputValue.phoneNumber === "" ||
+        inputValue.roles === ""
+      ) {
+        toast.error("Vui lòng điền đầy đủ thông tin.");
+        return;
+      }
+      const res = axios.post(
+        "http://localhost:8080/v1/api/auth/signup",
+        inputValue
+      );
+
+      setError("");
+      toast.success("Thêm mới thành công");
+      navigate("/admin");
+    } catch (error) {
+      toast.error("Đã xảy ra lỗi");
+      console.log(error);
     }
-
-
-    
-    axios
-      .post("http://localhost:8080/v1/api/auth/signup", inputValue)
-      .then((res) =>{
-        setInputValue({ ...inputValue, roles: role})
-        
-      console.log(res.data)
-      })
-      .catch((err) => {
-        toast.error("Đã xảy ra lỗi");
-        console.log(err);
-      })
-    setError("");
-    toast.success("Thêm mới thành công");
-    navigate("/admin");
   };
 
   const [imageUrl, setImageUrl] = useState("");
@@ -135,9 +134,9 @@ const Signup = () => {
     const imageRef = ref(storage, `uploadImage/${uploadImage.name}${v4()}`);
     uploadBytes(imageRef, previewImg).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
-        setInputValue({ ...inputValue,avatar : url });
+        setInputValue({ ...inputValue, avatar: url });
         setImageUrl(url);
-        console.log("image url ",url);
+        console.log("image url ", url);
       });
     });
   };
@@ -222,7 +221,7 @@ const Signup = () => {
                   <img width={50} src={imageUrl} alt="avatar" />
                 </div>
               </div>
-              
+
               <div>
                 <input
                   className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white"
@@ -264,9 +263,7 @@ const Signup = () => {
                   <h7 className="mb-4 font-semibold text-gray-900 dark:text-white">
                     Chọn quyền Truy cập
                   </h7>
-                  <ul
-                    className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  >
+                  <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                       <div className="flex items-center pl-3">
                         <input

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ra.model.Provider;
 
 
 import javax.persistence.Lob;
@@ -28,4 +29,6 @@ public class SignUpForm {
     private LocalDate birthDate;
 
     private Set<String> roles;
+
+    private Provider provider ;
 }

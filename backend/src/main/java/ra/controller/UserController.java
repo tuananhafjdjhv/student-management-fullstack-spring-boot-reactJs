@@ -190,7 +190,7 @@ public class UserController {
     }
     @GetMapping("/show-all")
     public ResponseEntity<?> findAllUser(Pageable pageable) {
-        pageable = PageRequest.of(pageable.getPageNumber(), 10);
+        pageable = PageRequest.of(pageable.getPageNumber(), 5);
         Page<User> listUser = userService.findAll(pageable);
         return new ResponseEntity<>(listUser, HttpStatus.OK);
     }
