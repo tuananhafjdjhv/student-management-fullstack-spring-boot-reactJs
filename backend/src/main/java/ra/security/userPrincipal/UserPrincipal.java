@@ -50,6 +50,7 @@ public class UserPrincipal implements UserDetails {
                 .address(user.getAddress())
                 .email(user.getEmail())
                 .avatar(user.getAvatar())
+                .birthDate(user.getBirthDate())
                 .phoneNumber(user.getPhoneNumber())
                 .address(user.getAddress())
                 .status(user.isStatus())

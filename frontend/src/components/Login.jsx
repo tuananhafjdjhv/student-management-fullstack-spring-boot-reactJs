@@ -23,10 +23,13 @@ const Login = () => {
           username,
           password,
         })
+        console.log(response.data);
         
       // Lưu JWT vào cookie
       // document.cookie = `token=${response.data.token}; path=/`;
       Cookies.set("token",response.data.token);
+      Cookies.set("name",response.data.name);
+      Cookies.set("avatar",response.data.avatar);
       // document.cookie = `token=${response.data.token}; path=/`;
       // localStorage.setItem('token', response.data.token);
 

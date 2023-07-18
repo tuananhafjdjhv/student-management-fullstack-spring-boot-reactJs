@@ -153,6 +153,7 @@ public class UserController {
                             .name(userPrincipal.getName())
                             .email(userPrincipal.getEmail())
                             .address(userPrincipal.getAddress())
+                            .avatar(userPrincipal.getAvatar())
                             .phoneNumber(userPrincipal.getPhoneNumber())
                             .birthDate(userPrincipal.getBirthDate())
                             .status(String.valueOf(userPrincipal.isStatus()))
