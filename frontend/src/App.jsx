@@ -8,7 +8,7 @@ import Home from './components/Home'
 import Course from './components/Course'
 import Profile from './components/Profile'
 import UpdateUser from './components/UpdateUser'
-// import ChatRoom from './components/ChatRoom'
+import Chat from './components/chat/Chat'
 
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
       <Route  Component={Course} path='/course'></Route>
       <Route  Component={Profile} path='/profile/:id'></Route>
       <Route  Component={UpdateUser} path='/edit-profile/:id'></Route>
-      {/* <Route  Component={ChatRoom} path='/chat-room'></Route> */}
+      <Route  Component={Chat} path='/chat'></Route>
     </Routes>
     
     </>

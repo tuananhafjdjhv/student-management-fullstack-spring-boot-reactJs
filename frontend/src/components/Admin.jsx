@@ -30,6 +30,7 @@ const Admin = () => {
       setPageCount(pageCount - 1);
     } else return toast.error("Đã đến đầu trang");
   };
+  
   useEffect(() => {
     try {
       fetchData(pageCount);

@@ -48,6 +48,7 @@
 //
 //    @Value("${check-user-scopes}")
 //    private Boolean checkUserScopes;
+//
 //    @Autowired
 //    private  TokenStore tokenStore;
 //
@@ -56,18 +57,18 @@
 //
 //    @Autowired
 //    private PasswordEncoder passwordEncoder;
-////
-////    @Autowired
-////    private final UserDetailsService userDetailsService;
-////    @Autowired
-////    public OAuth2Configuration(UserDetailsService userDetailsService) {
-////        this.userDetailsService=userDetailsService;
-////    }
+//
+//
+//    @Autowired
+//    public OAuth2Configuration(UserDetailsService userDetailsService) {
+//        this.userDetailsService=userDetailsService;
+//    }
 //    @Bean
 //    public UserDetailsService userDetailsService(){
 //        return userDetailsService();
 //    }
-//    private final UserDetailsService userDetailsService;
+//    @Autowired
+//    private UserDetailsService userDetailsService;
 //
 //    @Autowired
 //    private ClientDetailsService clientDetailsService;
@@ -154,7 +155,7 @@
 //                        tokenStore.readRefreshToken(requestParameters.get("refresh_token")));
 //                SecurityContextHolder.getContext()
 //                        .setAuthentication(new UsernamePasswordAuthenticationToken(authentication.getName(), null,
-//                                userDetailsService().loadUserByUsername(authentication.getName()).getAuthorities()));
+//                                userDetailsService.loadUserByUsername(authentication.getName()).getAuthorities()));
 //            }
 //            return super.createTokenRequest(requestParameters, authenticatedClient);
 //        }

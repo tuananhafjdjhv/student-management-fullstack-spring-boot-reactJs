@@ -195,8 +195,6 @@ const Signup = () => {
                   name="username"
                   type="text"
                   placeholder="Username"
-                  // value={username}
-                  // onChange={(e) => setUsername(e.target.value)}
                   value={inputValue.username}
                   onChange={(e) => handleChange(e)}
                 />

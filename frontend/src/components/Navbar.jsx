@@ -1,6 +1,7 @@
+import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,6 +9,8 @@ const Navbar = () => {
   const isLogin = Cookies.get("token");
   const avatar = Cookies.get("avatar");
   const name = Cookies.get("name");
+  const getEmailFromCookie = Cookies.get("email");
+  const [userProfile, setUserProfile] = useState({});
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -15,9 +18,10 @@ const Navbar = () => {
 
   const LogOut = (e) => {
     e.preventDefault();
-    localStorage.removeItem("token");
-    localStorage.removeItem("name");
     Cookies.remove("token");
+    Cookies.remove("avatar");
+    Cookies.remove("name");
+    Cookies.remove("email");
     navigate("/");
   };
 
@@ -33,34 +37,42 @@ const Navbar = () => {
     }, 1000);
     return () => clearInterval(id);
   }, [colorState]);
-  const [avatarState,setAvatarState] = useState()
+  const [avatarState, setAvatarState] = useState();
 
-  useEffect(()=>{
-    avatarVariable()
-
-  },[])
+  useEffect(() => {
+    avatarVariable();
+  }, []);
 
   const avatarVariable = () => {
     if (avatar === "") {
       setAvatarState(
-
-         <img
-        className="inline h-6 rounded-full"
-        src="https://antimatter.vn/wp-content/uploads/2022/11/hinh-avatar-trang-buon.jpg"
-      />
+        <img
+          className="inline h-6 rounded-full"
+          src="https://antimatter.vn/wp-content/uploads/2022/11/hinh-avatar-trang-buon.jpg"
+        />
       );
-       
-      
     } else {
-      setAvatarState(
-
-        <img className="inline h-6 rounded-full" src={avatar} />
-      );
-        
-        
-      
+      setAvatarState(<img className="inline h-6 rounded-full" src={avatar} />);
     }
   };
+
+  const [userId, setUserId] = useState();
+  useEffect(() => {
+    const res = axios
+      .get(`http://localhost:8080/v1/api/auth/user-email/${getEmailFromCookie}`)
+      .then((response) => {
+        setUserId(response.data.id);
+        setUserProfile(response.data);
+      });
+      console.log(userProfile);
+  }, []);
+  const handleShowProfile = () => {
+    navigate(`/profile/${userId}`);
+    console.log("user id == ", userProfile);
+  };
+  const handleClickToChat = () => {
+    navigate("/chat")
+  }
 
   return (
     <>
@@ -81,7 +93,7 @@ const Navbar = () => {
                   </div>
                   <div className="flex-shrink-0">
                     <span className="text-white font-bold text-lg">
-                      Lờ Mờ Ét
+                      Learning Store
                     </span>
                   </div>
                 </div>
@@ -99,12 +111,12 @@ const Navbar = () => {
                     >
                       Sinh viên
                     </NavLink>
-                    <a
-                      href="#"
+                    <Link to={"/course"}
+                      
                       className="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
                     >
                       Khoá học
-                    </a>
+                    </Link>
                     <a
                       href="#"
                       className="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
@@ -117,11 +129,6 @@ const Navbar = () => {
                     >
                       Đăng xuất
                     </a>
-                    <button className="flex flex-row items-center space-x-2 w-full px-4 py-2 mt-2 text-sm font-semibold text-left bg-transparent hover:bg-blue-800 md:w-auto md:inline md:mt-0 md:ml-4 hover:bg-gray-200 focus:bg-blue-800 focus:outline-none focus:shadow-outline">
-                      <span className="text-white">{name}</span>
-                      {avatarState}
-                      {/* <img className="inline h-6 rounded-full" src={avatar} /> */}
-                    </button>
                     <button className="text-white hover:bg-blue-600 px-2 py-2 rounded-md text-sm font-medium">
                       <div className="button-container">
                         <div
@@ -145,7 +152,9 @@ const Navbar = () => {
                         </svg>
                       </div>
                     </button>
-                    <button className="text-white hover:bg-blue-600 px-2 py-2 rounded-md text-sm font-medium">
+                    <button
+                    onClick={handleClickToChat}
+                    className="text-white hover:bg-blue-600 px-2 py-2 rounded-md text-sm font-medium">
                       <div className="button-container">
                         <div
                           style={{ width: 17, borderRadius: 50 }}
@@ -167,6 +176,15 @@ const Navbar = () => {
                         </svg>
                       </div>
                     </button>
+                    <button
+                      onClick={handleShowProfile}
+                      className="flex flex-row items-center space-x-2 w-full px-4 py-2 mt-2 text-sm font-semibold text-left bg-transparent hover:bg-blue-800 md:w-auto md:inline md:mt-0 md:ml-4 hover:bg-gray-200 focus:bg-blue-800 focus:outline-none focus:shadow-outline"
+                    >
+                      <span className="text-white">{name}</span>
+                      {avatarState}
+                      {/* <img className="inline h-6 rounded-full" src={avatar} /> */}
+                    </button>
+                  
                   </div>
                 </div>
                 <div className="-mr-2 flex md:hidden">

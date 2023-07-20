@@ -250,4 +250,8 @@ public class UserController {
     public User findUserById(@PathVariable String id){
         return userService.findUserById(Long.valueOf(id)).get();
     }
+    @GetMapping("/user-email/{email}")
+    public User findUserByEmail(@PathVariable String email){
+        return userRepository.findUserByEmail(email).get();
+    }
 }

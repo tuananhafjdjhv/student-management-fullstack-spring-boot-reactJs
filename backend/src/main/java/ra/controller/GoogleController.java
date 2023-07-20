@@ -15,14 +15,13 @@ import ra.model.User;
 import ra.service.user.UserService;
 
 @RestController
-@RequestMapping("/v1/api/auth")
+@RequestMapping("")
 public class GoogleController {
     @Autowired
     private UserService userService;
     private OAuth2User oauth2User;
     @GetMapping("/google")
     public ResponseEntity<ResponseMessage> getOAuth2(){
-
         return ResponseEntity.ok().body(
                 ResponseMessage.builder()
                         .status("OK")
