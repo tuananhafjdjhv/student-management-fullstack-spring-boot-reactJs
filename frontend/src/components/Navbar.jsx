@@ -64,14 +64,14 @@ const Navbar = () => {
         setUserId(response.data.id);
         setUserProfile(response.data);
       });
-      console.log(userProfile);
+      
   }, []);
   const handleShowProfile = () => {
     navigate(`/profile/${userId}`);
-    console.log("user id == ", userProfile);
   };
   const handleClickToChat = () => {
-    navigate("/chat")
+    navigate(`/chat/${userId}`);
+
   }
 
   return (
@@ -153,7 +153,7 @@ const Navbar = () => {
                       </div>
                     </button>
                     <button
-                    onClick={handleClickToChat}
+                    onClick={(handleClickToChat)}
                     className="text-white hover:bg-blue-600 px-2 py-2 rounded-md text-sm font-medium">
                       <div className="button-container">
                         <div

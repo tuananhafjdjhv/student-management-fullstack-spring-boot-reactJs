@@ -23,7 +23,7 @@ function App() {
       <Route  Component={Course} path='/course'></Route>
       <Route  Component={Profile} path='/profile/:id'></Route>
       <Route  Component={UpdateUser} path='/edit-profile/:id'></Route>
-      <Route  Component={Chat} path='/chat'></Route>
+      <Route  Component={Chat} path='/chat/:id'></Route>
     </Routes>
     
     </>

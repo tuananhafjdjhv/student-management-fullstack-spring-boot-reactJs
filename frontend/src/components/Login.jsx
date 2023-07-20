@@ -4,40 +4,44 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import Cookies from "js-cookie";
 
-
 const Login = () => {
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const isLogin = Cookies.get("token");
 
   const loginClick = async (e) => {
-
     e.preventDefault();
 
     try {
       // Gọi API để đăng nhập và nhận JWT từ server
-      const response = await axios
-        .post("http://localhost:8080/v1/api/auth/signIn", {
+      const response = await axios.post(
+        "http://localhost:8080/v1/api/auth/signIn",
+        {
           username,
           password,
-        })
+        }
+      );
+      if (response.data.status === 'true') {
+        toast.error("Tài khoản đã bị khóa! Vui lòng thử lại với tài khoản khác");
+        navigate("/");
+      } else {
         console.log(response.data);
-      // Lưu JWT vào cookie
-      // document.cookie = `token=${response.data.token}; path=/`;
-      Cookies.set("token",response.data.token);
-      Cookies.set("name",response.data.name);
-      Cookies.set("avatar",response.data.avatar);
-      Cookies.set("email",response.data.email);
-      // document.cookie = `token=${response.data.token}; path=/`;
-      // localStorage.setItem('token', response.data.token);
+        // Lưu JWT vào cookie
+        // document.cookie = `token=${response.data.token}; path=/`;
+        Cookies.set("token", response.data.token);
+        Cookies.set("name", response.data.name);
+        Cookies.set("avatar", response.data.avatar);
+        Cookies.set("email", response.data.email);
 
-      setPassword("");
-      setUsername("");
-      toast.success("Đăng nhập thành công!");
-      navigate("/admin");
-      // console.log(response.data);
+        // document.cookie = `token=${response.data.token}; path=/`;
+        // localStorage.setItem('token', response.data.token);
+
+        setPassword("");
+        setUsername("");
+        toast.success("Đăng nhập thành công!");
+        navigate("/admin");
+        // console.log(response.data);
+      }
     } catch (error) {
       toast.error("Tên người dùng hoặc mật khẩu không đúng.");
     }
@@ -103,8 +107,8 @@ const Login = () => {
             <div className="flex flex-row gap-2 p-3">
               <div className="flex bg-gray-50 ">
                 <a
-                // onClick={googleLogin}
-                href="http://localhost:8080/oauth2/authorization/google"
+                  // onClick={googleLogin}
+                  href="http://localhost:8080/oauth2/authorization/google"
                   className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                 >
                   <svg
@@ -165,7 +169,7 @@ const Login = () => {
                 </a>
               </div>
               <div className="flex bg-gray-50">
-                <button  className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                <button className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                   <svg
                     className="h-6 w-6 mr-2"
                     xmlns="http://www.w3.org/2000/svg"

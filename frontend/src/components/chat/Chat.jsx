@@ -1,7 +1,39 @@
-import React from "react";
+
+import { useParams } from "react-router-dom";
 import Navbar from "../Navbar";
+import axios from "axios";
+import { useEffect } from "react";
+import { useState } from "react";
+import Cookies from "js-cookie";
 
 const Chat = () => {
+  const { id } = useParams();
+  const avatar = Cookies.get("avatar");
+  console.log(id);
+  const fetchData = () => {
+    axios.get(`http://localhost:8080/v1/api/auth/user/${id}`)
+    .then(response =>{
+        console.log(response.data);
+    } )
+  }
+  useEffect(()=> {
+    fetchData();
+    avatarVariable()
+  },[])
+  const [avatarState,setAvatarState]=useState()
+
+  const avatarVariable = () => {
+    if (avatar === "") {
+      setAvatarState(
+        <img
+        className="h-full w-full"
+          src="https://antimatter.vn/wp-content/uploads/2022/11/hinh-avatar-trang-buon.jpg"
+        />
+      )
+    } else {
+      setAvatarState( <img src={avatar} alt="" className="h-full w-full" />);
+    }
+  };
   return (
     <>
       <Navbar></Navbar>
@@ -29,11 +61,12 @@ const Chat = () => {
             </div>
             <div className="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg">
               <div className="h-20 w-20 rounded-full border overflow-hidden">
-                <img
-                  src="https://avatars3.githubusercontent.com/u/2763884?s=128"
+                {avatarState}
+                {/* <img
+                  src={avatar}
                   alt="Avatar"
                   className="h-full w-full"
-                />
+                /> */}
               </div>
               <div className="text-sm font-semibold mt-2">Aminos Co.</div>
               <div className="text-xs text-gray-500">Tuấn Anh Designer</div>

@@ -165,7 +165,7 @@ public class UserController {
             return new ResponseEntity<>(
                     ResponseMessage.builder()
                             .status("Failed")
-                            .message("Invalid email or password!")
+                            .message("Invalid username or password!")
                             .data("")
                             .build(), HttpStatus.UNAUTHORIZED);
         }
