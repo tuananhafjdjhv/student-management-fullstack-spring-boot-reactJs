@@ -24,6 +24,9 @@ const Login = () => {
       if (response.data.status === 'true') {
         toast.error("Tài khoản đã bị khóa! Vui lòng thử lại với tài khoản khác");
         navigate("/");
+      } else if (response.data.roles === "STUDENT"){
+          
+        navigate("/");
       } else {
         console.log(response.data);
         // Lưu JWT vào cookie
@@ -35,11 +38,14 @@ const Login = () => {
 
         // document.cookie = `token=${response.data.token}; path=/`;
         // localStorage.setItem('token', response.data.token);
-
+        console.log(response.data.roles);
+         
+          navigate("/home");
+        
         setPassword("");
         setUsername("");
         toast.success("Đăng nhập thành công!");
-        navigate("/admin");
+        
         // console.log(response.data);
       }
     } catch (error) {
@@ -47,6 +53,9 @@ const Login = () => {
     }
   };
 
+  const googleLogin = ()=>{
+    const res = axios.get("http://localhost:8080/oauth2/authorization/google").then(res => console.log(res));
+  }
   return (
     <>
       <section
@@ -107,7 +116,7 @@ const Login = () => {
             <div className="flex flex-row gap-2 p-3">
               <div className="flex bg-gray-50 ">
                 <a
-                  // onClick={googleLogin}
+                  onClick={googleLogin}
                   href="http://localhost:8080/oauth2/authorization/google"
                   className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                 >

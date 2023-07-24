@@ -99,12 +99,12 @@ const Navbar = () => {
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
-                    <a
-                      href="#"
+                    <NavLink
+                      to={"/home"}
                       className="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
                     >
                       Trang chủ
-                    </a>
+                    </NavLink>
                     <NavLink
                       to={"/admin"}
                       className="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"

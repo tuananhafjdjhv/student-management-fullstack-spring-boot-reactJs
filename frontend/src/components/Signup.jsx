@@ -25,31 +25,14 @@ const Signup = () => {
     birthDate: "",
     roles: [],
   });
-  const [checkbox, setCheckbox] = useState({
-    checkbox1: "",
-    checkbox2: "",
-    checkbox3: "",
-    checkbox4: "",
-  });
-  const handleCheckboxChange = (event) => {
-    const checkboxName = event.target.name;
-    const isChecked = event.target.checked;
-    setCheckbox((prevCheckbox) => ({
-      ...prevCheckbox,
-      [checkboxName]: isChecked,
+  // const [newRoles,setNewRoles ]= useState();
+  
+  const handleCheckboxChange = (e) => {
+    const selectedRoles = Array.from(e.target.selectedOptions, option => option.value);
+    setInputValue((prevInputValue) => ({
+      ...prevInputValue,
+      roles: selectedRoles,
     }));
-
-    if (isChecked) {
-      const inputValue = event.target.value;
-      setRole((prevValues) => [...prevValues, inputValue]);
-      setInputValue({ ...inputValue, roles: role });
-    } else {
-      const updatedValues = role.filter(
-        (value) => value !== event.target.value
-      );
-      // setRole(updatedValues);
-      setInputValue({ ...inputValue, roles: updatedValues });
-    }
   };
 
   console.log("role   === ", role);
@@ -141,6 +124,7 @@ const Signup = () => {
     });
   };
 
+  console.log(inputValue);
   return (
     <>
       <Navbar></Navbar>
@@ -219,6 +203,7 @@ const Signup = () => {
                   <img width={50} src={imageUrl} alt="avatar" />
                 </div>
               </div>
+              
 
               <div>
                 <input
@@ -257,7 +242,18 @@ const Signup = () => {
                 />
               </div>
               <div>
-                <>
+              <div >
+                <select
+                onChange={handleCheckboxChange}
+                className="bg-gray-200 w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline focus:bg-white" >
+                  <option value="">Chọn quyền truy cập</option>
+                  <option value="ADMIN" >ADMIN</option>
+                  <option value="PM">PM</option>
+                  <option value="STUDENT">STUDENT</option>
+                  <option value="TEACHER">TEACHER</option>
+                </select>
+              </div>
+                {/* <>
                   <h7 className="mb-4 font-semibold text-gray-900 dark:text-white">
                     Chọn quyền Truy cập
                   </h7>
@@ -346,7 +342,7 @@ const Signup = () => {
                       </div>
                     </li>
                   </ul>
-                </>
+                </> */}
               </div>
               <div className="flex flex-row">
                 <input

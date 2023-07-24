@@ -9,10 +9,12 @@ import { Toaster } from "react-hot-toast";
 
 const store = configureStore;
 
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Provider store={store}>
       <Toaster position="top-center" reverseOrder={true} />
+      
         <App />
     </Provider>
   </BrowserRouter>

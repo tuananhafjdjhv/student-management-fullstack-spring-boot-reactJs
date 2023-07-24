@@ -1,7 +1,7 @@
 package ra.model;
 
-public enum Status {
+public enum MessageType {
+    CHAT,
     JOIN,
-    MESSAGE,
     LEAVE
 }

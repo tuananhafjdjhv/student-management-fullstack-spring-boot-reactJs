@@ -8,13 +8,17 @@ import Cookies from "js-cookie";
 
 const Chat = () => {
   const { id } = useParams();
+  const [userProfile,setUserProfile] = useState({});
   const avatar = Cookies.get("avatar");
   console.log(id);
   const fetchData = () => {
+    const res =
     axios.get(`http://localhost:8080/v1/api/auth/user/${id}`)
     .then(response =>{
         console.log(response.data);
+        setUserProfile(response.data);
     } )
+    // setUserProfile(res.data);
   }
   useEffect(()=> {
     fetchData();
@@ -62,14 +66,9 @@ const Chat = () => {
             <div className="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg">
               <div className="h-20 w-20 rounded-full border overflow-hidden">
                 {avatarState}
-                {/* <img
-                  src={avatar}
-                  alt="Avatar"
-                  className="h-full w-full"
-                /> */}
               </div>
-              <div className="text-sm font-semibold mt-2">Aminos Co.</div>
-              <div className="text-xs text-gray-500">Tuấn Anh Designer</div>
+              <div className="text-sm font-semibold mt-2">{userProfile.name}</div>
+              <div className="text-xs text-gray-500">{userProfile.name} Designer</div>
               <div className="flex flex-row items-center mt-3">
                 <div className="flex flex-col justify-center h-4 w-8 bg-indigo-500 rounded-full">
                   <div className="h-3 w-3 bg-white rounded-full self-end mr-1" />

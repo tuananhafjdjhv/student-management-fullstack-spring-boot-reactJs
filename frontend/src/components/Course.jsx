@@ -9,8 +9,10 @@ const Course = () => {
   const fetchData = () => {
     const response = axios
       .get("http://localhost:8080/v1/api/course/show-all")
-      .then((res) => setListCourse(res.data));
-    console.log(response);
+      .then((res) =>{
+        console.log(res.data);
+        setListCourse(res.data)});
+    
   };
   useEffect(() => {
     fetchData();
