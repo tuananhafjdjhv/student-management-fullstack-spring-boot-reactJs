@@ -23,9 +23,9 @@ public class CourseController {
     public ResponseEntity<Course> createCourse(@RequestBody Course  course){
         return new ResponseEntity<>(courseRepository.save(course),HttpStatus.OK);
     }
-    @PutMapping("/update")
-    public ResponseEntity<Course> updateCourse(@RequestBody Course course){
-        Course update = courseRepository.findById(course.getCourseId()).get();
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Course> updateCourse(@PathVariable Long id,@RequestBody Course course){
+        Course update = courseRepository.findById(id).get();
         if (update != null){
              courseRepository.save(course);
         }

@@ -29,31 +29,58 @@ const Course = () => {
   const handleDeleteCourse = async (courseId) => {
     let res = await axios.delete(
       `http://localhost:8080/v1/api/course/delete/${courseId}`
-    )
-    if (res.status === 200){
-      fetchData()
+    );
+    if (res.status === 200) {
+      fetchData();
     } else {
       console.log(res);
     }
-    
   };
 
   const [showModal, setShowModal] = React.useState(false);
-  const [showModalUpdate, setShowModalUpdate] = React.useState({
-    status: false,
-    id:""
-  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentCourse, setCurrentCourse] = useState({});
+  const handleModalOpen = async(id) => {
+    console.log(id);
+    setIsModalOpen(true);
+    const res = await axios.get(`http://localhost:8080/v1/api/course/course/${id}`)
+    .then(response=>setCurrentCourse(response.data))
+    // setCurrentCourse(res.data)
+    console.log(res.data);
+  };
 
-  const [courseId, setCourseId] = useState();
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setCurrentCourse((prevCourse) => ({
+      ...prevCourse,
+      [name]: value,
+    }));
+  };
+
+  const handleUpdateCourse = () => {
+    // Gọi API để cập nhật thông tin khóa học thông qua Axios
+    axios
+      .put(`http://localhost:8080/v1/api/course/update${currentCourse.id}`, currentCourse)
+      .then((response) => {
+        // Thực hiện hành động khi cập nhật thành công, có thể thông báo thành công, ẩn modal, vv.
+        // onCourseUpdate(currentCourse);
+        handleModalClose();
+      })
+      .catch((error) => {
+        // Xử lý lỗi nếu cần
+        console.error("Error updating course:", error);
+      });
+  };
+
   
 
-  useEffect(() =>{
-    handleUpdate()
-  },[courseId]);
 
-  const handleUpdate = ()=>{
-    setCourseId(showModalUpdate.id);
-  }
+
+ 
   const [inputvalue, setInputValue] = useState({
     courseName: "",
     description: "",
@@ -84,38 +111,33 @@ const Course = () => {
       setShowModal(false);
       toast.success("Thêm mới thành công ");
       fetchData();
-    }
-    else{
+    } else {
       console.log(res);
     }
-    
   };
 
-  const [error,setError] = useState()
+  const [error, setError] = useState();
   const handleChange = (e) => {
     let key = e.target.name;
     let value = e.target.value;
     setInputValue({ ...inputvalue, [key]: value });
-   if (key === "courseName") {
-    if (value.trim() === "") {
-      setError("Vui lòng nhập tên khóa học")
-      return;
-    } else {
-      setError("")
+    if (key === "courseName") {
+      if (value.trim() === "") {
+        setError("Vui lòng nhập tên khóa học");
+        return;
+      } else {
+        setError("");
+      }
     }
-   }
-   if (key === "description") {
-    if (value.trim() === "") {
-      setError("Vui lòng nhập mô tả khóa học")
-      return;
-    }else {
-      setError("")
+    if (key === "description") {
+      if (value.trim() === "") {
+        setError("Vui lòng nhập mô tả khóa học");
+        return;
+      } else {
+        setError("");
+      }
     }
-   }
-  }
-  
-
-
+  };
 
   return (
     <div className="h-screen">
@@ -154,15 +176,18 @@ const Course = () => {
                 <tr key={index} className="mt-5 border-2">
                   <td className="text-center">{index + 1}</td>
                   <td className="text-center">{course.courseName}</td>
-                  <td className=" block-ellipsis w-[100%]"> {course.description}</td>
+                  <td className=" block-ellipsis w-[100%]">
+                    {" "}
+                    {course.description}
+                  </td>
                   <td className="text-center">{course.courseId}</td>
                   <td className="text-center w-[18%] h-[15%]">
-                    <img src={course.image} alt=""/>
+                    <img src={course.image} alt="" />
                   </td>
 
                   <td className="text-center">
                     <button
-                      onClick={()=> setShowModalUpdate({...showModalUpdate,status: true,id:course.courseId})}
+                    onClick={()=>handleModalOpen(course.courseId)}
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-0 px-2 rounded mr-2"
                     >
                       <svg
@@ -214,7 +239,10 @@ const Course = () => {
       </div>
       {showModal ? (
         <>
-          <form onSubmit={handleSubmit} className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+          <form
+            onSubmit={handleSubmit}
+            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+          >
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
@@ -242,8 +270,11 @@ const Course = () => {
                   />
                   Description Course :
                   <input
-                  onChange={(e) => handleChange(e)}
-                  value={inputvalue.description} type="text"  name="description"/>
+                    onChange={(e) => handleChange(e)}
+                    value={inputvalue.description}
+                    type="text"
+                    name="description"
+                  />
                   <div className="flex">
                     <input
                       className="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
@@ -280,7 +311,14 @@ const Course = () => {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
-      {showModalUpdate ?  null : <UpdateCourse props={courseId}></UpdateCourse> }
+      {isModalOpen && 
+      <UpdateCourse
+      isOpen={isModalOpen}
+      onClose={handleModalClose}
+      courseData={currentCourse}
+      onInputChange={handleInputChange}
+      onUpdateCourse={handleUpdateCourse}
+      />}
       <Footer></Footer>
     </div>
   );
