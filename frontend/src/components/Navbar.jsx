@@ -1,6 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -22,7 +23,8 @@ const Navbar = () => {
     Cookies.remove("avatar");
     Cookies.remove("name");
     Cookies.remove("email");
-    navigate("/");
+    toast.success("Đăng xuất thành công!")
+    navigate("/login");
   };
 
   let color = ["bg-green-950"];
@@ -100,7 +102,7 @@ const Navbar = () => {
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
                     <NavLink
-                      to={"/home"}
+                      to={"/"}
                       className="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
                     >
                       Trang chủ
@@ -250,7 +252,7 @@ const Navbar = () => {
                   </div>
                   <div className="flex-shrink-0">
                     <span className="text-white font-bold text-lg">
-                      Lờ Mờ Ét
+                      Learn
                     </span>
                   </div>
                 </div>
@@ -263,10 +265,9 @@ const Navbar = () => {
                       Trang chủ
                     </a>
                     <NavLink
-                      to={"/admin"}
                       className="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
                     >
-                      Sinh viên
+                      Về chúng tôi
                     </NavLink>
                     <a
                       href="#"
@@ -281,7 +282,7 @@ const Navbar = () => {
                       Bạn bè
                     </a>
                     <NavLink
-                      to={"/"}
+                      to={"/login"}
                       className="cursor-pointer text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
                     >
                       Đăng nhập
@@ -352,12 +353,12 @@ const Navbar = () => {
                 >
                   Trang chủ
                 </a>
-                <a
+                {/* <a
                   href="#"
                   className="text-white hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium"
                 >
                   Sinh viên
-                </a>
+                </a> */}
                 <a
                   href="#"
                   className="text-white hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium"

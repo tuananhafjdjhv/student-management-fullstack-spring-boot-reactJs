@@ -124,9 +124,9 @@ const Admin = () => {
     <>
       {isLogin ? (
         <>
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5 h-max ">
             <Navbar ></Navbar>
-          <div className="flex flex-col ">
+          <div className="flex ">
             {/* <Sidebar /> */}
             <div
               className="container mx-auto p-12"
@@ -332,11 +332,11 @@ const Admin = () => {
                       </td>
                       <td className="border-b px-4 py-2">
                         {cu.status ? (
-                          <p className="bg-red-500 border-b px-4 py-2">
+                          <p className="bg-red-500 border-b rounded px-4 py-2">
                             Tài khoản bị khóa
                           </p>
                         ) : (
-                          <p className="bg-green-500">Hoạt động</p>
+                          <p className="bg-green-500 rounded">Hoạt động</p>
                         )}
                       </td>
                     </tr>

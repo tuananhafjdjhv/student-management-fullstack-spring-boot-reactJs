@@ -36,4 +36,9 @@ public class CourseController {
         courseRepository.deleteById(id);
         return new ResponseEntity<>(new ResponseMessage("OK","Update success",null),HttpStatus.OK);
     }
+    @GetMapping("/course/{id}")
+    public Course findById(@PathVariable Long id){
+        return   courseRepository.findById(id).get();
+
+    }
 }

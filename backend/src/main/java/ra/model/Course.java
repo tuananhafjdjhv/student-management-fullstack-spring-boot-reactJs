@@ -25,4 +25,11 @@ public class Course {
             inverseJoinColumns = @JoinColumn(name = "class_id")
     )
     private List<Class> classes;
+
+    @Lob
+    private String image;
+
+    @Lob
+    private String description;
+    private boolean status;
 }

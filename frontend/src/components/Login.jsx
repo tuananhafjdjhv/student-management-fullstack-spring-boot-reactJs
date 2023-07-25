@@ -24,8 +24,8 @@ const Login = () => {
       if (response.data.status === 'true') {
         toast.error("Tài khoản đã bị khóa! Vui lòng thử lại với tài khoản khác");
         navigate("/");
-      } else if (response.data.roles === "STUDENT"){
-          
+      } else if (response.data.roles === "STUDENT" ){
+
         navigate("/");
       } else {
         console.log(response.data);
@@ -40,7 +40,7 @@ const Login = () => {
         // localStorage.setItem('token', response.data.token);
         console.log(response.data.roles);
          
-          navigate("/home");
+          navigate("/");
         
         setPassword("");
         setUsername("");
