@@ -119,12 +119,12 @@ const Navbar = () => {
                     >
                       Khoá học
                     </Link>
-                    <a
-                      href="#"
+                    <NavLink 
+                      to={"/user-data"}
                       className="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
                     >
-                      Bạn bè
-                    </a>
+                      Data Khách hàng
+                    </NavLink>
                     <a
                       onClick={LogOut}
                       className="cursor-pointer text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"

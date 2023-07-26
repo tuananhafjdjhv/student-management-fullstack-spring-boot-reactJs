@@ -11,6 +11,7 @@ import Chat from './components/chat/Chat'
 import Home from './components/Home'
 import ErrorPage from './components/ErrorPage'
 import UpdateCourse from './components/UpdateCourse'
+import UserData from './components/UserData'
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
       <Route  Component={UpdateUser} path='/edit-profile/:id'></Route>
       <Route  Component={Chat} path='/chat/:id'></Route>
       <Route  Component={ErrorPage} path='/error'></Route>
+      <Route  Component={UserData} path='/user-data'></Route>
       {/* <Route  Component={UpdateCourse} path='/update-course/:courseId'></Route> */}
       <Route index  Component={Home} path='/'></Route>
       
