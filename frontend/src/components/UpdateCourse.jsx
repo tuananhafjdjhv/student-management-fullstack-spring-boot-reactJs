@@ -1,7 +1,6 @@
 import { Modal } from "antd";
 import axios from "axios";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 
 const UpdateCourse = ({
@@ -12,6 +11,9 @@ const UpdateCourse = ({
   onUpdateCourse,
 }) => {
   if (!isOpen) return null;
+
+
+
 
   return (
     <>
@@ -25,57 +27,62 @@ const UpdateCourse = ({
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl font-semibold">Update Course</h3>
-              <button
-                className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                onClick={onClose}
-              >
-                <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                  ×
-                </span>
-              </button>
+              
             </div>
             <form onSubmit={onUpdateCourse}>
               <p className="text-red-400">{/* {error} */}</p>
-              <div className="relative p-6 flex-auto ">
-                Name Course :{" "}
+              <div className="relative p-6 flex-auto">
+                <label className="font-bold text-left">Name Course :{" "}</label>
+                
                 <input
-                  //   value={courseUpdate.courseName}
                   name="courseName"
                   type="text"
                   className="w-1"
                   value={courseData.courseName}
                   onChange={onInputChange}
-                  //   onChange={(e) => handleChange(e)}
                 />
-                Description Course :
-                <input
-                  // onChange={(e) => handleChange(e)}
-                  // value={courseUpdate.description}
+                <label className="text-left font-bold">Description Course :</label>
+                <textarea
                   value={courseData.description}
                   onChange={onInputChange}
                   type="text"
                   name="description"
+                  className="w-full h-40 px-3 py-2 border rounded-lg resize-none focus:outline-none focus:border-blue-500"
                 />
-                <div className="flex">
+
+                <div className="mb-3">
                   <input
-                    className="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    id="large_size"
+                    className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-xs font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
                     type="file"
                     name="image"
-                    // value={courseData.image}
                     onChange={onInputChange}
+
                   />
-                  <div><img width={400} src={courseData.image} alt="" /></div>
                 </div>
-                Image Course :{" "}
+
+                <div className="flex mb-3" >
+                  <label className="text font-bold">Image Course :</label>
+                  <div className="ml-[20%] ">
+                    <img width={200} src={courseData.image} alt="" />
+                  </div>
+                </div>
+                
               </div>
               {/*footer*/}
               <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                 <button
+                  className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  type="button"
+                  onClick={() => onClose(false)}
+                >
+                  Close
+                </button>
+                <button
+                  
                   className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="submit"
                 >
-                  Save Changes
+                  Save Change
                 </button>
               </div>
             </form>

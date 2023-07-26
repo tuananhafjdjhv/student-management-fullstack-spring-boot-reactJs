@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 const Chat = () => {
   const { id } = useParams();
   const [userProfile,setUserProfile] = useState({});
-  const avatar = Cookies.get("avatar");
+  // const avatar = Cookies.get("avatar");
   console.log(id);
   const fetchData = () => {
     const res =
@@ -27,7 +27,7 @@ const Chat = () => {
   const [avatarState,setAvatarState]=useState()
 
   const avatarVariable = () => {
-    if (avatar === "") {
+    if (userProfile.avatar == "") {
       setAvatarState(
         <img
         className="h-full w-full"
@@ -35,7 +35,7 @@ const Chat = () => {
         />
       )
     } else {
-      setAvatarState( <img src={avatar} alt="" className="h-full w-full" />);
+      setAvatarState( <img src={userProfile.avatar} alt="" className="h-full w-full" />);
     }
   };
   return (

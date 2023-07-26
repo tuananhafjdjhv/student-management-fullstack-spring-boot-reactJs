@@ -40,11 +40,12 @@ const Course = () => {
   const [showModal, setShowModal] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCourse, setCurrentCourse] = useState({});
-  const handleModalOpen = async(id) => {
+  const handleModalOpen = async (id) => {
     console.log(id);
     setIsModalOpen(true);
-    const res = await axios.get(`http://localhost:8080/v1/api/course/course/${id}`)
-    .then(response=>setCurrentCourse(response.data))
+    const res = await axios
+      .get(`http://localhost:8080/v1/api/course/course/${id}`)
+      .then((response) => setCurrentCourse(response.data));
     // setCurrentCourse(res.data)
     console.log(res.data);
   };
@@ -64,11 +65,15 @@ const Course = () => {
   const handleUpdateCourse = () => {
     // Gọi API để cập nhật thông tin khóa học thông qua Axios
     axios
-      .put(`http://localhost:8080/v1/api/course/update${currentCourse.id}`, currentCourse)
+      .put(
+        `http://localhost:8080/v1/api/course/updateCourse/${currentCourse.id}`,
+        currentCourse
+      )
       .then((response) => {
         // Thực hiện hành động khi cập nhật thành công, có thể thông báo thành công, ẩn modal, vv.
-        // onCourseUpdate(currentCourse);
+        onCourseUpdate(currentCourse);
         handleModalClose();
+        console.log(currentCourse);
       })
       .catch((error) => {
         // Xử lý lỗi nếu cần
@@ -76,11 +81,6 @@ const Course = () => {
       });
   };
 
-  
-
-
-
- 
   const [inputvalue, setInputValue] = useState({
     courseName: "",
     description: "",
@@ -187,7 +187,7 @@ const Course = () => {
 
                   <td className="text-center">
                     <button
-                    onClick={()=>handleModalOpen(course.courseId)}
+                      onClick={() => handleModalOpen(course.courseId)}
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-0 px-2 rounded mr-2"
                     >
                       <svg
@@ -311,14 +311,15 @@ const Course = () => {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
-      {isModalOpen && 
-      <UpdateCourse
-      isOpen={isModalOpen}
-      onClose={handleModalClose}
-      courseData={currentCourse}
-      onInputChange={handleInputChange}
-      onUpdateCourse={handleUpdateCourse}
-      />}
+      {isModalOpen && (
+        <UpdateCourse
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+          courseData={currentCourse}
+          onInputChange={handleInputChange}
+          onUpdateCourse={handleUpdateCourse}
+        />
+      )}
       <Footer></Footer>
     </div>
   );

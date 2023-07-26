@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ra.dto.reponse.ResponseMessage;
 import ra.model.UserData;
 import ra.repository.IUserDataRepository;
 
@@ -22,12 +23,13 @@ public class UserDataController {
     public ResponseEntity<List<UserData>> findAll(){
         return new ResponseEntity<>(userDataRepository.findAll(),HttpStatus.OK);
     }
-    @DeleteMapping("/user/delete-all")
-    public void deleteAll(){
+    @DeleteMapping("/user/deleteAll")
+    public ResponseEntity<ResponseMessage> deleteAllUsers(){
         userDataRepository.deleteAll();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-    @DeleteMapping("/delete")
-    public void deleteById(@PathVariable Long id){
-        userDataRepository.deleteById(id);
+    @DeleteMapping("/deleteUserData/{id}")
+    public void deleteById(@PathVariable String id){
+        userDataRepository.deleteById(Long.valueOf(id));
     }
 }
