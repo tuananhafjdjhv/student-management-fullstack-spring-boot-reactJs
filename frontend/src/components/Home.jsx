@@ -35,13 +35,12 @@ const Home = () => {
   const handleChange = (e) => {
     let key = e.target.name;
     let value = e.target.value;
-   
+
     if (key === "name") {
       if (value.trim() === "") {
         setError("Vui lòng điền tên của bạn");
       } else {
         setError("");
-        
       }
     }
     if (key === "phoneNumber") {
@@ -53,7 +52,7 @@ const Home = () => {
     }
     if (key === "createDate") {
       if (value.trim() === "") {
-        setInputValue({ ...inputValue, createDate: (new Date()) });
+        setInputValue({ ...inputValue, createDate: new Date() });
       }
     }
     setInputValue({ ...inputValue, [key]: value });
@@ -61,51 +60,50 @@ const Home = () => {
 
   const handleSubmit = () => {
     if (inputValue.name.trim() === "" || inputValue.phoneNumber.trim() === "") {
-      toast.error("Thêm thông tin không thành công")
-    } else{
+      toast.error("Thêm thông tin không thành công");
+    } else {
       const res = axios.post(
-      "http://localhost:8080/v1/api/save-data",
-      inputValue
-    );
-    toast.success("Cảm ơn bạn đã đăng kí, Vui lòng đợi phản hồi nhé")
+        "http://localhost:8080/v1/api/save-data",
+        inputValue
+      );
+      toast.success("Cảm ơn bạn đã đăng kí, Vui lòng đợi phản hồi nhé");
     }
-    
   };
   return (
     <>
       <Navbar></Navbar>
       <div className="justify-between">
-        <div className="ml-20 w-auto h-10">
-          <ul className="flex gap-9 ">
-            <a href="">
+        <div className="ml-[10%] w-[%] h-[15%]">
+          <ul className="text-s font-bold flex gap-[3%] ">
+            <a href="" className="hover:text-red-600">
               {" "}
               <li>Trang chủ</li>
             </a>
-            <a href="">
+            <a href="" className="hover:text-red-600">
               {" "}
               <li>Giới thiệu</li>
             </a>
-            <a href="">
+            <a href="" className="hover:text-red-600">
               {" "}
               <li>Khóa học</li>
             </a>
-            <a href="">
+            <a href="" className="hover:text-red-600">
               {" "}
               <li>Lịch khai giảng</li>
             </a>
-            <a href="">
+            <a href="" className="hover:text-red-600">
               {" "}
               <li>Tin tức</li>
             </a>
-            <a href="">
+            <a href="" className="hover:text-red-600">
               {" "}
               <li>Test tư duy</li>{" "}
             </a>
-            <a href="">
+            <a href="" className="hover:text-red-600">
               {" "}
               <li>Tuyển dụng</li>
             </a>
-            <a href="">
+            <a href="" className="hover:text-red-600">
               {" "}
               <li>Tư vấn miễn phí</li>
             </a>
@@ -119,47 +117,49 @@ const Home = () => {
             />
           </div>
           <div className=" flex mt-4 ml-4  grid-cols-3 gap-[10%] rounded-full cursor-pointer m-10 w-auto h-auto">
-            <div className="bg-[rgb(207,46,46)] w-[30%] rounded-xl border-2 transform hover:translate-y-[-15%] duration-300 transition-all">
-              <h1 className="text-white text-3xl text-left mt-[5%] m-2">
+            <div className="bg-[rgb(207,46,46)] h-40 w-[35%] rounded-xl border-2 transform hover:translate-y-[-15%] duration-300 transition-all">
+              <h1 className="text-white text-3xl text-left mt-[5%] m-5 font-bold ">
                 Dành cho người mới bắt đầu
               </h1>
-              <a
-                href="https://rikkei.edu.vn/khoa-hoc-cho-nguoi-moi-bat-dau/"
-                target="_self"
-                className=" bg-white -500 rounded-xl "
-              >
-                {" "}
-                <span className="text-sm px-2 py-2">
-                  Khoá lập trình fullstack
-                </span>
-              </a>
+              <div className="px-[5%] py-[2%] p-[50%] text-left ">
+                <a
+                  href="https://rikkei.edu.vn/khoa-hoc-cho-nguoi-moi-bat-dau/"
+                  target="_self"
+                  className="text-black bg-white -500 rounded-2xl py-[2%] hover:bg-slate-400 hover:text-white"
+                >
+                  {" "}
+                  <span className="text-sm px-[8%]">
+                    Khoá lập trình fullstack
+                  </span>
+                </a>
+              </div>
             </div>
-            <div className="w-[30%] bg-[rgb(207,46,46)] rounded-xl border-2 transform hover:translate-y-[-15%] duration-300 transition-all">
-              <h1 className="text-white text-left mt-[5%] text-3xl m-2">
+            <div className="bg-[rgb(207,46,46)] h-40 w-[35%] rounded-xl border-2 transform hover:translate-y-[-15%] duration-300 transition-all">
+              <h1 className="text-white text-3xl text-left mt-[5%] m-5 font-bold">
                 Dành cho người đã có nền tảng
               </h1>
               <a
                 href="https://rikkei.edu.vn/khoa-hoc-cho-nguoi-moi-bat-dau/"
                 target="_self"
-                className=" bg-white -500 rounded-xl"
+                className=" text-black bg-white -500 rounded-2xl py-[2%] hover:bg-slate-400 hover:text-white"
               >
                 {" "}
-                <span className="text-sm px-1 py-1 ">
+                <span className="text-sm px-[8%] ">
                   Khóa lập trình công nghệ cao
                 </span>
               </a>
             </div>
-            <div className="w-[30%] bg-[rgb(207,46,46)] rounded-xl transform hover:translate-y-[-15%] duration-300 transition-all">
-              <h1 className="text-white text-left mt-[5%] text-3xl m-2">
+            <div className="bg-[rgb(207,46,46)] h-40 w-[35%] rounded-xl border-2 transform hover:translate-y-[-15%] duration-300 transition-all">
+              <h1 className="text-white text-3xl text-left mt-[5%] m-5 font-bold">
                 Dành cho người muốn đi Nhật Bản
               </h1>
               <div></div>
               <a
                 href="https://rikkei.edu.vn/khoa-hoc-cho-nguoi-moi-bat-dau/"
                 target="_self"
-                className=" bg-white -500 rounded-xl text-sm"
+                className=" text-black bg-white -500 rounded-2xl py-[2%] hover:bg-slate-400 hover:text-white"
               >
-                <span className="text-sm px-2 py-1">
+                <span className="text-sm px-[8%]">
                   Khóa lập trình viên Nhật Bản
                 </span>
               </a>
@@ -217,7 +217,7 @@ const Home = () => {
                   </p>
                   <button
                     onClick={() => setIsOpen(true)}
-                    className="bg-red-400 rounded-l ml-[3%] mt-[3%] text-2xl py-1 px-2 text-white"
+                    className="bg-red-400 rounded-l ml-[3%] mt-[3%] text-2xl py-1 px-2 text-white hover:text-black hover:bg-red-500 hover:border-2"
                   >
                     Đăng kí
                   </button>

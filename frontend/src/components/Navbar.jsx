@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { LogoutModal } from "./LogoutModal";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,6 +76,11 @@ const Navbar = () => {
     navigate(`/chat/${userId}`);
 
   }
+  const [isOpenModal,setIsOpenModal] = useState(false)
+
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
+  }
 
   return (
     <>
@@ -126,11 +132,13 @@ const Navbar = () => {
                       Data Khách hàng
                     </NavLink>
                     <a
-                      onClick={LogOut}
+                      // onClick={LogOut}
+                      onClick={()=>setIsOpenModal(true)}
                       className="cursor-pointer text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
                     >
                       Đăng xuất
                     </a>
+                    {isOpenModal && <LogoutModal onClose={handleCloseModal}/> }
                     <button className="text-white hover:bg-blue-600 px-2 py-2 rounded-md text-sm font-medium">
                       <div className="button-container">
                         <div
@@ -226,14 +234,16 @@ const Navbar = () => {
                   Khoa
                 </a>
                 <a
-                  onClick={LogOut}
+                  onClick={()=>setIsOpenModal(true)}
                   className="cursor-pointer text-white hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium"
                 >
                   Đăng xuất
                 </a>
+                {isOpenModal && <LogoutModal onClose={handleCloseModal}/>}
               </div>
             </div>
           </nav>
+          
         </>
       ) : (
         <>
@@ -371,6 +381,7 @@ const Navbar = () => {
               </div>
             </div>
           </nav>
+          
         </>
       )}
     </>
