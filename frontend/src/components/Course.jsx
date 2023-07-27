@@ -40,6 +40,7 @@ const Course = () => {
   const [showModal, setShowModal] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCourse, setCurrentCourse] = useState({});
+
   const handleModalOpen = async (id) => {
     console.log(id);
     setIsModalOpen(true);
@@ -47,8 +48,8 @@ const Course = () => {
       .get(`http://localhost:8080/v1/api/course/course/${id}`)
       .then((response) => setCurrentCourse(response.data));
     // setCurrentCourse(res.data)
-    console.log(res.data);
-  };
+    
+  };console.log(currentCourse);
 
   const handleModalClose = () => {
     setIsModalOpen(false);
@@ -61,31 +62,28 @@ const Course = () => {
       [name]: value,
     }));
   };
-
-  const handleUpdateCourse = () => {
-    // Gọi API để cập nhật thông tin khóa học thông qua Axios
-    axios
-      .put(
-        `http://localhost:8080/v1/api/course/updateCourse/${currentCourse.id}`,
-        currentCourse
-      )
-      .then((response) => {
-        // Thực hiện hành động khi cập nhật thành công, có thể thông báo thành công, ẩn modal, vv.
-        onCourseUpdate(currentCourse);
-        handleModalClose();
-        console.log(currentCourse);
-      })
-      .catch((error) => {
-        // Xử lý lỗi nếu cần
-        console.error("Error updating course:", error);
-      });
-  };
-
+  /// Create Course
   const [inputvalue, setInputValue] = useState({
     courseName: "",
     description: "",
     image: "",
   });
+
+  const handleUpdateCourse = async () => {
+    try {
+      await axios.put(
+        `http://localhost:8080/v1/api/course/updateCourse/${currentCourse.id}`,
+        currentCourse
+      )
+      .then((response) => {
+      onCourseUpdate(currentCourse);
+      handleModalClose();
+      console.log(currentCourse);
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const [imageUrl, setImageUrl] = useState("");
 
@@ -318,6 +316,9 @@ const Course = () => {
           courseData={currentCourse}
           onInputChange={handleInputChange}
           onUpdateCourse={handleUpdateCourse}
+          uploadImage={uploadImage}
+          currentCourse={currentCourse}
+          fetchData={fetchData}
         />
       )}
       <Footer></Footer>

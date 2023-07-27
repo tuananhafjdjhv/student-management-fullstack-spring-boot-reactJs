@@ -23,13 +23,20 @@ public class CourseController {
     public ResponseEntity<Course> createCourse(@RequestBody Course  course){
         return new ResponseEntity<>(courseRepository.save(course),HttpStatus.OK);
     }
-    @PutMapping("/updateCourse/{id}")
-    public ResponseEntity<Course> updateCourse(@PathVariable Long id,@RequestBody Course course){
-        Course update = courseRepository.findById(id).get();
-        if (update != null){
-             courseRepository.save(course);
+    @PutMapping("/updateCourse")
+    public ResponseEntity<?> updateCourse(@RequestBody Course course){
+        Course update = courseRepository.findById(course.getCourseId()).get();
+        if (update == null){
+            return  new ResponseEntity<>("Update error",HttpStatus.NOT_FOUND);
+        } else {
+            update.setCourseName(course.getCourseName());
+            update.setDescription(course.getDescription());
+            update.setImage(course.getImage());
+//            update.setStatus(course.isStatus());
+            courseRepository.save(update);
+            return new ResponseEntity<>("Update success",HttpStatus.OK);
         }
-        return  null;
+
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseMessage> deleteCourse(@PathVariable Long id){

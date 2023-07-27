@@ -37,8 +37,10 @@ const UpdateUser = () => {
         "http://localhost:8080/v1/api/update",
         student
       );
+      
       toast.success("Update thành công");
       navigate("/admin");
+      window.location.reload();
     } catch (error) {
       console.log("error ====", error);
       toast.error("Update lỗi !!");

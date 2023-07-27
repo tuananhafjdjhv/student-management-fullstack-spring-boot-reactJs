@@ -81,7 +81,7 @@ const Navbar = () => {
       {isLogin ? (
         <>
           <nav className={`${color[colorState]} transition-all duration-300`}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-[5%] sm:px-[6%] lg:px-[5%]">
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center">
                   <div>
@@ -102,10 +102,10 @@ const Navbar = () => {
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
                     <NavLink
-                      to={"/"}
-                      className="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+                      to={"/signup"}
+                      className="text-white hover:bg-blue-600 px-[-2%] py-[2%] rounded-md text-sm font-medium"
                     >
-                      Trang chủ
+                    Thêm mới học viên
                     </NavLink>
                     <NavLink
                       to={"/admin"}
