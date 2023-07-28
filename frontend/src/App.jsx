@@ -10,6 +10,7 @@ import Chat from "./components/chat/Chat";
 import Home from "./components/Home";
 import ErrorPage from "./components/ErrorPage";
 import UserData from "./components/UserData";
+import ChatRoom from "./components/ChatRoom";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route Component={ErrorPage} path="/error"></Route>
         <Route Component={UserData} path="/user-data"></Route>
         <Route index Component={Home} path="/"></Route>
+        <Route index Component={ChatRoom} path="/chat-room"></Route>
       </Routes>
     </>
   );

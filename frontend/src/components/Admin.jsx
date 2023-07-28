@@ -96,6 +96,7 @@ const Admin = () => {
     navigate(`/edit-profile/${id}`);
   };
 
+
   const handleUnblock = (id) => {
     try {
       let res = new StudentService();

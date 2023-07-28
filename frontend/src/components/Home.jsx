@@ -117,7 +117,7 @@ const Home = () => {
             />
           </div>
           <div className=" flex mt-4 ml-4  grid-cols-3 gap-[10%] rounded-full cursor-pointer m-10 w-auto h-auto">
-            <div className="bg-[rgb(207,46,46)] h-40 w-[35%] rounded-xl border-2 transform hover:translate-y-[-15%] duration-300 transition-all">
+            <div className="bg-[rgb(207,46,46)] w-[40%] rounded-xl border-2 transform hover:translate-y-[-15%] duration-300 transition-all">
               <h1 className="text-white text-3xl text-left mt-[5%] m-5 font-bold ">
                 Dành cho người mới bắt đầu
               </h1>
@@ -134,8 +134,8 @@ const Home = () => {
                 </a>
               </div>
             </div>
-            <div className="bg-[rgb(207,46,46)] h-40 w-[35%] rounded-xl border-2 transform hover:translate-y-[-15%] duration-300 transition-all">
-              <h1 className="text-white text-3xl text-left mt-[5%] m-5 font-bold">
+            <div className="bg-[rgb(207,46,46)] h-40 w-[40%] rounded-xl border-2 transform hover:translate-y-[-15%] duration-300 transition-all">
+              <h1 className="text-white text-3xl text-left mt-[8%] m-[7%] font-bold">
                 Dành cho người đã có nền tảng
               </h1>
               <a
@@ -144,13 +144,13 @@ const Home = () => {
                 className=" text-black bg-white -500 rounded-2xl py-[2%] hover:bg-slate-400 hover:text-white"
               >
                 {" "}
-                <span className="text-sm px-[8%] ">
+                <span className="text-sm px-[7%] ">
                   Khóa lập trình công nghệ cao
                 </span>
               </a>
             </div>
-            <div className="bg-[rgb(207,46,46)] h-40 w-[35%] rounded-xl border-2 transform hover:translate-y-[-15%] duration-300 transition-all">
-              <h1 className="text-white text-3xl text-left mt-[5%] m-5 font-bold">
+            <div className="bg-[rgb(207,46,46)]  w-[40%] rounded-xl border-2 transform hover:translate-y-[-15%] duration-300 transition-all">
+              <h1 className="text-white text-3xl text-left mt-[8%] m-[7%] font-bold">
                 Dành cho người muốn đi Nhật Bản
               </h1>
               <div></div>
@@ -159,7 +159,7 @@ const Home = () => {
                 target="_self"
                 className=" text-black bg-white -500 rounded-2xl py-[2%] hover:bg-slate-400 hover:text-white"
               >
-                <span className="text-sm px-[8%]">
+                <span className="text-sm px-[7%]">
                   Khóa lập trình viên Nhật Bản
                 </span>
               </a>

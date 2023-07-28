@@ -1,43 +1,61 @@
-
 import { useParams } from "react-router-dom";
 import Navbar from "../Navbar";
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import Cookies from "js-cookie";
+import SockJS from "sockjs-client";
+
 
 const Chat = () => {
   const { id } = useParams();
-  const [userProfile,setUserProfile] = useState({});
-  // const avatar = Cookies.get("avatar");
+  const [userProfile, setUserProfile] = useState({});
   console.log(id);
   const fetchData = () => {
-    const res =
-    axios.get(`http://localhost:8080/v1/api/auth/user/${id}`)
-    .then(response =>{
+    const res = axios
+      .get(`http://localhost:8080/v1/api/auth/user/${id}`)
+      .then((response) => {
         console.log(response.data);
         setUserProfile(response.data);
-    } )
-    // setUserProfile(res.data);
-  }
-  useEffect(()=> {
+      });
+  };
+  useEffect(() => {
     fetchData();
-    avatarVariable()
-  },[])
-  const [avatarState,setAvatarState]=useState()
+    avatarVariable();
+  }, []);
+  const [avatarState, setAvatarState] = useState();
 
   const avatarVariable = () => {
     if (userProfile.avatar == "") {
       setAvatarState(
         <img
-        className="h-full w-full"
+          className="h-full w-full"
           src="https://antimatter.vn/wp-content/uploads/2022/11/hinh-avatar-trang-buon.jpg"
         />
-      )
+      );
     } else {
-      setAvatarState( <img src={userProfile.avatar} alt="" className="h-full w-full" />);
+      setAvatarState(
+        <img src={userProfile.avatar} alt="" className="h-full w-full" />
+      );
     }
   };
+
+  const [bids, setBids] = useState([{}]);
+  const [myPriceInput, setPriceInput] = useState();
+  const [myUserNameInput, setUserNameInput] = useState();
+  const [myProductNameInput, setProductNameInput] = useState();
+
+  const connect = () => {
+    let Sock = new SockJS("http://localhost:8080/ws");
+    stompClient = over(Sock);
+    stompClient.connect({}, onConnected, (e) => console.log(e));
+  };
+
+  const onConnected = () => {
+    console.log("connected");
+    stompClient.subscribe("/topic/auction", onBidReceived);
+  };
+
   return (
     <>
       <Navbar></Navbar>
@@ -67,8 +85,12 @@ const Chat = () => {
               <div className="h-20 w-20 rounded-full border overflow-hidden">
                 {avatarState}
               </div>
-              <div className="text-sm font-semibold mt-2">{userProfile.name}</div>
-              <div className="text-xs text-gray-500">{userProfile.name} Designer</div>
+              <div className="text-sm font-semibold mt-2">
+                {userProfile.name}
+              </div>
+              <div className="text-xs text-gray-500">
+                {userProfile.name} Designer
+              </div>
               <div className="flex flex-row items-center mt-3">
                 <div className="flex flex-col justify-center h-4 w-8 bg-indigo-500 rounded-full">
                   <div className="h-3 w-3 bg-white rounded-full self-end mr-1" />

@@ -10,28 +10,22 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
-import ra.model.ChatMessage;
+import ra.model.Message;
 
 @RestController
 public class ChatController {
 
-    @MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/public")
-    public ChatMessage sendMessage(
-            @Payload ChatMessage chatMessage
-    ) {
-        return chatMessage;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+    @MessageMapping("/message")
+    @SendTo("/chatroom/public")
+    public Message receiverMessage(@Payload Message message){
+        return  message;
     }
-
-    @MessageMapping("/chat.addUser")
-    @SendTo("/topic/public")
-    public ChatMessage addUser(
-            @Payload ChatMessage chatMessage,
-            SimpMessageHeaderAccessor headerAccessor
-    ) {
-        // Add username in web socket session
-        headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
-        return chatMessage;
+    @MessageMapping("/private-message")
+    public Message reMessage(@Payload Message message){
+        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
+        return message;
     }
 }
 
