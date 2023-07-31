@@ -40,7 +40,7 @@ const Login = () => {
         // localStorage.setItem('token', response.data.token);
         console.log(response.data.roles);
          
-          navigate("/");
+          navigate("/admin");
         
         setPassword("");
         setUsername("");

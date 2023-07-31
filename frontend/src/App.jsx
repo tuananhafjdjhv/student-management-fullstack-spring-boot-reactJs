@@ -26,7 +26,7 @@ function App() {
         <Route Component={ErrorPage} path="/error"></Route>
         <Route Component={UserData} path="/user-data"></Route>
         <Route index Component={Home} path="/"></Route>
-        <Route index Component={ChatRoom} path="/chat-room"></Route>
+        <Route  Component={ChatRoom} path="/chat-room"></Route>
       </Routes>
     </>
   );

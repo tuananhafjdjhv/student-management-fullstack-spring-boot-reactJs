@@ -214,7 +214,7 @@ public class UserController {
         String token = jwtTokenFilter.getTokenFromRequest(request);
         String username = jwtProvider.getUserNameFromToken(token);
         User user = userService.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("Username Not found"));
-        if(changeAvatar.getAvatar()==null||changeAvatar.getAvatar().trim().equals("")){
+        if(changeAvatar.getAvatar() ==  null||changeAvatar.getAvatar().trim().equals("")){
             return new ResponseEntity<>(new ResponseMessage("Failed","Thay đổi avatar lỗi",null), HttpStatus.OK);
         }else {
             user.setAvatar(changeAvatar.getAvatar());

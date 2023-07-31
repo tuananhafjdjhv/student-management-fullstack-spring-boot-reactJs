@@ -5,9 +5,12 @@ import axios from "axios";
 import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../firebase/firebaseConfig";
+import Cookies from "js-cookie";
 
 const Profile = () => {
   const { id } = useParams();
+  const [imageUrl, setImageUrl] = useState("");
+
   const [student, setStudent] = useState({
     name: "",
     email: "",
@@ -17,7 +20,19 @@ const Profile = () => {
     phoneNumber: "",
     birthDate: "",
   });
-  // console.log(id);
+
+  const token = Cookies.get("token");
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  const handleSubmitChangeAvatar = async (e) => {
+    e.preventDefault();
+    const res = await axios.put(
+      "http://localhost:8080/v1/api/auth/change-avatar",
+      { avatar: imageUrl },
+      config
+    );
+  };
 
   useEffect(() => {
     fetchData();
@@ -58,8 +73,6 @@ const Profile = () => {
     }
   };
 
-  const [imageUrl, setImageUrl] = useState("");
-
   const uploadImage = (e) => {
     let previewImg = e.target.files[0];
     if (previewImg == null) return;
@@ -79,10 +92,13 @@ const Profile = () => {
         <div className="container mx-auto my-5 p-5">
           <div className="md:flex no-wrap md:-mx-2 ">
             {/* Left Side */}
-            <div className="w-full md:w-3/12 md:mx-2">
+            <form
+              onSubmit={handleSubmitChangeAvatar}
+              className="w-full md:w-3/12 md:mx-2"
+            >
               {/* Profile Card */}
               <div className="bg-white p-3 border-t-4 border-green-400">
-                <div className="image overflow-hidden">
+                <div className="image overflow-hidden rounded ">
                   <img
                     className="h-auto w-full mx-auto"
                     src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
@@ -95,26 +111,46 @@ const Profile = () => {
                 <h3 className="text-gray-600 font-lg text-semibold leading-6">
                   Owner at Her Company Inc.
                 </h3>
-                {/* <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">Lorem ipsum dolor sit amet
-                  consectetur adipisicing elit.
-                  Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur non deserunt</p> */}
-                <div className="text-center my-2">
-                  <img
-                    className="h-16 w-16 rounded-full mx-auto"
-                    src={student.avatar}
-                    alt=""
-                    
-                  />
-                  <input type="file" className="text-main-color" name="avatar"
-                    onChange={uploadImage} />
+                <div className="w-[20%] px-[35%]">
+                  <div className="text-center my-2 h-16 w-16 ">
+                    <div className="relative w-30 group ">
+                      <img
+                        src={
+                          student.avatar === ""
+                            ? "https://www.thepitttowndentist.com.au/wp-content/uploads/2018/08/default-avatar-768x768.jpg"
+                            : student.avatar
+                        }
+                        alt="avatar"
+                        className="h-16 w-16 rounded-full mx-auto"
+                      />
+                      <div className="rounded-full  absolute top-0 left-0 w-full h-0 bg-black bg-opacity-50 group-hover:h-full duration-300 transition-all flex justify-center items-center overflow-hidden">
+                        <div className="w-full h-full relative flex justify-center items-center">
+                          <p className="text-white">Avatar</p>
+                          <input
+                            className="block mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 absolute top-0 left-0 w-full h-full opacity-0"
+                            id="small_size"
+                            type="file"
+                            name="avatar"
+                            onChange={uploadImage}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               {/* End of profile card */}
               <div className="my-4" />
               {/* Friends card */}
-              <div className="bg-white p-3 hover:shadow"></div>
+              <button
+                type="submit"
+                className="bg-slate-500 rounded-xl p-2 hover:shadow font-mono"
+              >
+                {" "}
+                Change Avatar
+              </button>
               {/* End of friends card */}
-            </div>
+            </form>
             {/* Right Side */}
             <div className="w-full md:w-9/12 mx-2 h-64">
               {/* Profile tab */}
