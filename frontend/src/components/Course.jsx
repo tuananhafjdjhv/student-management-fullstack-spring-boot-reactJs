@@ -48,8 +48,8 @@ const Course = () => {
       .get(`http://localhost:8080/v1/api/course/course/${id}`)
       .then((response) => setCurrentCourse(response.data));
     // setCurrentCourse(res.data)
-    
-  };console.log(currentCourse);
+  };
+  console.log(currentCourse);
 
   const handleModalClose = () => {
     setIsModalOpen(false);
@@ -71,15 +71,16 @@ const Course = () => {
 
   const handleUpdateCourse = async () => {
     try {
-      await axios.put(
-        `http://localhost:8080/v1/api/course/updateCourse/${currentCourse.id}`,
-        currentCourse
-      )
-      .then((response) => {
-      onCourseUpdate(currentCourse);
-      handleModalClose();
-      console.log(currentCourse);
-      })
+      await axios
+        .put(
+          `http://localhost:8080/v1/api/course/updateCourse/${currentCourse.id}`,
+          currentCourse
+        )
+        .then((response) => {
+          onCourseUpdate(currentCourse);
+          handleModalClose();
+          console.log(currentCourse);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -110,6 +111,7 @@ const Course = () => {
       toast.success("Thêm mới thành công ");
       fetchData();
     } else {
+      toast.error("Thêm mới không thành công");
       console.log(res);
     }
   };
@@ -140,7 +142,6 @@ const Course = () => {
   return (
     <div className="h-screen">
       {/* Sidebar */}
-
       {/* Main content */}
       <div className="flex-grow p-4">
         <Navbar></Navbar>
@@ -157,11 +158,11 @@ const Course = () => {
             </h1>
           </div>
 
-          <table className="min-w-full bg-blue-100">
+          <table className="min-w-full ">
             <thead>
               <tr>
                 <th className="text-center">STT</th>
-                <th className="text-center">Course Name</th>
+                <th className="text-center inline-block">Course Name</th>
                 <th className="text-center">Course Description</th>
                 <th className="text-center">Course Id </th>
                 <th className="text-center">Image</th>
@@ -169,24 +170,24 @@ const Course = () => {
                 <th className="text-center">Action</th>
               </tr>
             </thead>
-            <tbody className="text-align-center border-2">
+            <tbody className="text-align-center border-2 ">
               {listCourse.map((course, index) => (
                 <tr key={index} className="mt-5 border-2">
                   <td className="text-center">{index + 1}</td>
-                  <td className="text-center">{course.courseName}</td>
+                  <td className="text-center font-bold">{course.courseName}</td>
                   <td className=" block-ellipsis w-[100%]">
                     {" "}
                     {course.description}
                   </td>
                   <td className="text-center">{course.courseId}</td>
-                  <td className="text-center w-[18%] h-[15%]">
+                  <td className="text-center w-[10%] h-[15%]">
                     <img src={course.image} alt="" />
                   </td>
 
                   <td className="text-center">
                     <button
                       onClick={() => handleModalOpen(course.courseId)}
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-0 px-2 rounded mr-2"
+                      className="bg-blue-400 hover:bg-blue-500 text-white font-bold py-0 px-2 rounded mr-2"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -235,6 +236,7 @@ const Course = () => {
           </table>
         </div>
       </div>
+      //Modal Add Course
       {showModal ? (
         <>
           <form
@@ -257,8 +259,8 @@ const Course = () => {
                   </button>
                 </div>
                 <p className="text-red-400">{error}</p>
-                <div className="relative p-6 flex-auto ">
-                  Name Course :{" "}
+                <div className="relative p-5 flex-auto ">
+                  <p> Name Course :</p>
                   <input
                     value={inputvalue.courseName}
                     name="courseName"
@@ -267,25 +269,44 @@ const Course = () => {
                     onChange={(e) => handleChange(e)}
                   />
                   Description Course :
-                  <input
+                  <textarea
                     onChange={(e) => handleChange(e)}
                     value={inputvalue.description}
                     type="text"
                     name="description"
+                    className="h-20"
                   />
                   <div className="flex">
-                    <input
-                      className="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                      id="large_size"
-                      type="file"
-                      name="image"
-                      onChange={uploadImage}
-                    />
+                    <>
+                      {/* component */}
+                      <div className="">
+                        <div className="extraOutline p-4 bg-white w-max bg-whtie m-auto rounded-lg">
+                          <div
+                            className="file_upload p-5 relative  border-dotted "
+                            style={{ width: 150 }}
+                          >
+                            <div className="input_field flex flex-col w-max mx-auto text-center">
+                              <label>
+                                <input
+                                  className="text-sm cursor-pointer w-36 hidden"
+                                  type="file"
+                                  multiple=""
+                                  name="image"
+                                  onChange={uploadImage}
+                                />
+                                <div className="text bg-indigo-600 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-indigo-500">
+                                  Upload photo
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
                     <div>
-                      <img width={50} src={imageUrl} alt="" />
+                      <img className="border-2 rounded-xl w-[60%]" src={imageUrl} alt="" />
                     </div>
                   </div>
-                  Image Course :{" "}
                 </div>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
@@ -309,6 +330,7 @@ const Course = () => {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
+      // Modal updates course
       {isModalOpen && (
         <UpdateCourse
           isOpen={isModalOpen}

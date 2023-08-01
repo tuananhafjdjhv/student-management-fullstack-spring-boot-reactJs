@@ -137,7 +137,6 @@ const UpdateUser = () => {
               </div>
 
               <div>
-
                 <div className="relative w-16 group">
                   <img
                     src={

@@ -71,16 +71,16 @@ const Home = () => {
   };
   return (
     <>
-      <div className="flex mt-[1%] ml-[3%] ">
-        <div className="w-[30%] mr-4">
+      <div className="flex mt-[2%] ml-[5%] ">
+        <div className=" mr-[1%] ml-10">
           <img
             src="https://rikkei.edu.vn/wp-content/uploads/2022/04/Logo-Rikkei.png"
             alt=""
           />
         </div>
-        <form className="mg px-[25%]">
+        <form className="mg px-[24%] w-[90%] h-4">
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none rounded">
+            <div className=" absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none rounded">
               <svg
                 className="w-4 h-4 text-gray-500 dark:text-gray-400"
                 aria-hidden="true"
@@ -100,16 +100,10 @@ const Home = () => {
             <input
               type="search"
               id="default-search"
-              className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block rounded-3xl w-full p-[5%] pl-[20%] text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search"
               required=""
             />
-            <button
-              type="submit"
-              className="text-white absolute right-2.5 bottom-2.5 bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Search
-            </button>
           </div>
         </form>
       </div>
@@ -122,8 +116,7 @@ const Home = () => {
             </a>
             <a href="" className="hover:text-red-600 hover: ">
               {" "}
-              <ul className="">Giới thiệu
-              </ul>
+              <ul className="">Giới thiệu</ul>
             </a>
             <a href="" className="hover:text-red-600">
               {" "}
@@ -165,7 +158,7 @@ const Home = () => {
               </h1>
               <div className="px-[5%] py-[2%] p-[50%] text-left ">
                 <a
-                  href="https://rikkei.edu.vn/khoa-hoc-cho-nguoi-moi-bat-dau/"
+                   onClick={() => setIsOpen(true)}
                   target="_self"
                   className="text-black bg-white -500 rounded-2xl py-[2%] hover:bg-slate-400 hover:text-white"
                 >
@@ -181,7 +174,7 @@ const Home = () => {
                 Dành cho người đã có nền tảng
               </h1>
               <a
-                href="https://rikkei.edu.vn/khoa-hoc-cho-nguoi-moi-bat-dau/"
+                onClick={() => setIsOpen(true)}
                 target="_self"
                 className=" text-black bg-white -500 rounded-2xl py-[2%] hover:bg-slate-400 hover:text-white"
               >
@@ -197,7 +190,7 @@ const Home = () => {
               </h1>
               <div></div>
               <a
-                href="https://rikkei.edu.vn/khoa-hoc-cho-nguoi-moi-bat-dau/"
+                 onClick={() => setIsOpen(true)}
                 target="_self"
                 className=" text-black bg-white -500 rounded-2xl py-[2%] hover:bg-slate-400 hover:text-white"
               >
@@ -219,17 +212,17 @@ const Home = () => {
             </h3>
           </div>
         </div>
-        <div className="fixed top-1 right-5 mt-96">
-          <a href="">
+        <div className="fixed top-1 right-5 mt-96 z-50">
+          <a  onClick={() => setIsOpen(true)}>
             <img
-              className="mt-4 border border-transparent transition-transform transform-gpu hover:scale-110 hover:border-black rounded-[50%] border-5"
+              className="cursor-pointer mt-4 border border-transparent transition-transform transform-gpu hover:scale-110 hover:border-black rounded-[50%] border-5"
               src="https://rikkei.edu.vn/wp-content/themes/hoabinhweb-v3-154-child-theme/image/icon-zalo.svg"
               alt="zalo"
             />
           </a>
-          <a href="">
+          <a  onClick={() => setIsOpen(true)}>
             <img
-              className="mt-2 transform hover:translate-y-[-35%] duration-300 transition-all"
+              className="cursor-pointer mt-4 border border-transparent transition-transform transform-gpu hover:scale-110 hover:border-black rounded-[50%] border-5"
               src="https://rikkei.edu.vn/wp-content/themes/hoabinhweb-v3-154-child-theme/image/icon-call.svg"
               alt="phone"
             />
@@ -246,20 +239,34 @@ const Home = () => {
           <h1 className="text-4xl text-red-400 mt-[5%] ">
             Các khóa học dành cho bạn{" "}
           </h1>
-          <div className="grid grid-cols-3 mt-[5%] gap-[4%] ">
+          <div className="grid grid-cols-3 mt-[3%] gap-[5%] rounded-xl">
             {listCourse.map((course, index) => (
-              <div className="" key={index}>
-                <div className="text-start bg-red-100 transform hover:border-black cursor-pointer">
-                  <img className="rounded-t-xl " src={course.image} alt="" />
-                  <h3 className="ml-[3%] text-2xl text-red-600 block-ellipsis-course-name">
-                    {course.courseName}
-                  </h3>
-                  <p className="ml-[3%] block-ellipsis">
-                    Mô tả: {course.description}
-                  </p>
+              <div className="hover:scale-110 transition-transform transform-gpu hover:bg-red-100 hover:border-1" key={index}>
+                <div className="text-start h-[60%] bg-red-100 transform hover:border-black cursor-pointer">
+                  <a onClick={() => setIsOpen(true)}>
+                    <img
+                      className="rounded-t-xl object-cover w-full h-full"
+                      src={course.image}
+                      alt=""
+                    />{" "}
+                  </a>
+
+                  <a onClick={() => setIsOpen(true)}>
+                    {" "}
+                    <h3 className="ml-[3%] text-2xl text-red-600 block-ellipsis-course-name hover:text-green-700">
+                      {course.courseName}
+                    </h3>{" "}
+                  </a>
+                  <a onClick={() => setIsOpen(true)}>
+                    {" "}
+                    <p className="ml-[3%] block-ellipsis">
+                      Mô tả: {course.description}
+                    </p>
+                  </a>
+
                   <button
                     onClick={() => setIsOpen(true)}
-                    className="bg-red-400 rounded-l ml-[3%] mt-[3%] text-2xl py-1 px-2 text-white hover:text-black hover:bg-red-500 hover:border-2"
+                    className="bg-red-400 rounded-l ml-[3%] mt-[3%] text-2xl py-1 px-2 text-white hover:text-black hover:bg-red-500 hover:border-black"
                   >
                     Đăng kí
                   </button>

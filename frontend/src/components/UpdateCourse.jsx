@@ -14,7 +14,6 @@ const UpdateCourse = ({
   currentCourse,
   fetchData,
 }) => {
-
   if (!isOpen) return null;
 
   const [inputValueCourse, setInputValueCourse] = useState({
@@ -35,18 +34,16 @@ const UpdateCourse = ({
     });
   };
 
-  
   const handleSubmit = async () => {
     try {
-
       const course = {
         courseId: currentCourse.courseId,
         courseName: courseData.courseName,
         description: courseData.description,
         image: inputValueCourse.image,
       };
-      if (inputValueCourse.image === ""){
-        course.image = courseData.image; 
+      if (inputValueCourse.image === "") {
+        course.image = courseData.image;
       }
       setInputValueCourse({ ...inputValueCourse, value: course });
       const response = await axios.put(
@@ -98,21 +95,10 @@ const UpdateCourse = ({
                   name="description"
                   className="w-full h-40 px-3 py-2 border rounded-lg resize-none focus:outline-none focus:border-blue-500"
                 />
-
-                <div className="mb-3">
-                  <label className="text font-bold">Image Course :</label>
-                  <input
-                    className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-xs font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
-                    type="file"
-                    name="image"
-                    onChange={uploadImage}
-                  />
-                </div>
-
                 <div className="flex mb-3 ">
-                  <div className="ml-[20%] ">
+                  <div className="ml-[35%] ">
                     <img
-                      width={200}
+                      className="w-[30%]"
                       src={
                         inputValueCourse.image !== ""
                           ? inputValueCourse.image
@@ -122,6 +108,30 @@ const UpdateCourse = ({
                     />
                   </div>
                 </div>
+
+                <div className="extraOutline p-4 bg-white w-max bg-whtie m-auto rounded-lg">
+                  <div
+                    className="file_upload p-5 relative  border-dotted "
+                    style={{ width: 150 }}
+                  >
+                    <div className="input_field flex flex-col w-max mx-auto text-center">
+                      <label>
+                        <input
+                          className="text-sm cursor-pointer w-36 hidden"
+                          type="file"
+                          multiple=""
+                          name="image"
+                          onChange={uploadImage}
+                        />
+                        <div className="text bg-indigo-600 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-indigo-500">
+                          Upload photo
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                
               </div>
               {/*footer*/}
               <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">

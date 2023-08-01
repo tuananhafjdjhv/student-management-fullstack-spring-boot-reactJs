@@ -113,7 +113,7 @@ const Profile = () => {
                 </h3>
                 <div className="w-[20%] px-[35%]">
                   <div className="text-center my-2 h-16 w-16 ">
-                    <div className="relative w-30 group ">
+                    <div className="relative w-30 group border-xl">
                       <img
                         src={
                           student.avatar === ""
@@ -121,11 +121,27 @@ const Profile = () => {
                             : student.avatar
                         }
                         alt="avatar"
-                        className="h-16 w-16 rounded-full mx-auto"
+                        className="h-16 w-16 rounded-full  mx-auto"
                       />
-                      <div className="rounded-full  absolute top-0 left-0 w-full h-0 bg-black bg-opacity-50 group-hover:h-full duration-300 transition-all flex justify-center items-center overflow-hidden">
+                      <div className="rounded-full  absolute top-0 left-0 w-full h-0 bg-black bg-opacity-50 group-hover:h-full duration-100 transition-all flex justify-center items-center overflow-hidden">
                         <div className="w-full h-full relative flex justify-center items-center">
-                          <p className="text-white">Avatar</p>
+                          <p className="text-white text-sm">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              className="w-5 h-5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                              />
+                            </svg>
+                            avatar
+                          </p>
                           <input
                             className="block mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 absolute top-0 left-0 w-full h-full opacity-0"
                             id="small_size"
@@ -140,11 +156,11 @@ const Profile = () => {
                 </div>
               </div>
               {/* End of profile card */}
-              <div className="my-4" />
+              <div className="my-4 " />
               {/* Friends card */}
               <button
                 type="submit"
-                className="bg-slate-500 rounded-xl p-2 hover:shadow font-mono"
+                className=" bg-slate-500 rounded-xl p-2 hover:shadow font-mono hover:text-white border-blue-500 hover:bg-red-800"
               >
                 {" "}
                 Change Avatar
@@ -181,6 +197,7 @@ const Profile = () => {
                       <div className="px-4 py-2 font-semibold"> Name</div>
                       <div className="px-4 py-2">
                         <input
+                          className="rounded"
                           type="text"
                           value={student.name}
                           onChange={(e) =>
@@ -226,6 +243,7 @@ const Profile = () => {
                       <div className="px-4 py-2 font-semibold"> Address</div>
                       <div className="px-4 py-2">
                         <input
+                          className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           type="text"
                           value={student.address}
                           onChange={(e) =>
@@ -261,7 +279,7 @@ const Profile = () => {
                       </div>
                     </div>
                   </div>
-                  <button className="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
+                  <button className="bg-red-500 block w-full text-blue-800 text-sm font-semibold rounded-lg hover:text-white hover:bg-red-700 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
                     Update
                   </button>
                 </form>

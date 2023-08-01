@@ -191,7 +191,7 @@ const Signup = () => {
                 >
                   Tải lên avatar
                 </label>
-                <input
+                {/* <input
                   className="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                   id="small_size"
                   type="file"
@@ -201,7 +201,33 @@ const Signup = () => {
 
                 <div>
                   <img width={50} src={imageUrl} alt="avatar" />
+                </div> */}
+                <div>
+                <div className="relative w-16 group">
+                  <img
+                    src={
+                      imageUrl === ""
+                        ? "https://www.thepitttowndentist.com.au/wp-content/uploads/2018/08/default-avatar-768x768.jpg"
+                        : imageUrl
+                    }
+                    // src="https://www.thepitttowndentist.com.au/wp-content/uploads/2018/08/default-avatar-768x768.jpg"
+                    alt="avatar"
+                    className="w-full"
+                  />
+                  <div className="absolute top-0 left-0 w-full h-0 bg-black bg-opacity-50 group-hover:h-full duration-300 transition-all flex justify-center items-center overflow-hidden">
+                    <div className="w-full h-full relative flex justify-center items-center">
+                      <p className="text-white">Avatar</p>
+                      <input
+                        className="block mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 absolute top-0 left-0 w-full h-full opacity-0"
+                        id="small_size"
+                        type="file"
+                        name="avatar"
+                        onChange={uploadImage}
+                      />
+                    </div>
+                  </div>
                 </div>
+              </div>
               </div>
               
 

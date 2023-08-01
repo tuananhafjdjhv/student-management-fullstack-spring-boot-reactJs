@@ -16,19 +16,19 @@
   } */
 
   input[type="text"],
-  textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
 
-  img {
+  /* img {
     max-width: 100%;
     height: auto;
     margin-bottom: 20px;
-  }
+  } */
 
   /* button {
     padding: 10px 20px;
