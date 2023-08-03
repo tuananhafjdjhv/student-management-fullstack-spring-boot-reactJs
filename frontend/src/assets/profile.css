@@ -33,3 +33,12 @@
   align-items: center;
   border-radius: 50%;
 }
+.scroll-to-top-button {
+  /* ... */
+  opacity: 0;
+  /* ... */
+}
+
+.scroll-to-top-button.visible {
+  opacity: 1;
+}

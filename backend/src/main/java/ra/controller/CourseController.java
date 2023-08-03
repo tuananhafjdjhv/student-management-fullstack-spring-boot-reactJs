@@ -3,10 +3,13 @@ package ra.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import ra.dto.CourseDTO;
 import ra.dto.reponse.ResponseMessage;
 import ra.model.Course;
 import ra.repository.ICourseRepository;
+import ra.service.course.ICourseService;
 
 import java.util.List;
 
@@ -15,9 +18,12 @@ import java.util.List;
 public class CourseController {
     @Autowired
     private ICourseRepository courseRepository;
+    @Autowired
+    private ICourseService courseService;
     @GetMapping("/show-all")
-    public ResponseEntity<List<Course>> showAll(){
-        return new ResponseEntity<>(courseRepository.findAll(), HttpStatus.OK);
+    @Transactional
+    public List<CourseDTO> showAll(){
+        return courseService.findAllCourse();
     }
     @PostMapping("/create")
     public ResponseEntity<Course> createCourse(@RequestBody Course  course){

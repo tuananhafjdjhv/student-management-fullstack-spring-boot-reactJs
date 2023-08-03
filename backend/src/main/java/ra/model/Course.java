@@ -3,6 +3,8 @@ package ra.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ra.dto.ClassDTO;
+import ra.dto.CourseDTO;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +13,22 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@NamedStoredProcedureQuery(name = "find_all_course",
+        procedureName = "find_all_course",
+        resultSetMappings = "find_all_course"
+)
+@SqlResultSetMapping(name = "find_all_course",
+        classes = @ConstructorResult(
+                targetClass = CourseDTO.class,
+                columns = {
+                        @ColumnResult(name = "courseId", type = Long.class),
+                        @ColumnResult(name = "courseName", type = String.class),
+                        @ColumnResult(name = "image", type = String.class),
+                        @ColumnResult(name = "description", type = String.class),
+                        @ColumnResult(name = "status", type = boolean.class)
+                }
+        )
+)
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -104,10 +104,10 @@ const Navbar = () => {
                 <div className="hidden md:block space-x-6 ">
                   <div className="ml-10 flex items-baseline space-x-6">
                     <NavLink
-                      to={"/signup"}
+                      to={"/class"}
                       className="text-white hover:bg-blue-600 px-1 py-1 rounded-md text-sm font-medium "
                     >
-                    Thêm mới HV
+                    Quản lý lớp
                     </NavLink>
                     <NavLink
                       to={"/admin"}

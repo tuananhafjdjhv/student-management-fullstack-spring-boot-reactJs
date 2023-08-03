@@ -11,6 +11,8 @@ import Home from "./components/Home";
 import ErrorPage from "./components/ErrorPage";
 import UserData from "./components/UserData";
 import ChatRoom from "./components/ChatRoom";
+import { UserDetail } from "./components/UserDetail";
+import { ClassComponent } from "./components/ClassComponent";
 
 function App() {
   return (
@@ -26,7 +28,8 @@ function App() {
         <Route Component={ErrorPage} path="/error"></Route>
         <Route Component={UserData} path="/user-data"></Route>
         <Route index Component={Home} path="/"></Route>
-        <Route  Component={ChatRoom} path="/chat-room"></Route>
+        <Route  Component={UserDetail} path="/user-detail/:id"></Route>
+        <Route  Component={ClassComponent} path="/class"></Route>
       </Routes>
     </>
   );

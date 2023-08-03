@@ -82,18 +82,10 @@ const Admin = () => {
   };
 
   const handleGetStudent = (id) => {
-    let show = new StudentService();
-    show.getById(id).then((res) => {
-      console.log(res.data);
-    });
-    navigate(`/profile/${id}`);
+    navigate(`/user-detail/${id}`);
   };
 
   const handleEdit = (id) => {
-    let show = new StudentService();
-    show.getById(id).then((res) => {
-      console.log(res.data);
-    });
     navigate(`/edit-profile/${id}`);
   };
 
@@ -119,6 +111,35 @@ const Admin = () => {
       console.log(error);
       toast.error("Error");
     }
+  };
+  const [listClass, setListClass] = useState([]);
+
+  const fetchDataClass = async () => {
+    const res = await axios.get("http://localhost:8080/v1/api/class-all");
+    setListClass(res.data);
+    console.log(res.data);
+  };
+  useEffect(() => {
+    fetchDataClass();
+  }, []);
+
+  const [selectClass, setSelectClass] = useState(-1);
+
+  useEffect(() => {
+    if (selectClass !== -1) {
+      handleGetAllStudentByClassId(selectClass);
+    }
+  }, [selectClass]);
+
+  const handleGetAllStudentByClassId = async (id) => {
+    const res = await axios
+      .get(`http://localhost:8080/v1/api/class/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        setListStudent(res.data);
+      });
+    console.log(id);
+    console.log("ra đi mà");
   };
 
   return (
@@ -192,31 +213,43 @@ const Admin = () => {
                       </ul>
                     </nav>
                   </div>
-                  <div className="flex ml-auto">
-                    <NavLink
-                      to={"/signup"}
-                      className="bg-blue-500 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Thêm sinh viên
-                    </NavLink>
+                  <div className="flex ml-[20%]">
+                    <div className="flex ">
+                      <div>
+                        <NavLink
+                          to={"/signup"}
+                          className=" bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                        >
+                          Thêm sinh viên
+                        </NavLink>
+                      </div>
+                      <NavLink
+                        to={"/class"}
+                        className="cursor-pointer ml-12 border-2 py-1 px-1 hover:border-blue-600  rounded-xl bg-slate-100 hover:bg-slate-200"
+                      >
+                        Quản lý lớp
+                      </NavLink>
+                    </div>
                   </div>
                 </div>
 
                 <h1 className="text-3xl font-bold mb-4 "></h1>
-                <div className="mb-3 mx-auto mr-4">
-                  <form className="flex-auto">
-                    <input
-                      className="border border-gray-300 px-6 py-2 rounded-full w-4 w-auto"
-                      type="text"
-                      id="search"
-                      name="search"
-                      value={search}
-                      onChange={handleChange}
-                      placeholder="Tìm kiếm sinh viên"
-                    />
+                <div className="mb-4 mx-auto mr-5">
+                  <form className="flex w-[50%]">
+                    <div className="rounded-full overflow-hidden h-10">
+                      <input
+                        className=" border-gray-300 w-[10%] h-full bg-slate-200 outline-none pl-7"
+                        type="text"
+                        id="search"
+                        name="search"
+                        value={search}
+                        onChange={handleChange}
+                        placeholder="Tìm kiếm sinh viên"
+                      />
+                    </div>
                     <button
                       onClick={handleSearch}
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded ml-2"
+                      className="w-[40%] h-10 bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded ml-3 "
                     >
                       Tìm kiếm
                     </button>
@@ -346,6 +379,8 @@ const Admin = () => {
                     ))}
                   </tbody>
                 </table>
+                {/* Dữ liệu sinh viên theo từng lớp */}
+
                 <div className="flex ml-96">
                   <nav className="" aria-label=" Page navigation example">
                     <ul className="flex items-center -space-x-px h-10 text-base">

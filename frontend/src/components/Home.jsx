@@ -69,6 +69,30 @@ const Home = () => {
       toast.success("Cảm ơn bạn đã đăng kí, Vui lòng đợi phản hồi nhé");
     }
   };
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const handleScroll = () => {
+    const scrolled = document.documentElement.scrollTop;
+    const windowHeight = window.innerHeight;
+    setIsVisible(scrolled > windowHeight);
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
       <div className="flex mt-[2%] ml-[5%] ">
@@ -158,7 +182,7 @@ const Home = () => {
               </h1>
               <div className="px-[5%] py-[2%] p-[50%] text-left ">
                 <a
-                   onClick={() => setIsOpen(true)}
+                  onClick={() => setIsOpen(true)}
                   target="_self"
                   className="text-black bg-white -500 rounded-2xl py-[2%] hover:bg-slate-400 hover:text-white"
                 >
@@ -190,7 +214,7 @@ const Home = () => {
               </h1>
               <div></div>
               <a
-                 onClick={() => setIsOpen(true)}
+                onClick={() => setIsOpen(true)}
                 target="_self"
                 className=" text-black bg-white -500 rounded-2xl py-[2%] hover:bg-slate-400 hover:text-white"
               >
@@ -213,35 +237,54 @@ const Home = () => {
           </div>
         </div>
         <div className="fixed top-1 right-5 mt-96 z-50">
-          <a  onClick={() => setIsOpen(true)}>
+          <a onClick={() => setIsOpen(true)}>
             <img
               className="cursor-pointer mt-4 border border-transparent transition-transform transform-gpu hover:scale-110 hover:border-black rounded-[50%] border-5"
               src="https://rikkei.edu.vn/wp-content/themes/hoabinhweb-v3-154-child-theme/image/icon-zalo.svg"
               alt="zalo"
             />
           </a>
-          <a  onClick={() => setIsOpen(true)}>
+          <a onClick={() => setIsOpen(true)}>
             <img
               className="cursor-pointer mt-4 border border-transparent transition-transform transform-gpu hover:scale-110 hover:border-black rounded-[50%] border-5"
               src="https://rikkei.edu.vn/wp-content/themes/hoabinhweb-v3-154-child-theme/image/icon-call.svg"
               alt="phone"
             />
           </a>
+
+          <a
+            className={
+              `scroll-to-top-button ${isVisible ? "visible" : "hidden"}` 
+            }
+            onClick={scrollToTop}
+          >
+            <img
+             src="/src/assets/images/arrow.png" alt=""
+             className=" w-9 cursor-pointer mt-3 ml-1 border border-transparent transition-transform transform-gpu hover:scale-110 hover:border-black rounded-[50%] border-5"
+
+             />
+          </a>
         </div>
-        <div>
-          <img
-            className="mt-10 "
-            src="https://rikkei.edu.vn/wp-content/uploads/2022/12/Thiet-ke-chua-co-ten.png"
-            alt=""
-          />
-        </div>
+
+        {/* <div
+          className={
+            `scroll-to-top-button ${isVisible ? "visible" : "hidden"}` +
+            `cursor-pointer mt-4 border border-transparent transition-transform transform-gpu hover:scale-110 hover:border-black rounded-[50%] border-5`
+          }
+          onClick={scrollToTop}
+        >
+          Top
+        </div> */}
         <div>
           <h1 className="text-4xl text-red-400 mt-[5%] ">
             Các khóa học dành cho bạn{" "}
           </h1>
           <div className="grid grid-cols-3 mt-[3%] gap-[5%] rounded-xl">
             {listCourse.map((course, index) => (
-              <div className="hover:scale-110 transition-transform transform-gpu hover:bg-red-100 hover:border-1" key={index}>
+              <div
+                className="hover:scale-110 transition-transform transform-gpu hover:bg-red-100 hover:border-1"
+                key={index}
+              >
                 <div className="text-start h-[60%] bg-red-100 transform hover:border-black cursor-pointer">
                   <a onClick={() => setIsOpen(true)}>
                     <img

@@ -236,7 +236,7 @@ const Course = () => {
           </table>
         </div>
       </div>
-      //Modal Add Course
+      {/* Modal Add Course */}
       {showModal ? (
         <>
           <form
@@ -330,7 +330,7 @@ const Course = () => {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
-      // Modal updates course
+       {/* Modal updates course */}
       {isModalOpen && (
         <UpdateCourse
           isOpen={isModalOpen}
