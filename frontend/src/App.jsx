@@ -18,7 +18,9 @@ function App() {
   return (
     <>
       <Routes>
-        <Route Component={Admin} path="/admin"></Route>
+        <Route Component={Admin} path="/admin">
+          
+        </Route>
         <Route Component={Login} path="/login"></Route>
         <Route Component={Signup} path="/signup"></Route>
         <Route Component={Course} path="/course"></Route>

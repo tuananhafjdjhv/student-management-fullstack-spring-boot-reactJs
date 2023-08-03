@@ -42,7 +42,6 @@ public class CourseController {
             courseRepository.save(update);
             return new ResponseEntity<>("Update success",HttpStatus.OK);
         }
-
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseMessage> deleteCourse(@PathVariable Long id){

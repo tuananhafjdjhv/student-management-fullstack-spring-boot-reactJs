@@ -6,6 +6,7 @@ import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../firebase/firebaseConfig";
 import Cookies from "js-cookie";
+import { ModalChangepass } from "./ModalChangepass";
 
 const Profile = () => {
   const { id } = useParams();
@@ -85,10 +86,15 @@ const Profile = () => {
       });
     });
   };
+
+  const [openModalChangePass,setOpenModalChangePass] = useState(false);
   return (
     <>
       <div className="bg-gray-100">
         <Navbar></Navbar>
+        {openModalChangePass &&
+              <ModalChangepass closeModal={()=>setOpenModalChangePass(false)}/> 
+              }
         <div className="container mx-auto my-5 p-5">
           <div className="md:flex no-wrap md:-mx-2 ">
             {/* Left Side */}
@@ -156,7 +162,7 @@ const Profile = () => {
                 </div>
               </div>
               {/* End of profile card */}
-              <div className="my-4 " />
+              <div className="my-4 flex " />
               {/* Friends card */}
               <button
                 type="submit"
@@ -164,6 +170,14 @@ const Profile = () => {
               >
                 {" "}
                 Change Avatar
+              </button>
+              <button
+              onClick={() =>setOpenModalChangePass(true)}
+                type="button"
+                className="mt-5 bg-slate-500 rounded-xl p-2 hover:shadow font-mono hover:text-white border-blue-500 hover:bg-red-800"
+              >
+                {" "}
+                Change Password
               </button>
               {/* End of friends card */}
             </form>

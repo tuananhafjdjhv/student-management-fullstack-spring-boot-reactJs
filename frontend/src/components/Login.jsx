@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import Cookies from "js-cookie";
+import { ModalChangepass } from "./ModalChangepass";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -53,9 +54,12 @@ const Login = () => {
     }
   };
 
+  
   const googleLogin = ()=>{
-    const res = axios.get("http://localhost:8080/oauth2/authorization/google").then(res => console.log(res));
+    const res = axios.post("http://localhost:8080/oauth2/authorization/google").then(res => console.log(res));
   }
+
+
   return (
     <>
       <section
@@ -115,9 +119,9 @@ const Login = () => {
 
             <div className="flex flex-row gap-2 p-3">
               <div className="flex bg-gray-50 ">
-                <a
-                  onClick={googleLogin}
-                  href="http://localhost:8080/oauth2/authorization/google"
+                <button
+                  onClick={()=>googleLogin()}
+                  // href="http://localhost:8080/oauth2/authorization/google"
                   className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                 >
                   <svg
@@ -175,7 +179,7 @@ const Login = () => {
                     </g>
                   </svg>
                   <span>Google</span>
-                </a>
+                </button>
               </div>
               <div className="flex bg-gray-50">
                 <button className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
@@ -210,13 +214,14 @@ const Login = () => {
               </div>
             </div>
             <div className="text-center mt-5">
-              <p
+              <a
                 className="cursor-pointer text-blue-500 hover:text-blue-700 font-semibold text-center"
                 style={{ color: "#00acee" }}
-                onClick={() => navigate("/")}
+                onClick={()=>setOpenModalChangePass(true)}
               >
-                Forgot password ?
-              </p>
+                Change password?
+              </a>
+             
             </div>
           </div>
         </div>

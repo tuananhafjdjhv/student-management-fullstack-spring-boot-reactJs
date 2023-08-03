@@ -45,4 +45,6 @@ public class ClassController {
         return new ResponseEntity<>(classService.findAllClass(), HttpStatus.OK);
     }
 
+
+
 }

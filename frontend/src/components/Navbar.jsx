@@ -113,7 +113,7 @@ const Navbar = () => {
                       to={"/admin"}
                       className="text-white hover:bg-blue-600 px-1 py-1 rounded-md text-sm font-medium"
                     >
-                     Danh sách HV
+                     Danh sách User
                     </NavLink>
                     <Link to={"/course"}
                       

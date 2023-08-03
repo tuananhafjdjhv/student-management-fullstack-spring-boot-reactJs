@@ -6,6 +6,8 @@ import ModalNotificationDeleteAll from "./ModalNotificationDeleteAll";
 import axios from "axios";
 import { useEffect } from "react";
 import { ModalCreateNewClass } from "./ModalCreateNewClass";
+import { ModalEvaluteStudent } from "./ModalEvaluteStudent";
+import { ModalDetailEvaluate } from "./ModalDetailEvaluate";
 
 export const ClassComponent = () => {
   const [listStudent, setListStudent] = useState([]);
@@ -42,9 +44,22 @@ export const ClassComponent = () => {
 
   const [newClass,setNewClass] = useState({})
   const [isTogle,setIsTogle] = useState(false)
+  const [isOpenModalValuate,setIsOpenModalValuate]=useState(false)
+  const [isOpenModalDetailValuate,setIsOpenModalDetailValuate]=useState(false)
+  const [listEvaluate,setListEvaluate] = useState([])
 
-  const closeModal =()=>{
-    setIsTogle(false);
+  const fetchData =  (studentId) =>{
+    
+  }
+
+ 
+
+  const handleModalOpen = async (studentId)=>{
+
+    setIsOpenModalDetailValuate(true)
+    const res = await axios.get(`http://localhost:8080/v1/api/evaluate/student/${studentId}`)
+    setListEvaluate(res.data);
+    console.log(res.data);
   }
 
 
@@ -98,6 +113,12 @@ export const ClassComponent = () => {
               <th scope="col" className="px-6 py-3">
                 Giảng viên
               </th>
+              <th scope="col" className="px-6 py-3">
+               Đánh giá HV
+              </th>
+              <th scope="col" className="px-6 py-3">
+               Xem 
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -128,6 +149,12 @@ export const ClassComponent = () => {
                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {student.teacherName}
                 </td>
+                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <button onClick={()=>setIsOpenModalValuate(true)}>Đánh giá </button>
+                </td>
+                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <button onClick={()=>handleModalOpen(student.studentId)}> Xem Đánh giá </button>
+                </td>
                 
               </tr>
             )}
@@ -143,6 +170,16 @@ export const ClassComponent = () => {
             // fetchData={fetchData}
           />
         )}
+        {isOpenModalValuate && <ModalEvaluteStudent
+          closeModal={() => setIsOpenModalValuate(false)}
+        />}
+         {isOpenModalDetailValuate && <ModalDetailEvaluate
+         listEvaluate={listEvaluate}
+         closeModal={() => setIsOpenModalDetailValuate(false)}
+         />}
+         
+        
+
         <Footer></Footer>
       </div>
     </>
