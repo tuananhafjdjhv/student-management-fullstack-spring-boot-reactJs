@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class EvaluateForm {
-
+    private String evaluate;
+    private Long studentId;
 }

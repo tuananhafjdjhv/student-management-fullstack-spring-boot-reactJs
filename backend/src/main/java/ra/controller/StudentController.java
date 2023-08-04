@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import ra.model.Student;
 import ra.model.User;
+import ra.repository.IStudentRepository;
 import ra.repository.UserRepository;
 import ra.service.user.IUserService;
 
@@ -24,6 +26,8 @@ public class StudentController {
     private final IUserService userService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private IStudentRepository studentRepository;
 
     @PutMapping("/update")
     public ResponseEntity<?> updateStudent(@RequestBody User user){
@@ -56,5 +60,9 @@ public class StudentController {
     @GetMapping("/student/{id}")
     public Optional<User> findById(@PathVariable Long id){
         return userRepository.findById(id);
+    }
+    @GetMapping("/student")
+    public Student createNewStudent(@RequestBody Student student){
+        return studentRepository.save(student);
     }
 }

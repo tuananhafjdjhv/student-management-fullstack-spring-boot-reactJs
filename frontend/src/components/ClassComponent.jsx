@@ -35,46 +35,46 @@ export const ClassComponent = () => {
     const res = await axios
       .get(`http://localhost:8080/v1/api/class/${id}`)
       .then((res) => {
-        console.log(res.data);
         setListStudent(res.data);
       });
-    console.log(id);
-    console.log("ra đi mà");
   };
 
-  const [newClass,setNewClass] = useState({})
-  const [isTogle,setIsTogle] = useState(false)
-  const [isOpenModalValuate,setIsOpenModalValuate]=useState(false)
-  const [isOpenModalDetailValuate,setIsOpenModalDetailValuate]=useState(false)
-  const [listEvaluate,setListEvaluate] = useState([])
+  const [isTogle, setIsTogle] = useState(false);
+  const [isOpenModalValuate, setIsOpenModalValuate] = useState(false);
+  const [isOpenModalDetailValuate, setIsOpenModalDetailValuate] =
+    useState(false);
 
-  const fetchData =  (studentId) =>{
-    
-  }
+  const [listEvaluate, setListEvaluate] = useState([]);
 
- 
-
-  const handleModalOpen = async (studentId)=>{
-
-    setIsOpenModalDetailValuate(true)
-    const res = await axios.get(`http://localhost:8080/v1/api/evaluate/student/${studentId}`)
+  const handleModalOpen = async (studentId) => {
+    setIsOpenModalDetailValuate(true);
+    const res = await axios.get(
+      `http://localhost:8080/v1/api/evaluate/student/${studentId}`
+    );
     setListEvaluate(res.data);
     console.log(res.data);
-  }
+  };
+  const [id,setId] =useState()
 
+  const hadleOpenModalCreateEvaluate = (studentId) => {
+    console.log(studentId);
+    setIsOpenModalValuate(true);
+    setId(studentId);
+      
+  };
 
   return (
     <>
       <Navbar></Navbar>
-       <h1 className="text-xl mt-[2%] text-red-500 font-serif">
-          Quản Lý Class
-        </h1>
+      <h1 className="text-xl mt-[2%] text-red-500 font-serif">Quản Lý Class</h1>
       <div className="flex ml-8">
-            <button 
-            onClick={()=>setIsTogle(true)} 
-            className="px-1 bg-slate-200 rounded-xl border-collapse hover:bg-slate-400 "
-            >Thêm mới Lớp</button>
-      
+        <button
+          onClick={() => setIsTogle(true)}
+          className="px-1 bg-slate-200 rounded-xl border-collapse hover:bg-slate-400 "
+        >
+          Thêm mới Lớp
+        </button>
+
         <div className="ml-[60%] mt-[2%]">
           <select
             className="cursor-pointer ml-12 border-1 hover:border-blue-600 px-4 py-1  rounded bg-slate-100 hover:bg-slate-200"
@@ -108,57 +108,64 @@ export const ClassComponent = () => {
                 Mã HV
               </th>
               <th scope="col" className="px-6 py-3">
-               Mã Giảng viên
+                Mã Giảng viên
               </th>
               <th scope="col" className="px-6 py-3">
                 Giảng viên
               </th>
               <th scope="col" className="px-6 py-3">
-               Đánh giá HV
+                Đánh giá HV
               </th>
               <th scope="col" className="px-6 py-3">
-               Xem 
+                Xem
               </th>
             </tr>
           </thead>
           <tbody>
             <>
-            {listStudent.map((student,index) => 
-            <tr
-                key={index + 1}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-              >
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              {listStudent.map((student, index) => (
+                <tr
+                  key={index + 1}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                 >
-                  {index+1}
-                </th>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {student.studentName}
-                </td>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {student.className}
-                </td>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {student.studentId}
-                </td>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {student.teacherId}
-                </td>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {student.teacherName}
-                </td>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  <button onClick={()=>setIsOpenModalValuate(true)}>Đánh giá </button>
-                </td>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                <button onClick={()=>handleModalOpen(student.studentId)}> Xem Đánh giá </button>
-                </td>
-                
-              </tr>
-            )}
-              
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    {index + 1}
+                  </th>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {student.studentName}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {student.className}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {student.studentId}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {student.teacherId}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {student.teacherName}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <button
+                      onClick={() =>
+                        hadleOpenModalCreateEvaluate(student.studentId)
+                      }
+                    >
+                      Đánh giá{" "}
+                    </button>
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <button onClick={() => handleModalOpen(student.studentId)}>
+                      {" "}
+                      Xem Đánh giá{" "}
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </>
           </tbody>
         </table>
@@ -166,19 +173,22 @@ export const ClassComponent = () => {
       <div className=" mt-[5%]">
         {isTogle && (
           <ModalCreateNewClass
-          closeModal={() => setIsTogle(false)}
+            closeModal={() => setIsTogle(false)}
             // fetchData={fetchData}
           />
         )}
-        {isOpenModalValuate && <ModalEvaluteStudent
-          closeModal={() => setIsOpenModalValuate(false)}
-        />}
-         {isOpenModalDetailValuate && <ModalDetailEvaluate
-         listEvaluate={listEvaluate}
-         closeModal={() => setIsOpenModalDetailValuate(false)}
-         />}
-         
-        
+        {isOpenModalValuate && (
+          <ModalEvaluteStudent
+            closeModal={() => setIsOpenModalValuate(false)}
+            studentId={id}
+          />
+        )}
+        {isOpenModalDetailValuate && (
+          <ModalDetailEvaluate
+            listEvaluate={listEvaluate}
+            closeModal={() => setIsOpenModalDetailValuate(false)}
+          />
+        )}
 
         <Footer></Footer>
       </div>

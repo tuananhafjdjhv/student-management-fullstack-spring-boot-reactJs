@@ -1,6 +1,7 @@
 package ra.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ra.dto.CourseDTO;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 @NamedStoredProcedureQuery(name = "find_evaluate_by_student_id",
         procedureName = "find_evaluate_by_student_id", parameters = {
         @StoredProcedureParameter(mode = ParameterMode.IN, name = "studentId", type = Long.class)},
