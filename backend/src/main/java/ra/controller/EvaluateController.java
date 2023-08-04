@@ -25,10 +25,10 @@ public class EvaluateController {
     private IEvaluateService evaluateService;
     @Autowired
     private  IStudentRepository studentRepository;
-    @GetMapping("/student/{id}")
+    @GetMapping("/student/{studentId}")
     @Transactional
-    public List<EvaluateDTO> findEvaluateByStudentId(@PathVariable Long id){
-      return   evaluateService.findEvaluateByStudentId(id);
+    public List<EvaluateDTO> findEvaluateByStudentId(@PathVariable Long studentId){
+      return   evaluateService.findEvaluateByStudentId(studentId);
     }
 
     /**

@@ -1,7 +1,7 @@
 import React from "react";
 
-export const ModalDetailEvaluate = ({ closeModal,listEvaluate }) => {
-    
+export const ModalDetailEvaluate = ({ closeModal, listEvaluate }) => {
+  console.log(listEvaluate);
   return (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -23,13 +23,20 @@ export const ModalDetailEvaluate = ({ closeModal,listEvaluate }) => {
             {/*body*/}
             <div className="relative p-6 flex-auto">
               <>
-              {listEvaluate.map((list,index) =>
-              <div className="flex" key={index}>
-                <lable className="text-red-500">* </lable>
-                  <p className="">  {list.evaluate}</p>
-                </div>
-              )}
-                
+                {listEvaluate.length > 0 ? (
+                  listEvaluate.map((val, index) => {
+                    return (
+                      <div className="flex" key={index}>
+                        <lable className="text-red-500">*</lable>
+                        <p className=""> {val.evaluate}</p>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="text-red-500">
+                    <p>Chưa có đánh giá nào</p>
+                  </div>
+                )}
               </>
             </div>
             {/*footer*/}

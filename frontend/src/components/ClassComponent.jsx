@@ -65,12 +65,12 @@ export const ClassComponent = () => {
 
   return (
     <>
-      <Navbar></Navbar>
-      <h1 className="text-xl mt-[2%] text-red-500 font-serif">Quản Lý Class</h1>
+      <Navbar ></Navbar>
+      <h1 className="text-xl mt-[2%] text-red-500 font-serif ">Quản Lý Class</h1>
       <div className="flex ml-8">
         <button
           onClick={() => setIsTogle(true)}
-          className="px-1 bg-slate-200 rounded-xl border-collapse hover:bg-slate-400 "
+          className=" px-1 bg-slate-500 rounded-xl border-collapse hover:bg-slate-400 "
         >
           Thêm mới Lớp
         </button>
@@ -91,7 +91,7 @@ export const ClassComponent = () => {
         </div>
       </div>
 
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-[2%]">
+      <div className=" relative overflow-x-auto shadow-md sm:rounded-lg mt-[2%]">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -149,8 +149,9 @@ export const ClassComponent = () => {
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {student.teacherName}
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <td className=" hover:underline  px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                     <button
+                    className="hover:underline hover:text-blue-500"
                       onClick={() =>
                         hadleOpenModalCreateEvaluate(student.studentId)
                       }
@@ -159,7 +160,7 @@ export const ClassComponent = () => {
                     </button>
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <button onClick={() => handleModalOpen(student.studentId)}>
+                    <button  className=" hover:underline hover:text-blue-500" onClick={() => handleModalOpen(student.studentId)}>
                       {" "}
                       Xem Đánh giá{" "}
                     </button>

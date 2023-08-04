@@ -9,24 +9,43 @@ export const ModalChangepass = ({ closeModal }) => {
   const [oldPass, setOldPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [rePass, setRePass] = useState("");
-  console.log(isLogin);
+  const [error, setError] = useState("");
   const handleSubmit = async () => {
-    try {
-      if (!isLogin) {
-        const res = await axios
-          .put("http://localhost:8080/v1/api/auth/change-password", {
-            oldPass,
-            newPass,
-            rePass,
-          })
-          // .then((res) => console.log(res));
-        toast.success("Change password successfully");
-      } else {
-        toast.error("Lỗi");
-      }
+    if (newPass !== rePass) {
+      return toast.error("Mật khẩu mới không trùng khớp");
+    } else {
+      try {
+      const headers = {
+        Authorization: `Bearer ${isLogin}`,
+        "Content-Type": "application/json",
+      };
+      const data = {
+        oldPass,
+        newPass,
+        rePass,
+      };
+      const res = await axios
+        .put("http://localhost:8080/v1/api/auth/change-password", data, { headers })
+        // .then((res) => console.log(res));
+      toast.success("Đổi mật khẩu thành công");
     } catch (error) {
       console.log(error);
       toast.error("Lỗi");
+    }
+    }
+    
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "oldPass") {
+      setOldPass(value);
+    }
+    if (name === "newPass") {
+      setNewPass(value);
+    }
+    if (name === "rePass") {
+      setRePass(value);
     }
   };
 
@@ -53,38 +72,45 @@ export const ModalChangepass = ({ closeModal }) => {
               <>
                 <div>
                   <input
-                    type="text"
-                    name="oldPassword"
+                    type="password"
+                    name="oldPass"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Password"
                     required=""
                     value={oldPass}
-                    onChange={(e) => setOldPass(e.target.value)}
+                    onChange={handleChange}
                   />
                 </div>
                 <div>
                   <input
-                    type="text"
-                    name="password"
+                    type="password"
+                    name="newPass"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="New password"
                     required=""
                     value={newPass}
-                    onChange={(e) => setNewPass(e.target.value)}
+                    onChange={handleChange}
                   />
                 </div>
                 <div>
                   <input
-                    type="text"
-                    name="repassword"
+                    type="password"
+                    name="rePass"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="New Repassword"
                     required=""
                     value={rePass}
-                    onChange={(e) => setRePass(e.target.value)}
+                    onChange={handleChange}
                   />
                 </div>
               </>
+              {error ? (
+                <div>
+                  <p>{error}</p>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             {/*footer*/}
             <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
