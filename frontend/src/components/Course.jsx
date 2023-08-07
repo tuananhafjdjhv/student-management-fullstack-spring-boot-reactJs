@@ -151,10 +151,10 @@ const Course = () => {
               onClick={() => setShowModal(true)}
               className=" bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded"
             >
-              Add Course
+              Thêm mới khóa học
             </button>
             <h1 className="ml-96 text-2xl font-bold mb-4 text-blue-400">
-              Course List
+              Danh sách khóa học
             </h1>
           </div>
 
@@ -162,12 +162,12 @@ const Course = () => {
             <thead>
               <tr>
                 <th className="text-center">STT</th>
-                <th className="text-center inline-block">Course Name</th>
-                <th className="text-center">Course Description</th>
-                <th className="text-center">Course Id </th>
-                <th className="text-center">Image</th>
+                <th className="text-center inline-block">Tên khóa học</th>
+                <th className="text-center">Mô tả</th>
+                <th className="text-center">Mã Khóa học </th>
+                <th className="text-center">Hình ảnh </th>
 
-                <th className="text-center">Action</th>
+                <th className="text-center">Lựa chọn</th>
               </tr>
             </thead>
             <tbody className="text-align-center border-2 ">

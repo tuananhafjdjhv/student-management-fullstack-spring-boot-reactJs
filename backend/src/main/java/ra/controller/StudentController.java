@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import ra.dto.reponse.ResponseMessage;
 import ra.model.Student;
 import ra.model.User;
 import ra.repository.IStudentRepository;
@@ -63,6 +64,10 @@ public class StudentController {
     }
     @GetMapping("/student")
     public Student createNewStudent(@RequestBody Student student){
+        return studentRepository.save(student);
+    }
+    @PostMapping("/create")
+    public Student createStudent(@RequestBody Student student){
         return studentRepository.save(student);
     }
 }

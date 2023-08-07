@@ -5,10 +5,10 @@ const ErrorPage = () => {
   return (
     <>
       <NavLink
-        to={"/"}
+        to={"/login"}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
-        Back to Login
+        Quay lại đăng nhập
       </NavLink>
       <img
         style={{ width: 1400, height: 500 }}

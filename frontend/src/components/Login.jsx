@@ -41,7 +41,7 @@ const Login = () => {
         // localStorage.setItem('token', response.data.token);
         console.log(response.data.roles);
          
-          navigate("/admin");
+          navigate("/user-data");
         
         setPassword("");
         setUsername("");
@@ -119,9 +119,9 @@ const Login = () => {
 
             <div className="flex flex-row gap-2 p-3">
               <div className="flex bg-gray-50 ">
-                <button
-                  onClick={()=>googleLogin()}
-                  // href="http://localhost:8080/oauth2/authorization/google"
+                <a
+                  // onClick={()=>googleLogin()}
+                  href="http://localhost:8080/oauth2/authorization/google"
                   className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                 >
                   <svg
@@ -179,7 +179,7 @@ const Login = () => {
                     </g>
                   </svg>
                   <span>Google</span>
-                </button>
+                </a>
               </div>
               <div className="flex bg-gray-50">
                 <button className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">

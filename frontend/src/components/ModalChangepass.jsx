@@ -28,9 +28,10 @@ export const ModalChangepass = ({ closeModal }) => {
         .put("http://localhost:8080/v1/api/auth/change-password", data, { headers })
         // .then((res) => console.log(res));
       toast.success("Đổi mật khẩu thành công");
+      closeModal();
     } catch (error) {
       console.log(error);
-      toast.error("Lỗi");
+      toast.error("Mật khẩu cũ không đúng");
     }
     }
     

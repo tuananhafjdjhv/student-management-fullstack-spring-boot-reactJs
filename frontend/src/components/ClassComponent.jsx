@@ -66,7 +66,7 @@ export const ClassComponent = () => {
   return (
     <>
       <Navbar ></Navbar>
-      <h1 className="text-xl mt-[2%] text-red-500 font-serif ">Quản Lý Class</h1>
+      <h1 className="text-xl mt-[2%] text-red-500 font-serif ">Quản Lý Lớp</h1>
       <div className="flex ml-8">
         <button
           onClick={() => setIsTogle(true)}

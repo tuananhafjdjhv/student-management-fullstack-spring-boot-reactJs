@@ -25,7 +25,6 @@ const Signup = () => {
     birthDate: "",
     roles: [],
   });
-  // const [newRoles,setNewRoles ]= useState();
   
   const handleCheckboxChange = (e) => {
     const selectedRoles = Array.from(e.target.selectedOptions, option => option.value);
@@ -90,7 +89,7 @@ const Signup = () => {
         inputValue.address === "" ||
         inputValue.birthDate === "" ||
         inputValue.phoneNumber === "" ||
-        inputValue.roles === ""
+        inputValue.roles.length === 0
       ) {
         toast.error("Vui lòng điền đầy đủ thông tin.");
         return;
@@ -98,11 +97,16 @@ const Signup = () => {
       const res = axios.post(
         "http://localhost:8080/v1/api/auth/signup",
         inputValue
-      );
-
-      setError("");
-      toast.success("Thêm mới thành công");
-      navigate("/admin");
+      )
+        // if(res.status === 200){
+          toast.success("Thêm mới thành công");
+          console.log(res);
+          navigate("/user-data");
+          setError("");
+        // }
+        // else {
+          // toast.error("Username hoặc email đã tồn tại");
+        // }
     } catch (error) {
       toast.error("Đã xảy ra lỗi");
       console.log(error);
@@ -167,8 +171,6 @@ const Signup = () => {
                   name="email"
                   type="email"
                   placeholder="Email"
-                  // value={email}
-                  // onChange={(e) => setEmail(e.target.value)}
                   value={inputValue.email}
                   onChange={(e) => handleChange(e)}
                 />
@@ -191,17 +193,6 @@ const Signup = () => {
                 >
                   Tải lên avatar
                 </label>
-                {/* <input
-                  className="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                  id="small_size"
-                  type="file"
-                  name="avatar"
-                  onChange={uploadImage}
-                />
-
-                <div>
-                  <img width={50} src={imageUrl} alt="avatar" />
-                </div> */}
                 <div>
                 <div className="relative w-16 group">
                   <img
